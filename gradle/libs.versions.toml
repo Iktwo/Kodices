@@ -18,6 +18,7 @@ kotlinx-serialization = "1.6.2"
 kover = "0.7.4"
 ktlint = "12.0.3"
 lifecycle = "2.6.2"
+skie = "0.6.1"
 
 [libraries]
 accompanist-webview = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanist-webview" }
@@ -49,3 +50,4 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+skie = { id = "co.touchlab.skie", version.ref = "skie" }

@@ -17,6 +17,7 @@ plugins {
     alias(libs.plugins.serialization).apply(false)
     alias(libs.plugins.allopen).apply(false)
     alias(libs.plugins.ktlint).apply(false)
+    alias(libs.plugins.skie).apply(false)
 }
 
 allprojects {
