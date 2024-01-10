@@ -27,7 +27,7 @@ kotlin {
         iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
-            baseName = "Kodices"
+            baseName = "KodicesSampleApp"
             xcf.add(this)
         }
     }
