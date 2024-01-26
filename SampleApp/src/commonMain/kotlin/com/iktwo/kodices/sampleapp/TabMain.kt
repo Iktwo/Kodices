@@ -144,9 +144,14 @@ fun TabCountdownDashboard() {
         println("New content size: ${content.elements.size} content: ${state.content}")
         var openDialog by remember { mutableStateOf(false) }
 
+        fun closeAndClear() {
+            openDialog = false
+            name = ""
+        }
+
         if (openDialog) {
             ContentDialog(onCloseRequest = {
-                openDialog = false
+                closeAndClear()
             }) {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     // TODO: add datetime picker
@@ -180,13 +185,15 @@ fun TabCountdownDashboard() {
                                         put("entries", entries)
                                     },
                                 )
+
+                                closeAndClear()
                             }
                         }) {
                             Text("Add")
                         }
 
                         Button(onClick = {
-                            openDialog = false
+                            closeAndClear()
                         }) {
                             Text("Cancel")
                         }
