@@ -67,6 +67,7 @@ kotlin {
                 implementation(libs.androidx.appcompat)
                 implementation(libs.androidx.core)
                 implementation(libs.kotlinx.coroutines.android)
+                implementation(compose.preview)
 
                 api(libs.androidx.lifecycle.viewmodel)
             }

@@ -10,13 +10,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.iktwo.kodices.Kodices
 import com.iktwo.piktographs.elements.CountdownElement
 import com.iktwo.piktographs.elements.WebElement
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import org.jetbrains.compose.resources.InternalResourceApi
+import org.jetbrains.compose.resources.readResourceBytes
+
 
 val json = Json { prettyPrint = true }
 val kodices = Kodices(elements = listOf(WebElement, CountdownElement))
@@ -27,6 +35,7 @@ enum class Tabs(val displayName: String) {
     Input("Dynamic Input"),
 }
 
+@OptIn(InternalResourceApi::class)
 @Composable
 fun App() {
     val orderedTabs = Tabs.entries
@@ -35,6 +44,16 @@ fun App() {
     val sampleInitialContent = "{}"
 
     var activeContent by remember { mutableStateOf(sampleInitialContent) }
+    var catalogContent by remember { mutableStateOf("") }
+
+    val scope = rememberCoroutineScope()
+
+    scope.launch(Dispatchers.IO) {
+        val result = readResourceBytes("files/catalog.json").decodeToString()
+        withContext(Dispatchers.Main) {
+            catalogContent = result
+        }
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         TabRow(selectedTabIndex = orderedTabs.indexOf(selectedTab)) {
@@ -53,7 +72,7 @@ fun App() {
             }
 
             Tabs.ComponentCatalog -> {
-                TabCatalog(activeContent)
+                TabCatalog(catalogContent)
             }
 
             Tabs.Input -> {

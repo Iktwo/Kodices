@@ -19,6 +19,7 @@ fun TabCatalog(contentString: String) {
     kodices.parseJSONToContent(contentString, dataString)?.let { content ->
         val actionPerformer = object : ActionPerformer {
             override fun onAction(action: Action) {
+                // no-op
             }
         }
 

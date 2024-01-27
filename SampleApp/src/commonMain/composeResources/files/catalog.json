@@ -1,0 +1,23 @@
+{
+  "elements": [
+    {
+      "type": "row",
+      "constants": {
+        "text": "Row element",
+        "textSecondary": "Secondary text"
+      }
+    },
+    {
+      "type": "countdown",
+      "constants": {
+        "target": "2030-05-05T00:00:00"
+      }
+    },
+    {
+      "type": "button",
+      "constants": {
+        "text": "Button"
+      }
+    }
+  ]
+}
