@@ -1,5 +1,8 @@
 package com.iktwo.kodices
 
+import com.iktwo.kodices.actions.ActionDescriptor
+import com.iktwo.kodices.actions.ActionsRegistry
+import com.iktwo.kodices.actions.MessageAction
 import com.iktwo.kodices.content.Content
 import com.iktwo.kodices.content.InterimContent
 import com.iktwo.kodices.elements.ElementDescriptor
@@ -11,11 +14,17 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
 
-class Kodices(elements: List<ElementDescriptor> = listOf()) {
-    private val json: Json = Json
+class Kodices(
+    elements: List<ElementDescriptor> = listOf(),
+    actions: List<ActionDescriptor> = listOf()
+) {
+    private val json: Json = Json { ignoreUnknownKeys = true }
 
     init {
         ElementRegistry.addElements(elements)
+
+        val defaultActions = listOf(MessageAction.descriptor)
+        ActionsRegistry.addActions(actions.plus(defaultActions))
     }
 
     fun parseJSONElementToContent(
@@ -37,6 +46,10 @@ class Kodices(elements: List<ElementDescriptor> = listOf()) {
         jsonString: String,
         data: JsonElement? = null,
     ): Content? {
+        if (jsonString.isBlank()) {
+            return null
+        }
+
         return try {
             val interimContent = json.decodeFromString(InterimContent.Companion, jsonString)
             interimContent.process(data)

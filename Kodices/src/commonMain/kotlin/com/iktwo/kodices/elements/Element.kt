@@ -14,7 +14,6 @@ import com.iktwo.kodices.utils.asStringOrNull
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
@@ -80,7 +79,8 @@ sealed interface Element {
 
             val processors = jsonObject[Constants.PROCESSORS]?.asJSONObjectOrNull()
             val constants = jsonObject[Constants.CONSTANTS]?.asJSONObjectOrNull()
-            val expandWithProcessors = jsonObject[Constants.EXPAND_WITH_PROCESSOR] ?: jsonObject[Constants.EXPAND_WITH_PROCESSORS]
+            val expandWithProcessors = jsonObject[Constants.EXPAND_WITH_PROCESSOR]
+                ?: jsonObject[Constants.EXPAND_WITH_PROCESSORS]
             val id = jsonObject[Constants.ID]?.asStringOrNull()
             val nestedElements = jsonObject[Constants.NESTED_ELEMENTS]?.asJSONArrayOrNull()
 
@@ -114,24 +114,26 @@ sealed interface Element {
                     when (jsonElement) {
                         is JsonArray -> {
                             return@map property to jsonElement.jsonArray.map {
-                                DataProcessorRegistry.fromJsonObject(it.jsonObject)?.let { dataProcessorBuilder ->
-                                    dataProcessorBuilder(decoder.json, it.jsonObject)
-                                } ?: run {
+                                DataProcessorRegistry.fromJsonObject(it.jsonObject)
+                                    ?.let { dataProcessorBuilder ->
+                                        dataProcessorBuilder(decoder.json, it.jsonObject)
+                                    } ?: run {
                                     throw DataProcessorException("invalid ${jsonElement.jsonObject} in ${DataProcessor::class.simpleName} not supported")
                                 }
                             }
                         }
 
                         is JsonObject -> {
-                            DataProcessorRegistry.fromJsonObject(jsonElement.jsonObject)?.let { dataProcessorBuilder ->
-                                return@map property to
-                                    listOf(
-                                        dataProcessorBuilder(
-                                            decoder.json,
-                                            jsonElement.jsonObject,
-                                        ),
-                                    )
-                            } ?: run {
+                            DataProcessorRegistry.fromJsonObject(jsonElement.jsonObject)
+                                ?.let { dataProcessorBuilder ->
+                                    return@map property to
+                                        listOf(
+                                            dataProcessorBuilder(
+                                                decoder.json,
+                                                jsonElement.jsonObject,
+                                            ),
+                                        )
+                                } ?: run {
                                 throw DataProcessorException("$property ${DataProcessor::class.simpleName} not registered")
                             }
                         }
@@ -144,7 +146,11 @@ sealed interface Element {
 
                 return InterimElement(
                     type = type,
-                    nestedElements = nestedElements?.map { decoder.json.decodeFromJsonElement<Element>(it) } ?: emptyList(),
+                    nestedElements = nestedElements?.map {
+                        decoder.json.decodeFromJsonElement<Element>(
+                            it
+                        )
+                    } ?: emptyList(),
                     id = id,
                     constants = constants,
                     processors = dataProcessors,
@@ -173,20 +179,22 @@ sealed interface Element {
 
             val id = jsonObject[Constants.ID]?.asStringOrNull() ?: "id"
 
-            val nestedElements = jsonObject[Constants.NESTED_ELEMENTS]?.asJSONArrayOrNull()?.mapNotNull {
-                if (it is JsonObject) resolveProcessedElement(it) else null
-            } ?: emptyList()
+            val nestedElements =
+                jsonObject[Constants.NESTED_ELEMENTS]?.asJSONArrayOrNull()?.mapNotNull {
+                    if (it is JsonObject) resolveProcessedElement(it) else null
+                } ?: emptyList()
             val text = jsonObject[Constants.TEXT_KEY]?.asStringOrNull()
             val textSecondary = jsonObject[Constants.TEXT_SECONDARY_KEY]?.asStringOrNull()
 
-            return ElementRegistry.getElement(jsonObject[Constants.TYPE]?.asStringOrNull() ?: "")?.let { builder ->
-                builder(
-                    id,
-                    jsonObject.asMap().toMutableMap(),
-                    nestedElements,
-                    emptyList(),
-                )
-            } ?: ProcessedElement(
+            return ElementRegistry.getElement(jsonObject[Constants.TYPE]?.asStringOrNull() ?: "")
+                ?.let { builder ->
+                    builder(
+                        id,
+                        jsonObject.asMap().toMutableMap(),
+                        nestedElements,
+                        emptyList(),
+                    )
+                } ?: ProcessedElement(
                 type = type,
                 id = id,
                 nestedElements = nestedElements,
@@ -221,18 +229,20 @@ sealed interface Element {
 
             return when (actionsValue) {
                 is JsonArray -> {
-                    json.decodeFromJsonElement(
-                        ListSerializer(InterimAction.serializer()),
-                        actionsValue,
-                    )
+                    actionsValue.map { actionJsonContent ->
+                        InterimAction(
+                            actionJsonContent.asJSONObjectOrNull()?.get(Constants.TYPE)
+                                ?.asStringOrNull() ?: "invalid", actionJsonContent
+                        )
+                    }
                 }
 
                 is JsonObject -> {
                     listOf(
-                        json.decodeFromJsonElement(
-                            InterimAction.serializer(),
-                            actionsValue,
-                        ),
+                        InterimAction(
+                            actionsValue.asJSONObjectOrNull()?.get(Constants.TYPE)?.asStringOrNull()
+                                ?: "invalid", actionsValue
+                        )
                     )
                 }
 

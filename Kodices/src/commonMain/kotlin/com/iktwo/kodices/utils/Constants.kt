@@ -18,6 +18,7 @@ object Constants {
     const val TEXT_KEY = "text"
     const val TEXT_SECONDARY_KEY = "textSecondary"
     const val TYPE = "type"
+    const val STYLE = "style"
 
     val GENERIC_ELEMENT_KEYS = listOf(TEXT_KEY, TEXT_SECONDARY_KEY)
 
