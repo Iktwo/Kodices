@@ -8,15 +8,22 @@
       }
     },
     {
-      "type": "countdown",
+      "type": "button",
       "constants": {
-        "target": "2030-05-05T00:00:00"
+        "text": "Button"
+      },
+      "action": {
+        "type": "message",
+        "constants": {
+          "text": "This is a message!"
+        }
       }
     },
     {
       "type": "button",
       "constants": {
-        "text": "Button"
+        "text": "Disabled Button",
+        "enabled": false
       }
     }
   ]
