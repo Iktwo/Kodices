@@ -2,21 +2,23 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 
 buildscript {
     dependencies {
+        classpath(libs.kotlinpoet)
         classpath(libs.gradle)
     }
 }
 plugins {
+    alias(libs.plugins.allopen).apply(false)
     alias(libs.plugins.androidApplication).apply(false)
     alias(libs.plugins.androidLibrary).apply(false)
     alias(libs.plugins.benchmark).apply(false)
     alias(libs.plugins.jetbrainsCompose).apply(false)
     alias(libs.plugins.kotlin.android).apply(false)
-    alias(libs.plugins.kover).apply(false)
     alias(libs.plugins.kotlinMultiplatform).apply(false)
+    alias(libs.plugins.kover).apply(false)
+    alias(libs.plugins.ktlint).apply(false)
+    alias(libs.plugins.ktor).apply(false)
     alias(libs.plugins.org.jetbrains.kotlin.jvm).apply(false)
     alias(libs.plugins.serialization).apply(false)
-    alias(libs.plugins.allopen).apply(false)
-    alias(libs.plugins.ktlint).apply(false)
     alias(libs.plugins.skie).apply(false)
 }
 

@@ -1,16 +1,16 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Sample App Desktop" type="GradleRunConfiguration" factoryName="Gradle">
+  <configuration default="false" name="KodexServer" type="GradleRunConfiguration" factoryName="Gradle" singleton="false">
     <ExternalSystemSettings>
       <option name="executionName" />
-      <option name="externalProjectPath" value="$PROJECT_DIR$/SampleApp" />
+      <option name="externalProjectPath" value="$PROJECT_DIR$/KodexServer" />
       <option name="externalSystemIdString" value="GRADLE" />
-      <option name="scriptParameters" value="-DmainClass=com.iktwo.kodices.sampleapp.MainKt --quiet" />
+      <option name="scriptParameters" value="" />
       <option name="taskDescriptions">
         <list />
       </option>
       <option name="taskNames">
         <list>
-          <option value="desktopRun" />
+          <option value="runDebugExecutableNative" />
         </list>
       </option>
       <option name="vmOptions" />

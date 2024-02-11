@@ -1,4 +1,4 @@
-package com.iktwo.sampleapp
+package com.iktwo.kodices.sampleapp
 
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +14,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.iktwo.kodices.sampleapp.json
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 
@@ -30,17 +29,21 @@ fun JSONTextEditor(
     TextField(
         value = layoutText,
         modifier = modifier,
-        onValueChange = {
-            layoutText = it
+        onValueChange = { jsonString ->
+            if (jsonString.isBlank()) {
+                return@TextField
+            }
+
+            layoutText = jsonString
 
             validJSON =
                 try {
-                    val element = Json.parseToJsonElement(it)
-                    onJSONTextChanged(it)
+                    val element = Json.parseToJsonElement(jsonString)
+                    onJSONTextChanged(jsonString)
 
                     val stringified = json.encodeToString(JsonElement.serializer(), element)
 
-                    if (it != stringified) {
+                    if (jsonString != stringified) {
                         layoutText = stringified
                     }
 
