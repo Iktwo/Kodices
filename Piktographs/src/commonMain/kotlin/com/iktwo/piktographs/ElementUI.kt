@@ -1,10 +1,12 @@
 package com.iktwo.piktographs
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateMap
 import com.iktwo.kodices.elements.INPUT_ELEMENT_CHECKBOX
 import com.iktwo.kodices.elements.INPUT_ELEMENT_TEXT_AREA
 import com.iktwo.kodices.elements.INPUT_ELEMENT_TEXT_INPUT
 import com.iktwo.kodices.elements.InputElement
+import com.iktwo.kodices.elements.InputHandler
 import com.iktwo.kodices.elements.ProcessedElement
 import com.iktwo.piktographs.ui.CheckboxUI
 import com.iktwo.piktographs.ui.ROW_ELEMENT_TYPE
@@ -18,6 +20,8 @@ import com.iktwo.piktographs.ui.UnknownElementUI
 fun ElementUI(
     element: ProcessedElement,
     elementOverrides: @Composable (ProcessedElement) -> Boolean,
+    inputHandler: InputHandler,
+    textInputData: SnapshotStateMap<String, String>
 ) {
     when {
         element.type == ROW_ELEMENT_TYPE -> {
@@ -25,7 +29,7 @@ fun ElementUI(
         }
 
         element.type == INPUT_ELEMENT_TEXT_INPUT && element is InputElement -> {
-            TextInputUI(element)
+            TextInputUI(element, inputHandler, textInputData[element.inputKey])
         }
 
         element.type == INPUT_ELEMENT_TEXT_AREA && element is InputElement -> {
