@@ -129,6 +129,7 @@ data class InterimElement(
         return ElementRegistry.getElement(type)?.let { builder ->
             listOf(
                 builder(
+                    type,
                     processedId,
                     processedValues,
                     nestedElements,

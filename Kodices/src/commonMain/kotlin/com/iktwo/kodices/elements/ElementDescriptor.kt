@@ -7,6 +7,7 @@ import kotlinx.serialization.json.JsonElement
  * typealias that defines a function that creates a ProcessedElement
  */
 typealias ElementBuilder = (
+    type: String,
     id: String,
     processedValues: Map<String, JsonElement?>,
     nestedElements: List<ProcessedElement>,

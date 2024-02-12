@@ -183,12 +183,13 @@ sealed interface Element {
                 jsonObject[Constants.NESTED_ELEMENTS]?.asJSONArrayOrNull()?.mapNotNull {
                     if (it is JsonObject) resolveProcessedElement(it) else null
                 } ?: emptyList()
-            val text = jsonObject[Constants.TEXT_KEY]?.asStringOrNull()
-            val textSecondary = jsonObject[Constants.TEXT_SECONDARY_KEY]?.asStringOrNull()
 
-            return ElementRegistry.getElement(jsonObject[Constants.TYPE]?.asStringOrNull() ?: "")
+            val commonElementProperties = jsonObject.toCommonElementProperties()
+
+            return ElementRegistry.getElement(type)
                 ?.let { builder ->
                     builder(
+                        type,
                         id,
                         jsonObject.asMap().toMutableMap(),
                         nestedElements,
@@ -198,8 +199,8 @@ sealed interface Element {
                 type = type,
                 id = id,
                 nestedElements = nestedElements,
-                text = text,
-                textSecondary = textSecondary,
+                text = commonElementProperties.text,
+                textSecondary = commonElementProperties.textSecondary,
                 actions = emptyList(),
                 jsonValues = jsonObject.asMap().toMutableMap(),
             )

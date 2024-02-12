@@ -8,11 +8,13 @@ import androidx.compose.ui.unit.sp
 
 data class Dimensions(
     val padding: Dp = SPACING,
-    val verticalSpacing: Dp = VERTICAL_SPACING
+    val verticalSpacing: Dp = VERTICAL_SPACING,
+    val horizontalSpacing: Dp = HORIZONTAL_SPACING
 )
 
 private val SPACING = 8.dp
 private val VERTICAL_SPACING = 4.dp
+private val HORIZONTAL_SPACING = 4.dp
 
 data class FontSizes(
     val primary: TextUnit = FONT_SIZE_PRIMARY,

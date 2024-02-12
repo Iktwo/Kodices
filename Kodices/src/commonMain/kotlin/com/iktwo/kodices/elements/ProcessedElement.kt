@@ -13,4 +13,8 @@ open class ProcessedElement(
     val textSecondary: String? = null,
     override val actions: List<Action> = emptyList(),
     val jsonValues: ProcessedValues = mutableMapOf(),
-) : Element
+) : Element {
+    override fun toString(): String {
+        return "ProcessedElement { type: $type, id: $id, text: $text, jsonValues: $jsonValues }"
+    }
+}

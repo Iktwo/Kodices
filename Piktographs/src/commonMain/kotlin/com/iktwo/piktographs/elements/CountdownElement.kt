@@ -45,7 +45,7 @@ class CountdownElement(
 
         const val STYLE = "style"
 
-        override val builder: ElementBuilder = { id, processedValues, nestedElements, actions ->
+        override val builder: ElementBuilder = { _, id, processedValues, nestedElements, actions ->
             val targetValue = processedValues[TARGET]?.asStringOrNull() ?: ""
             val styleValue = processedValues[STYLE]?.asStringOrNull() ?: ""
             val title = processedValues[Constants.TEXT_KEY]?.asStringOrNull()

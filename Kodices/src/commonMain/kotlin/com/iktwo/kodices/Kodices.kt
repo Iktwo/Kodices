@@ -5,8 +5,10 @@ import com.iktwo.kodices.actions.ActionsRegistry
 import com.iktwo.kodices.actions.MessageAction
 import com.iktwo.kodices.content.Content
 import com.iktwo.kodices.content.InterimContent
+import com.iktwo.kodices.elements.DefaultInputElements
 import com.iktwo.kodices.elements.ElementDescriptor
 import com.iktwo.kodices.elements.ElementRegistry
+import com.iktwo.kodices.elements.InputElement
 import com.iktwo.kodices.utils.Constants
 import com.iktwo.kodices.utils.Logger
 import kotlinx.serialization.json.Json
@@ -21,7 +23,14 @@ class Kodices(
     private val json: Json = Json { ignoreUnknownKeys = true }
 
     init {
-        ElementRegistry.addElements(elements)
+        val inputElements = DefaultInputElements.map { elementType ->
+            object : ElementDescriptor {
+                override val type = elementType
+                override val builder = InputElement.builder
+            }
+        }.toList()
+
+        ElementRegistry.addElements(inputElements.plus(elements))
 
         val defaultActions = listOf(MessageAction.descriptor)
         ActionsRegistry.addActions(actions.plus(defaultActions))

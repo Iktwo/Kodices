@@ -15,12 +15,12 @@ import com.iktwo.kodices.elements.ProcessedElement
 fun UnknownElementUI(processedElement: ProcessedElement) {
     if (Kodices.debug) {
         Text(
-            "${processedElement.type} element is not supported",
+            "${processedElement.type} element is not supported. $processedElement",
             modifier = Modifier.fillMaxWidth().padding(
                 8.dp,
             ),
             color = Color.Red,
-            fontSize = 32.sp,
+            fontSize = 24.sp,
         )
     }
 }

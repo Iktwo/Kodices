@@ -26,7 +26,9 @@ import org.jetbrains.compose.resources.InternalResourceApi
 import org.jetbrains.compose.resources.readResourceBytes
 
 val json = Json { prettyPrint = true }
-val kodices = Kodices(elements = listOf(WebElement, CountdownElement))
+val kodices = Kodices(
+    elements = listOf(WebElement, CountdownElement)
+)
 
 enum class Tabs(val displayName: String) {
     ComponentCatalog("Catalog"),

@@ -3,7 +3,7 @@
     {
       "type": "row",
       "constants": {
-        "text": "Row element",
+        "text": "Row",
         "textSecondary": "Secondary text"
       }
     },
@@ -24,6 +24,17 @@
       "constants": {
         "text": "Disabled Button",
         "enabled": false
+      }
+    },
+    {
+      "type": "textInput",
+      "constants": {
+        "textSecondary": "Text Input"
+      }
+    },
+    {
+      "type": "checkbox",
+      "constants": {
       }
     }
   ]
