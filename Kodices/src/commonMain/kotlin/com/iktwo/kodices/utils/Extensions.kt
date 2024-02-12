@@ -5,6 +5,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -28,6 +29,14 @@ fun JsonElement.asJSONObjectOrNull(): JsonObject? {
 fun JsonElement.asStringOrNull(): String? {
     return if (this is JsonPrimitive && jsonPrimitive.isString) {
         content
+    } else {
+        null
+    }
+}
+
+fun JsonElement.asIntOrNull(): Int? {
+    return if (this is JsonPrimitive && jsonPrimitive.intOrNull != null) {
+        intOrNull
     } else {
         null
     }
