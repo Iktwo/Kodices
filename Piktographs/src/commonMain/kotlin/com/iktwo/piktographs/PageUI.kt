@@ -24,26 +24,46 @@ fun PageUI(
     theme: Theme = Theme(),
 ) {
     CompositionLocalProvider(DefaultTheme provides theme) {
-        val inputData = remember {
+        val textInputData = remember {
             mutableStateMapOf<String, String>()
+        }
+
+        val booleanInputData = remember {
+            mutableStateMapOf<String, Boolean>()
         }
 
         val inputHandler = object : InputHandler {
             override fun onTextInput(key: String, value: String) {
-                inputData[key] = value
+                textInputData[key] = value
+            }
+
+            override fun onBooleanInput(key: String, value: Boolean) {
+                booleanInputData[key] = value
             }
         }
 
         when (pageStyle) {
             HorizontalListPageStyle -> {
                 LazyRow(modifier = modifier) {
-                    renderElements(content.elements, elementOverrides, inputHandler, inputData)
+                    renderElements(
+                        content.elements,
+                        elementOverrides,
+                        inputHandler,
+                        textInputData,
+                        booleanInputData
+                    )
                 }
             }
 
             VerticalListPageStyle -> {
                 LazyColumn(modifier = modifier) {
-                    renderElements(content.elements, elementOverrides, inputHandler, inputData)
+                    renderElements(
+                        content.elements,
+                        elementOverrides,
+                        inputHandler,
+                        textInputData,
+                        booleanInputData
+                    )
                 }
             }
         }
@@ -54,11 +74,12 @@ fun LazyListScope.renderElements(
     elements: List<ProcessedElement>,
     elementOverrides: @Composable (ProcessedElement) -> Boolean,
     inputHandler: InputHandler,
-    textInputData: SnapshotStateMap<String, String>
+    textInputData: SnapshotStateMap<String, String>,
+    booleanInputData: SnapshotStateMap<String, Boolean>,
 ) {
     elements.forEach { element ->
         item {
-            ElementUI(element, elementOverrides, inputHandler, textInputData)
+            ElementUI(element, elementOverrides, inputHandler, textInputData, booleanInputData)
         }
     }
 }

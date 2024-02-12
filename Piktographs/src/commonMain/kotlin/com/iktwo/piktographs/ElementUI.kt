@@ -21,7 +21,8 @@ fun ElementUI(
     element: ProcessedElement,
     elementOverrides: @Composable (ProcessedElement) -> Boolean,
     inputHandler: InputHandler,
-    textInputData: SnapshotStateMap<String, String>
+    textInputData: SnapshotStateMap<String, String>,
+    booleanInputData: SnapshotStateMap<String, Boolean>,
 ) {
     when {
         element.type == ROW_ELEMENT_TYPE -> {
@@ -37,7 +38,7 @@ fun ElementUI(
         }
 
         element.type == INPUT_ELEMENT_CHECKBOX && element is InputElement -> {
-            CheckboxUI(element)
+            CheckboxUI(element, inputHandler, booleanInputData[element.inputKey])
         }
 
         element.type == SEPARATOR_ELEMENT_TYPE -> {
