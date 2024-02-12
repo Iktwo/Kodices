@@ -11,7 +11,8 @@ class InputElement(
     textSecondary: String? = null,
     actions: List<Action> = emptyList(),
     override val type: String,
-    override val inputKey: String
+    override val inputKey: String,
+    override val style: String? = null
 ) : ProcessedElement(
     type = type,
     nestedElements = nestedElements,
@@ -20,6 +21,7 @@ class InputElement(
     textSecondary = textSecondary,
     actions = actions,
     jsonValues = jsonValues,
+    style = style
 ), InputProvider {
     companion object {
         private const val INPUT_KEY = "inputKey"
@@ -37,7 +39,8 @@ class InputElement(
                 type = type,
                 text = commonElementProperties.text,
                 textSecondary = commonElementProperties.textSecondary,
-                inputKey = inputKey ?: type
+                inputKey = inputKey ?: type,
+                style = commonElementProperties.style
             )
         }
     }

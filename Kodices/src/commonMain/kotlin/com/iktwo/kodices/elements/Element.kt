@@ -203,6 +203,7 @@ sealed interface Element {
                 textSecondary = commonElementProperties.textSecondary,
                 actions = emptyList(),
                 jsonValues = jsonObject.asMap().toMutableMap(),
+                style = commonElementProperties.style,
             )
         }
 

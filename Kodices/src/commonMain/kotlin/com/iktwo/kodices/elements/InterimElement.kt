@@ -62,6 +62,7 @@ data class InterimElement(
 
         var processedText: String? = null
         var processedTextSecondary: String? = null
+        var style: String? = null
 
         val processedValues: ProcessedValues = mutableMapOf()
 
@@ -92,6 +93,14 @@ data class InterimElement(
                     Constants.TEXT_SECONDARY_KEY -> {
                         processedValue?.asStringOrNull()?.let {
                             processedTextSecondary = it
+                        } ?: run {
+                            Kodices.logger.warn("${InterimElement::class.simpleName} $key was provided but processed value is not as expected $processedValue")
+                        }
+                    }
+
+                    Constants.STYLE -> {
+                        processedValue?.asStringOrNull()?.let {
+                            style = it
                         } ?: run {
                             Kodices.logger.warn("${InterimElement::class.simpleName} $key was provided but processed value is not as expected $processedValue")
                         }
@@ -145,6 +154,8 @@ data class InterimElement(
                 processedText,
                 processedTextSecondary,
                 processedActions,
+                jsonValues = processedValues,
+                style = style
             ),
         )
     }

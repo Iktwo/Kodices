@@ -20,7 +20,7 @@ object Constants {
     const val TYPE = "type"
     const val STYLE = "style"
 
-    val GENERIC_ELEMENT_KEYS = listOf(TEXT_KEY, TEXT_SECONDARY_KEY)
+    val GENERIC_ELEMENT_KEYS = listOf(TEXT_KEY, TEXT_SECONDARY_KEY, STYLE)
 
     val jsonPrettyPrinter = Json { prettyPrint = true }
     val json = Json { prettyPrint = false }

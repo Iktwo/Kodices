@@ -16,8 +16,10 @@ enum class CountdownStyle {
     ;
 
     companion object {
-        fun fromString(value: String): CountdownStyle? {
-            return entries.firstOrNull { it.name.equals(value, ignoreCase = true) }
+        fun fromString(value: String): CountdownStyle {
+            return entries.firstOrNull {
+                it.name.equals(value, ignoreCase = true)
+            } ?: DAYS_HOURS_MINUTES_SECONDS
         }
     }
 }
@@ -29,15 +31,15 @@ class CountdownElement(
     title: String? = null,
     actions: List<Action> = emptyList(),
     val target: LocalDateTime,
-    val style: CountdownStyle,
+    val elementStyle: CountdownStyle,
 ) : ProcessedElement(
-        type = type,
-        nestedElements = nestedElements,
-        id = id,
-        text = title,
-        actions = actions,
-        jsonValues = jsonValues,
-    ) {
+    type = type,
+    nestedElements = nestedElements,
+    id = id,
+    text = title,
+    actions = actions,
+    jsonValues = jsonValues,
+) {
     companion object : ElementDescriptor {
         override val type = "countdown"
 
@@ -65,7 +67,7 @@ class CountdownElement(
                 actions = actions,
                 target = target,
                 title = title,
-                style = CountdownStyle.fromString(styleValue) ?: CountdownStyle.DAYS_HOURS_MINUTES_SECONDS,
+                elementStyle = CountdownStyle.fromString(styleValue)
             )
         }
     }

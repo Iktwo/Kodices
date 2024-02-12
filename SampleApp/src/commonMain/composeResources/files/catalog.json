@@ -36,6 +36,20 @@
       "type": "checkbox",
       "constants": {
       }
+    },
+    {
+      "type": "separator",
+      "constants": {
+        "style": "line",
+        "size": 1
+      }
+    },
+    {
+      "type": "separator",
+      "constants": {
+        "size": 20
+      }
+      }
     }
   ]
 }

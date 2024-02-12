@@ -46,7 +46,7 @@ fun CountdownUI(
             )
         }
 
-        when (countdownElement.style) {
+        when (countdownElement.elementStyle) {
             CountdownStyle.SHORT -> {
                 if (timeDifference.years != 0) {
                     timeFrames.add("${timeDifference.years} years")
