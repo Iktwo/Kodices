@@ -32,7 +32,7 @@ val kodices = Kodices(
 
 enum class Tabs(val displayName: String) {
     ComponentCatalog("Catalog"),
-
+    TabSamples("Samples"),
     //    Websockets("Websockets"),
     CountdownDashboard("Countdown"),
     Input("Dynamic Input"),
@@ -82,6 +82,10 @@ fun App() {
                 TabInput(activeContent) {
                     activeContent = it
                 }
+            }
+
+            Tabs.TabSamples -> {
+                TabSamples()
             }
 
 //            Tabs.Websockets -> {
