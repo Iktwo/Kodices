@@ -24,9 +24,10 @@ import org.jetbrains.compose.resources.readResourceBytes
 
 @OptIn(InternalResourceApi::class)
 @Composable
-fun ResourceContentPage(resourceFilename: String) {
+fun ResourceContentPage(resourceFilename: String, dataFilename: String?) {
     val scope = rememberCoroutineScope()
     var contentString by remember { mutableStateOf("") }
+    var dataString by remember { mutableStateOf("") }
 
     scope.launch(Dispatchers.IO) {
         val result = readResourceBytes("files/$resourceFilename").decodeToString()
@@ -35,7 +36,15 @@ fun ResourceContentPage(resourceFilename: String) {
         }
     }
 
-    val dataString = json.encodeToString(JsonElement.serializer(), buildJsonObject { })
+    if (dataFilename != null) {
+        scope.launch(Dispatchers.IO) {
+            val result = readResourceBytes("files/$dataFilename").decodeToString()
+            withContext(Dispatchers.Main) {
+                dataString = result
+            }
+        }
+    }
+
 
 //    var dialogMessage by remember { mutableStateOf("") }
 //    var isDialogOpen by remember { mutableStateOf(false) }

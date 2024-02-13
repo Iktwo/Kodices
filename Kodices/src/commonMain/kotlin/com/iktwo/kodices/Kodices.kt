@@ -13,6 +13,7 @@ import com.iktwo.kodices.utils.Constants
 import com.iktwo.kodices.utils.Logger
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
 
@@ -74,7 +75,7 @@ class Kodices(
         jsonString: String,
         data: String,
     ): Content? {
-        return parseJSONToContent(jsonString, json.parseToJsonElement(data))
+        return parseJSONToContent(jsonString, if (data.isBlank()) JsonNull else json.parseToJsonElement(data))
     }
 
     fun parseJSONWithDataToContent(jsonString: String): Content? {

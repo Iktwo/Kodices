@@ -1,6 +1,7 @@
 package com.iktwo.kodices.sampleapp
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -44,19 +45,21 @@ fun TabCatalog(contentString: String) {
         }
 
         CompositionLocalProvider(DefaultActionPerformer provides actionPerformer) {
-            PageUI(
-                content = content,
-                modifier = Modifier.fillMaxSize(),
-                elementOverrides = {
-                    ElementOverride(it)
-                },
-            )
+            Surface(modifier = Modifier.fillMaxSize()) {
+                PageUI(
+                    content = content,
+                    modifier = Modifier.fillMaxSize(),
+                    elementOverrides = {
+                        ElementOverride(it)
+                    },
+                )
 
-            if (isDialogOpen) {
-                ContentDialog(onCloseRequest = {
-                    isDialogOpen = false
-                }) {
-                    Text(dialogMessage)
+                if (isDialogOpen) {
+                    ContentDialog(onCloseRequest = {
+                        isDialogOpen = false
+                    }) {
+                        Text(dialogMessage)
+                    }
                 }
             }
         }

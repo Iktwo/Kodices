@@ -1,0 +1,33 @@
+{
+  "elements": [
+    {
+      "type": "countdown",
+      "constants": {
+        "style": "short"
+      },
+      "processors": {
+        "target": {
+          "type": "path",
+          "element": "target"
+        },
+        "text": {
+          "type": "path",
+          "element": "name"
+        }
+      },
+      "expandWithProcessor": {
+        "type": "path",
+        "element": "entries"
+      }
+    },
+    {
+      "type": "button",
+      "constants": {
+        "text": "Add"
+      },
+      "action": {
+        "type": "add"
+      }
+    }
+  ]
+}
