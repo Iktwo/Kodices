@@ -1,6 +1,7 @@
 package com.iktwo.kodices.elements
 
 import com.iktwo.kodices.actions.Action
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 
 /**
@@ -12,6 +13,7 @@ typealias ElementBuilder = (
     processedValues: Map<String, JsonElement?>,
     nestedElements: List<ProcessedElement>,
     actions: List<Action>,
+    json: Json
 ) -> ProcessedElement
 
 interface ElementDescriptor {

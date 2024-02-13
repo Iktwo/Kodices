@@ -1,7 +1,7 @@
 package com.iktwo.kodices.elements
 
 interface InputProvider {
-    val inputKey: String
+    val isValid: Boolean
 }
 
 const val INPUT_ELEMENT_CHECKBOX = "checkbox"

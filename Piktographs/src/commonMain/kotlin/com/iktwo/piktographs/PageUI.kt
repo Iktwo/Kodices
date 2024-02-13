@@ -5,11 +5,14 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Modifier
 import com.iktwo.kodices.content.Content
+import com.iktwo.kodices.elements.InputElement
 import com.iktwo.kodices.elements.InputHandler
 import com.iktwo.kodices.elements.ProcessedElement
 import com.iktwo.piktographs.ui.DefaultTheme
@@ -24,21 +27,35 @@ fun PageUI(
     theme: Theme = Theme(),
 ) {
     CompositionLocalProvider(DefaultTheme provides theme) {
-        val textInputData = remember {
+        val textInputData = rememberSaveable {
             mutableStateMapOf<String, String>()
         }
 
-        val booleanInputData = remember {
+        val booleanInputData = rememberSaveable {
             mutableStateMapOf<String, Boolean>()
         }
 
+        val validityMap = rememberSaveable {
+            mutableStateMapOf<String, Boolean>()
+        }
+
+        content.elements.forEach { element ->
+            if (element is InputElement) {
+                validityMap[element.id] = element.isValid
+            }
+        }
+
         val inputHandler = object : InputHandler {
-            override fun onTextInput(key: String, value: String) {
-                textInputData[key] = value
+            override fun onTextInput(element: ProcessedElement, value: String) {
+                textInputData[element.id] = value
+
+                if (element is InputElement) {
+                    validityMap[element.id] = element.isValid
+                }
             }
 
-            override fun onBooleanInput(key: String, value: Boolean) {
-                booleanInputData[key] = value
+            override fun onBooleanInput(element: ProcessedElement, value: Boolean) {
+                booleanInputData[element.id] = value
             }
         }
 
@@ -50,7 +67,8 @@ fun PageUI(
                         elementOverrides,
                         inputHandler,
                         textInputData,
-                        booleanInputData
+                        booleanInputData,
+                        validityMap
                     )
                 }
             }
@@ -62,7 +80,8 @@ fun PageUI(
                         elementOverrides,
                         inputHandler,
                         textInputData,
-                        booleanInputData
+                        booleanInputData,
+                        validityMap
                     )
                 }
             }
@@ -76,10 +95,11 @@ fun LazyListScope.renderElements(
     inputHandler: InputHandler,
     textInputData: SnapshotStateMap<String, String>,
     booleanInputData: SnapshotStateMap<String, Boolean>,
+    validityMap: SnapshotStateMap<String, Boolean>,
 ) {
     elements.forEach { element ->
-        item {
-            ElementUI(element, elementOverrides, inputHandler, textInputData, booleanInputData)
+        item(key = element.id) {
+            ElementUI(element, elementOverrides, inputHandler, textInputData, booleanInputData, validityMap)
         }
     }
 }

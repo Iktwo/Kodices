@@ -42,7 +42,7 @@ class Kodices(
     ): Content? {
         return try {
             val interimContent = json.decodeFromJsonElement(InterimContent.Companion, jsonElement)
-            interimContent.process(data)
+            interimContent.process(data, json)
         } catch (e: Exception) {
             if (debug) {
                 println("Exception $e at parseJSONToContent")
@@ -61,7 +61,7 @@ class Kodices(
 
         return try {
             val interimContent = json.decodeFromString(InterimContent.Companion, jsonString)
-            interimContent.process(data)
+            interimContent.process(data, json)
         } catch (e: Exception) {
             if (debug) {
                 println("Exception $e at parseJSONToContent")

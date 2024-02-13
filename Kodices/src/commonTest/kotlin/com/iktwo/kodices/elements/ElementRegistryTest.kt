@@ -12,8 +12,8 @@ class ElementRegistryTest {
             object : ElementDescriptor {
                 override val type = "valid"
 
-                override val builder: ElementBuilder = { _, id, _, nestedElements, _ ->
-                    ProcessedElement(type, nestedElements, id)
+                override val builder: ElementBuilder = { _, id, _, nestedElements, _, _ ->
+                    ProcessedElement(type = type, nestedElements = nestedElements, id = id)
                 }
             },
         )

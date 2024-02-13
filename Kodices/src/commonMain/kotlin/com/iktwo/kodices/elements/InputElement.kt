@@ -1,7 +1,7 @@
 package com.iktwo.kodices.elements
 
 import com.iktwo.kodices.actions.Action
-import com.iktwo.kodices.utils.asStringOrNull
+import com.iktwo.kodices.inputvalidation.Validation
 
 class InputElement(
     id: String,
@@ -11,8 +11,10 @@ class InputElement(
     textSecondary: String? = null,
     actions: List<Action> = emptyList(),
     override val type: String,
-    override val inputKey: String,
-    override val style: String? = null
+    override val style: String? = null,
+    override val validation: Validation? = null,
+    override val requiresValidElements: List<String> = emptyList(),
+    override val enabled: Boolean = true
 ) : ProcessedElement(
     type = type,
     nestedElements = nestedElements,
@@ -21,15 +23,45 @@ class InputElement(
     textSecondary = textSecondary,
     actions = actions,
     jsonValues = jsonValues,
-    style = style
+    style = style,
+    validation = validation,
+    requiresValidElements = requiresValidElements,
+    enabled = enabled
 ), InputProvider {
+    override val isValid: Boolean
+        get() = validation == null || validation.validate(text)
+
+    override fun copy(
+        id: String,
+        index: Int,
+        nestedElements: List<ProcessedElement>,
+        text: String?,
+        textSecondary: String?,
+        actions: List<Action>,
+        jsonValues: ProcessedValues,
+        style: String?,
+        validation: Validation?,
+        requiresValidElements: List<String>,
+        enabled: Boolean
+    ): InputElement {
+        return InputElement(
+            id = id,
+            nestedElements = nestedElements,
+            jsonValues = jsonValues,
+            actions = actions,
+            type = type,
+            text = text,
+            textSecondary = textSecondary,
+            style = style,
+            validation = validation,
+            requiresValidElements = requiresValidElements,
+            enabled = enabled
+        )
+    }
+
     companion object {
-        private const val INPUT_KEY = "inputKey"
-
-        val builder: ElementBuilder = { type, id, processedValues, nestedElements, actions ->
-            val commonElementProperties = processedValues.toCommonElementProperties()
-
-            val inputKey = processedValues[INPUT_KEY]?.asStringOrNull()
+        val builder: ElementBuilder = { type, id, processedValues, nestedElements, actions, json ->
+            val commonElementProperties = processedValues.toCommonElementProperties(json)
 
             InputElement(
                 id = id,
@@ -39,8 +71,9 @@ class InputElement(
                 type = type,
                 text = commonElementProperties.text,
                 textSecondary = commonElementProperties.textSecondary,
-                inputKey = inputKey ?: type,
-                style = commonElementProperties.style
+                style = commonElementProperties.style,
+                validation = commonElementProperties.validation,
+                requiresValidElements = commonElementProperties.requiresValidElements
             )
         }
     }

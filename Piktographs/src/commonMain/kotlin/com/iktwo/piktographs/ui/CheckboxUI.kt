@@ -25,7 +25,7 @@ fun CheckboxUI(element: InputElement, inputHandler: InputHandler, inputData: Boo
             val checked = element.jsonValues[CHECKED_KEY]?.asBooleanOrNull()
 
             Checkbox(inputData ?: checked ?: false, onCheckedChange = { newCheckedValue ->
-                inputHandler.onBooleanInput(element.inputKey, newCheckedValue)
+                inputHandler.onBooleanInput(element, newCheckedValue)
             })
 
             element.text?.let { text ->

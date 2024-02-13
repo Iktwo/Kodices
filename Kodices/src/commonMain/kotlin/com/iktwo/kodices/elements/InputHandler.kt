@@ -1,7 +1,7 @@
 package com.iktwo.kodices.elements
 
 interface InputHandler {
-    fun onTextInput(key: String, value: String)
+    fun onTextInput(element: ProcessedElement, value: String)
 
-    fun onBooleanInput(key: String, value: Boolean)
+    fun onBooleanInput(element: ProcessedElement, value: Boolean)
 }

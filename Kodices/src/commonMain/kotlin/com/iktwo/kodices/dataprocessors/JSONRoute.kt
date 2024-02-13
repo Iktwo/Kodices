@@ -1,6 +1,7 @@
 package com.iktwo.kodices.dataprocessors
 
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -10,6 +11,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.double
 import kotlinx.serialization.json.doubleOrNull
 
+@Serializable(with = JSONRoute.Companion::class)
 sealed class JSONRoute {
     /**
      * Class that represents a key in a JSON object

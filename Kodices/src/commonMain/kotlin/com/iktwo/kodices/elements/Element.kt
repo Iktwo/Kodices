@@ -6,6 +6,7 @@ import com.iktwo.kodices.actions.InterimAction
 import com.iktwo.kodices.dataprocessors.DataProcessor
 import com.iktwo.kodices.dataprocessors.DataProcessorException
 import com.iktwo.kodices.dataprocessors.DataProcessorRegistry
+import com.iktwo.kodices.inputvalidation.Validation
 import com.iktwo.kodices.utils.Constants
 import com.iktwo.kodices.utils.asJSONArrayOrNull
 import com.iktwo.kodices.utils.asJSONObjectOrNull
@@ -158,7 +159,7 @@ sealed interface Element {
                     actions = actions,
                 )
             } else {
-                return resolveProcessedElement(jsonObject)
+                return resolveProcessedElement(jsonObject, decoder.json)
             }
         }
 
@@ -170,7 +171,7 @@ sealed interface Element {
          *
          * Note: Creating a [ProcessedElement] this way does not support [Action]
          */
-        private fun resolveProcessedElement(jsonObject: JsonObject): ProcessedElement {
+        private fun resolveProcessedElement(jsonObject: JsonObject, json: Json): ProcessedElement {
             val type = jsonObject[Constants.TYPE]?.asStringOrNull()
 
             checkNotNull(type) {
@@ -181,10 +182,10 @@ sealed interface Element {
 
             val nestedElements =
                 jsonObject[Constants.NESTED_ELEMENTS]?.asJSONArrayOrNull()?.mapNotNull {
-                    if (it is JsonObject) resolveProcessedElement(it) else null
+                    if (it is JsonObject) resolveProcessedElement(it, json) else null
                 } ?: emptyList()
 
-            val commonElementProperties = jsonObject.toCommonElementProperties()
+            val commonElementProperties = jsonObject.toCommonElementProperties(json)
 
             return ElementRegistry.getElement(type)
                 ?.let { builder ->
@@ -194,6 +195,7 @@ sealed interface Element {
                         jsonObject.asMap().toMutableMap(),
                         nestedElements,
                         emptyList(),
+                        json
                     )
                 } ?: ProcessedElement(
                 type = type,
@@ -204,6 +206,9 @@ sealed interface Element {
                 actions = emptyList(),
                 jsonValues = jsonObject.asMap().toMutableMap(),
                 style = commonElementProperties.style,
+                validation = commonElementProperties.validation,
+                enabled = commonElementProperties.enabled,
+                requiresValidElements = commonElementProperties.requiresValidElements,
             )
         }
 

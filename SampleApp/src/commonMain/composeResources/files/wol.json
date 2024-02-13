@@ -1,0 +1,74 @@
+{
+  "elements": [
+    {
+      "type": "row",
+      "constants": {
+        "text": "Mac address",
+        "textSecondary": "(AA:BB:CC:DD:EE:FF or AA-BB-CC-DD-EE-FF)"
+      }
+    },
+    {
+      "type": "textInput",
+      "id": "macAddress",
+      "constants": {
+        "text": "AA:BB:CC:DD:EE:FF",
+        "textSecondary": "AA:BB:CC:DD:EE:FF",
+        "validation": {
+          "regex": "^([0-9A-Fa-f]{2}(:|-)[0-9A-Fa-f]{2}(:|-)[0-9A-Fa-f]{2}(:|-)[0-9A-Fa-f]{2}(:|-)[0-9A-Fa-f]{2}(:|-)[0-9A-Fa-f]{2})$"
+        }
+      }
+    },
+    {
+      "type": "row",
+      "constants": {
+        "text": "IP address",
+        "textSecondary": "(0.0.0.0)"
+      }
+    },
+    {
+      "type": "textInput",
+      "id": "ipAddress",
+      "constants": {
+        "text": "192.168.1.0",
+        "textSecondary": "192.168.1.0",
+        "validation": {
+          "regex": "^((25[0-5]|(2[0-4]|1\\d|[1-9])?\\d)\\.){3}(25[0-5]|(2[0-4]|1\\d|[1-9])?\\d)$"
+        }
+      }
+    },
+    {
+      "type": "row",
+      "constants": {
+        "text": "Port",
+        "textSecondary": "0-65535",
+        "validation": {
+          "regex": "^(?:[1-5]\\d{3}|[6][0-4]\\d{2}|[0-9]{1,4})$"
+        }
+      }
+    },
+    {
+      "type": "textInput",
+      "id": "port",
+      "constants": {
+        "text": "0",
+        "textSecondary": "0-65535",
+        "validation": {
+          "regex": "^(0|[1-9]\\d{0,3}|[1-5]\\d{4}|6[0-4]\\d{3}|655[0-2]\\d|6553[0-5])$"
+        }
+      }
+    },
+    {
+      "type": "button",
+      "constants": {
+        "text": "Wake up!",
+        "requiresValidElements": ["macAddress", "ipAddress", "port"]
+      },
+      "action": {
+        "type": "message",
+        "constants": {
+          "text": "This is a message!"
+        }
+      }
+    }
+  ]
+}

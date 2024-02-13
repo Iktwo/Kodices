@@ -3,12 +3,15 @@ package com.iktwo.kodices.elements
 import com.iktwo.kodices.Kodices
 import com.iktwo.kodices.actions.InterimAction
 import com.iktwo.kodices.dataprocessors.DataProcessor
+import com.iktwo.kodices.inputvalidation.Validation
 import com.iktwo.kodices.utils.Constants
 import com.iktwo.kodices.utils.asStringOrNull
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonArray
 
 typealias ProcessedValues = MutableMap<String, JsonElement?>
@@ -27,6 +30,7 @@ data class InterimElement(
         index: Int = 0,
         data: JsonElement? = null,
         parentId: String? = null,
+        json: Json
     ): List<ProcessedElement> {
         // If there are processors for expansion, then the result of executing them should be an array
         if (processorsForExpansion.isNotEmpty()) {
@@ -50,6 +54,7 @@ data class InterimElement(
                         repeatingIndex,
                         jsonElement,
                         "${if (parentId != null) "${parentId}_" else "${type}_"}index$index",
+                        json
                     )
                 }?.flatten()?.toList() ?: emptyList()
             } else {
@@ -119,7 +124,7 @@ data class InterimElement(
                 }
 
                 is InterimElement -> {
-                    element.process(nestedIndex, data, processedId).toList()
+                    element.process(nestedIndex, data, processedId, json).toList()
                 }
             }
         }.flatten()
@@ -134,6 +139,8 @@ data class InterimElement(
             it.process(data ?: JsonNull)
         }
 
+        val commonElementProperties = processedValues.toCommonElementProperties(json)
+
         // If there is a custom element builder, use it, otherwise create a ProcessedElement
         return ElementRegistry.getElement(type)?.let { builder ->
             listOf(
@@ -143,19 +150,23 @@ data class InterimElement(
                     processedValues,
                     nestedElements,
                     processedActions,
+                    json
                 ),
             )
         } ?: listOf(
             ProcessedElement(
-                type,
-                nestedElements,
-                processedId,
-                index,
-                processedText,
-                processedTextSecondary,
-                processedActions,
+                type = type,
+                nestedElements = nestedElements,
+                id = processedId,
+                index = index,
+                text = processedText,
+                textSecondary = processedTextSecondary,
+                actions = processedActions,
                 jsonValues = processedValues,
-                style = style
+                style = style,
+                validation = commonElementProperties.validation,
+                enabled = commonElementProperties.enabled,
+                requiresValidElements = commonElementProperties.requiresValidElements
             ),
         )
     }

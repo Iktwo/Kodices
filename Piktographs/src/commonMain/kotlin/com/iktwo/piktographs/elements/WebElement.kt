@@ -21,7 +21,7 @@ class WebElement(
         private const val URL = "url"
         private const val JS_ON_LOAD_KEY = "jsOnLoad"
 
-        override val builder: ElementBuilder = { _, id, processedValues, nestedElements, actions ->
+        override val builder: ElementBuilder = { _, id, processedValues, nestedElements, actions, _ ->
             val url = processedValues[URL]?.asStringOrNull()
             val jsOnLoad = processedValues[JS_ON_LOAD_KEY]?.asStringOrNull()
 

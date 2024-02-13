@@ -22,7 +22,7 @@ import kotlinx.serialization.json.buildJsonObject
 @Composable
 fun TabCatalog(contentString: String) {
     val dataString = json.encodeToString(JsonElement.serializer(), buildJsonObject { })
-    Kodices.debug = true
+//    Kodices.debug = true
 
     var dialogMessage by remember { mutableStateOf("") }
     var isDialogOpen by remember { mutableStateOf(false) }

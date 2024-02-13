@@ -11,6 +11,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonElement
@@ -29,7 +30,7 @@ data class InterimContent(val elements: List<Element>) {
      *
      * @param data optional [JsonElement] that represents data to process elements.
      */
-    fun process(data: JsonElement?): Content {
+    fun process(data: JsonElement?, json: Json): Content {
         return Content(
             elements.mapIndexed { index, element ->
                 when (element) {
@@ -38,7 +39,7 @@ data class InterimContent(val elements: List<Element>) {
                     }
 
                     is InterimElement -> {
-                        element.process(index, data).toList()
+                        element.process(index = index, data = data, json = json).toList()
                     }
                 }
             }.flatten(),
