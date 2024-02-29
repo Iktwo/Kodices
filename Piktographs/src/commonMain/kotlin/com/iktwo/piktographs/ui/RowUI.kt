@@ -27,7 +27,6 @@ fun RowUI(element: ProcessedElement) {
                     it,
                     modifier = Modifier.fillMaxWidth(),
                     color = Color.Black,
-
                     style = TextStyle(
                         fontSize = DefaultTheme.current.fonts.primary,
                         lineHeightStyle = LineHeightStyle(

@@ -18,6 +18,7 @@ fun TextInputUI(element: InputElement, inputHandler: InputHandler) {
         verticalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.verticalSpacing)
     ) {
         TextField(
+            singleLine = true,
             value = element.text ?: "",
             onValueChange = { newText ->
                 inputHandler.onTextInput(element.copy(text = newText), newText)
@@ -27,7 +28,7 @@ fun TextInputUI(element: InputElement, inputHandler: InputHandler) {
                     Text(placeholder)
                 }
             },
-            isError = !element.isValid
+            isError = element.text != null && !element.isValid
         )
     }
 }

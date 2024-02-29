@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.iktwo.kodices.Kodices
+import com.iktwo.kodices.sampleapp.actions.WakeOnLANAction
 import com.iktwo.piktographs.elements.CountdownElement
 import com.iktwo.piktographs.elements.WebElement
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +28,8 @@ import org.jetbrains.compose.resources.readResourceBytes
 
 val json = Json { prettyPrint = true }
 val kodices = Kodices(
-    elements = listOf(WebElement, CountdownElement)
+    elements = listOf(WebElement, CountdownElement),
+    actions = listOf(WakeOnLANAction)
 )
 
 enum class Tabs(val displayName: String) {

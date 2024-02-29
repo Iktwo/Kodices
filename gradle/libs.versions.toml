@@ -6,16 +6,16 @@ android-minSdk = "28"
 android-targetSdk = "34"
 androidx-activity-compose = "1.8.2"
 androidx-core = "1.12.0"
+androidx-datastore = "1.1.0-beta01"
 appcompat = "1.6.1"
 benchmark = "0.4.10"
-compose-jetbrains = "1.6.0-beta02"
+compose-jetbrains = "1.6.0"
 junit = "4.13.2"
 kotlin = "1.9.22"
-kotlinpoet = "1.16.0"
-kotlinx-coroutines = "1.7.3"
+kotlinx-coroutines = "1.8.0"
 kotlinx-datetime = "0.5.0"
-kotlinx-serialization = "1.6.2"
-kover = "0.7.4"
+kotlinx-serialization = "1.6.3"
+kover = "0.7.6"
 ktlint = "12.0.3"
 ktor = "2.3.8"
 lifecycle = "2.7.0"
@@ -27,10 +27,11 @@ accompanist-webview = { module = "com.google.accompanist:accompanist-webview", v
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
+androidx-datastore-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "androidx-datastore" }
+androidx-datastore-core-okio = { module = "androidx.datastore:datastore-core-okio", version.ref = "androidx-datastore" }
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
 junit = { module = "junit:junit", version.ref = "junit" }
-kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }

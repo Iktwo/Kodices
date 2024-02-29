@@ -15,12 +15,19 @@ import androidx.compose.material.Button
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.iktwo.kodices.Kodices
+import com.iktwo.kodices.actions.Action
+import com.iktwo.kodices.actions.ActionPerformer
+import com.iktwo.kodices.actions.MessageAction
+import com.iktwo.kodices.sampleapp.actions.WakeOnLANAction
+import com.iktwo.kodices.sampleapp.actions.WakeOnLan
 
 @Composable
 fun TabSamples() {
@@ -61,17 +68,17 @@ fun TabSamples() {
                             Text(text = "Back")
                         }
 
-                        ResourceContentPage(
-                            selectedSample?.resourceFilename ?: "",
-                            selectedSample?.dataFilename
-                        )
+                        selectedSample?.resourceFilename?.let { resourceFilename ->
+                            ResourceContentPage(
+                                resourceFilename,
+                                selectedSample?.dataFilename
+                            )
+                        }
                     }
                 }
             }
         }
     }
-
-
 }
 
 enum class Samples(

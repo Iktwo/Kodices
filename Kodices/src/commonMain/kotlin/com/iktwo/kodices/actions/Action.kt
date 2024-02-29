@@ -12,7 +12,7 @@ import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 
 @Serializable(with = Action.Companion::class)
-sealed interface Action {
+interface Action {
     val type: String
 
     companion object : KSerializer<Action> {

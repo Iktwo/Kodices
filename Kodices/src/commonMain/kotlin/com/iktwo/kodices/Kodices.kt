@@ -30,11 +30,10 @@ class Kodices(
                 override val builder = InputElement.builder
             }
         }.toList()
-
         ElementRegistry.addElements(inputElements.plus(elements))
 
         val defaultActions = listOf(MessageAction.descriptor)
-        ActionsRegistry.addActions(actions.plus(defaultActions))
+        ActionsRegistry.addActions(defaultActions.plus(actions))
     }
 
     fun parseJSONElementToContent(
@@ -65,7 +64,7 @@ class Kodices(
             interimContent.process(data, json)
         } catch (e: Exception) {
             if (debug) {
-                println("Exception $e at parseJSONToContent")
+                println("Exception $e at parseJSONToContent. Source json: $jsonString")
             }
             null
         }

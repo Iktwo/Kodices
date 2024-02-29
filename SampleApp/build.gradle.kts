@@ -47,6 +47,9 @@ kotlin {
                 implementation(libs.ktor.client.cio)
                 implementation(libs.ktor.client.websockets)
 
+                implementation(libs.androidx.datastore.core)
+                implementation(libs.androidx.datastore.core.okio)
+
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
             }

@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 
 buildscript {
     dependencies {
-        classpath(libs.kotlinpoet)
         classpath(libs.gradle)
     }
 }

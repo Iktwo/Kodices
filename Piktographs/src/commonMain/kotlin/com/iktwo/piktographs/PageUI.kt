@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
@@ -25,24 +26,29 @@ fun PageUI(
     pageStyle: PageStyle = VerticalListPageStyle,
     elementOverrides: @Composable (ProcessedElement) -> Boolean,
     theme: Theme = Theme(),
+    textInputData: SnapshotStateMap<String, String?> = rememberSaveable {
+        mutableStateMapOf()
+    },
+    booleanInputData: SnapshotStateMap<String, Boolean> = rememberSaveable {
+        mutableStateMapOf()
+    },
+    validityMap: SnapshotStateMap<String, Boolean> = rememberSaveable {
+        mutableStateMapOf()
+    },
+    onInputIdsPopulated: () -> Unit = { },
+    onInputUpdated: () -> Unit = { }
 ) {
     CompositionLocalProvider(DefaultTheme provides theme) {
-        val textInputData = rememberSaveable {
-            mutableStateMapOf<String, String>()
-        }
-
-        val booleanInputData = rememberSaveable {
-            mutableStateMapOf<String, Boolean>()
-        }
-
-        val validityMap = rememberSaveable {
-            mutableStateMapOf<String, Boolean>()
-        }
-
         content.elements.forEach { element ->
             if (element is InputElement) {
                 validityMap[element.id] = element.isValid
+
+                textInputData[element.id] = element.text
             }
+        }
+
+        LaunchedEffect(true) {
+            onInputIdsPopulated()
         }
 
         val inputHandler = object : InputHandler {
@@ -52,6 +58,8 @@ fun PageUI(
                 if (element is InputElement) {
                     validityMap[element.id] = element.isValid
                 }
+
+                onInputUpdated()
             }
 
             override fun onBooleanInput(element: ProcessedElement, value: Boolean) {
@@ -93,7 +101,7 @@ fun LazyListScope.renderElements(
     elements: List<ProcessedElement>,
     elementOverrides: @Composable (ProcessedElement) -> Boolean,
     inputHandler: InputHandler,
-    textInputData: SnapshotStateMap<String, String>,
+    textInputData: SnapshotStateMap<String, String?>,
     booleanInputData: SnapshotStateMap<String, Boolean>,
     validityMap: SnapshotStateMap<String, Boolean>,
 ) {

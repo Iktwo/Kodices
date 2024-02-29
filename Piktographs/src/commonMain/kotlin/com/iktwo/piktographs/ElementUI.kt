@@ -28,7 +28,7 @@ fun ElementUI(
     element: ProcessedElement,
     elementOverrides: @Composable (ProcessedElement) -> Boolean,
     inputHandler: InputHandler,
-    textInputData: SnapshotStateMap<String, String>,
+    textInputData: SnapshotStateMap<String, String?>,
     booleanInputData: SnapshotStateMap<String, Boolean>,
     validityMap: SnapshotStateMap<String, Boolean>
 ) {
@@ -56,10 +56,27 @@ fun ElementUI(
             updatedElement.type == INPUT_ELEMENT_TEXT_INPUT && updatedElement is InputElement -> {
                 val input by remember {
                     derivedStateOf {
-                        textInputData[updatedElement.id] ?: updatedElement.text
+                        textInputData[updatedElement.id] ?: element.text
                     }
                 }
-                TextInputUI(updatedElement.copy(text = input), inputHandler)
+
+                val validity by remember {
+                    derivedStateOf {
+                        validityMap[updatedElement.id]
+                    }
+                }
+
+                if (input != null) {
+                    updatedElement = updatedElement.copy(text = input)
+                }
+
+                println("id: ${element.id} input: $input updatedElement: ${updatedElement.text} textInputData: ${textInputData.toMap()}")
+
+                if (validity != updatedElement.isValid) {
+                    validityMap[element.id] = updatedElement.isValid
+                }
+
+                TextInputUI(updatedElement, inputHandler)
             }
 
             updatedElement.type == INPUT_ELEMENT_TEXT_AREA && updatedElement is InputElement -> {
