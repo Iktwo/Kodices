@@ -1,5 +1,6 @@
 package com.iktwo.kodices.elements
 
+import com.iktwo.kodices.Kodices
 import com.iktwo.kodices.sampleArrayData
 import com.iktwo.kodices.sampleInterimElementSource
 import com.iktwo.kodices.sampleInterimElementSourceWithAction
@@ -19,7 +20,7 @@ class InterimElementTest {
         val element = Json.decodeFromString(Element, sampleInterimElementSource.toString())
         assertEquals("row", element.type)
         assertTrue(element.nestedElements.isEmpty())
-        assertEquals("Melanerpes formicivorus", (element as InterimElement).process(0, sampleArrayData).first().text)
+        assertEquals("Melanerpes formicivorus", (element as InterimElement).process(0, data = sampleArrayData, json = Json { ignoreUnknownKeys = true }).first().text)
     }
 
     @Test

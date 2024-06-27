@@ -16,6 +16,7 @@ import com.iktwo.kodices.actions.Action
 import com.iktwo.kodices.actions.ActionPerformer
 import com.iktwo.kodices.sampleapp.actions.WakeOnLANAction
 import com.iktwo.kodices.sampleapp.actions.WakeOnLan
+import com.iktwo.kodices.sampleapp.resources.Res
 import com.iktwo.kodices.sampleapp.ui.ElementOverride
 import com.iktwo.piktographs.PageUI
 import kotlinx.coroutines.CoroutineScope
@@ -25,10 +26,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.InternalResourceApi
 import org.jetbrains.compose.resources.readResourceBytes
 
-@OptIn(InternalResourceApi::class)
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun ResourceContentPage(resourceFilename: String, dataFilename: String?) {
     val scope = rememberCoroutineScope()
@@ -36,7 +38,7 @@ fun ResourceContentPage(resourceFilename: String, dataFilename: String?) {
     var dataString by remember { mutableStateOf("") }
 
     scope.launch(Dispatchers.IO) {
-        val result = readResourceBytes("files/$resourceFilename").decodeToString()
+        val result = Res.readBytes("files/$resourceFilename").decodeToString()
         withContext(Dispatchers.Main) {
             contentString = result
         }
@@ -44,7 +46,7 @@ fun ResourceContentPage(resourceFilename: String, dataFilename: String?) {
 
     if (dataFilename != null) {
         scope.launch(Dispatchers.IO) {
-            val result = readResourceBytes("files/$dataFilename").decodeToString()
+            val result = Res.readBytes("files/$dataFilename").decodeToString()
             withContext(Dispatchers.Main) {
                 dataString = result
             }

@@ -1,26 +1,26 @@
 [versions]
 accompanist-webview = "0.32.0"
 android-compileSdk = "34"
-android-gradle-plugin = "8.2.2"
+android-gradle-plugin = "8.5.0"
 android-minSdk = "28"
 android-targetSdk = "34"
-androidx-activity-compose = "1.8.2"
-androidx-core = "1.12.0"
-androidx-datastore = "1.1.0-beta01"
-appcompat = "1.6.1"
+androidx-activity-compose = "1.9.0"
+androidx-core = "1.13.1"
+androidx-datastore = "1.1.1"
+appcompat = "1.7.0"
 benchmark = "0.4.10"
-compose-jetbrains = "1.6.0"
+compose-jetbrains = "1.6.11"
 junit = "4.13.2"
-kotlin = "1.9.22"
+kotlin = "2.0.0"
 kotlinx-coroutines = "1.8.0"
-kotlinx-datetime = "0.5.0"
+kotlinx-datetime = "0.6.0-RC.2"
 kotlinx-serialization = "1.6.3"
 kover = "0.7.6"
 ktlint = "12.0.3"
-ktor = "2.3.8"
-lifecycle = "2.7.0"
+ktor = "2.3.9"
+lifecycle = "2.8.0"
 okio = "3.8.0"
-skie = "0.6.1"
+skie = "0.8.0"
 
 [libraries]
 accompanist-webview = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanist-webview" }
@@ -29,7 +29,6 @@ androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "a
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-datastore-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "androidx-datastore" }
 androidx-datastore-core-okio = { module = "androidx.datastore:datastore-core-okio", version.ref = "androidx-datastore" }
-androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "android-gradle-plugin" }
 junit = { module = "junit:junit", version.ref = "junit" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
@@ -48,6 +47,7 @@ ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negoti
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 ktor-server-host-common = { module = "io.ktor:ktor-server-host-common", version.ref = "ktor" }
 ktor-server-websockets = { module = "io.ktor:ktor-server-websockets", version.ref = "ktor" }
+lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 
 [plugins]
@@ -55,6 +55,7 @@ allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
 androidApplication = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 androidLibrary = { id = "com.android.library", version.ref = "android-gradle-plugin" }
 benchmark = { id = "org.jetbrains.kotlinx.benchmark", version.ref = "benchmark" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-jetbrains" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

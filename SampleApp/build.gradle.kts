@@ -1,19 +1,21 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.serialization)
 }
 
 kotlin {
     androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = JavaVersion.VERSION_17.toString()
-            }
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
@@ -33,26 +35,24 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(project(":Piktographs"))
+        val desktopMain by getting
 
-                implementation(compose.foundation)
-                implementation(compose.material)
-                implementation(compose.runtime)
-                implementation(libs.kotlinx.datetime)
-                implementation(libs.kotlinx.serialization.json)
-                implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.ktor.client.core)
-                implementation(libs.ktor.client.cio)
-                implementation(libs.ktor.client.websockets)
+        commonMain.dependencies {
+            implementation(project(":Piktographs"))
 
-                implementation(libs.androidx.datastore.core)
-                implementation(libs.androidx.datastore.core.okio)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.runtime)
+            implementation(compose.components.resources)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.cio)
+            implementation(libs.ktor.client.websockets)
 
-                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-                implementation(compose.components.resources)
-            }
+            implementation(libs.androidx.datastore.core)
+            implementation(libs.androidx.datastore.core.okio)
         }
 
         val commonTest by getting {
@@ -62,15 +62,13 @@ kotlin {
             }
         }
 
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.androidx.activity.compose)
-                implementation(libs.accompanist.webview)
-                implementation(libs.androidx.appcompat)
-                implementation(libs.androidx.core)
-                implementation(libs.kotlinx.coroutines.android)
-                implementation(libs.ktor.client.okhttp)
-            }
+        androidMain.dependencies {
+            implementation(libs.androidx.activity.compose)
+            implementation(libs.accompanist.webview)
+            implementation(libs.androidx.appcompat)
+            implementation(libs.androidx.core)
+            implementation(libs.kotlinx.coroutines.android)
+            implementation(libs.ktor.client.okhttp)
         }
 
         val androidUnitTest by getting {
@@ -79,17 +77,17 @@ kotlin {
             }
         }
 
-        val desktopMain by getting {
-            dependencies {
-                implementation(compose.desktop.currentOs)
-                implementation(libs.kotlinx.coroutines.swing)
-            }
+        desktopMain.dependencies {
+            implementation(compose.desktop.currentOs)
+            implementation(libs.kotlinx.coroutines.swing)
         }
 
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
     }
+
+    task("testClasses")
 }
 
 compose.desktop {
@@ -102,6 +100,12 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.iktwo.kodices.sampleapp.resources"
+    generateResClass = always
 }
 
 android {

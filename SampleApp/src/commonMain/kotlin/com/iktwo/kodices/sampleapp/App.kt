@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.iktwo.kodices.Kodices
 import com.iktwo.kodices.sampleapp.actions.WakeOnLANAction
+import com.iktwo.kodices.sampleapp.resources.Res
 import com.iktwo.piktographs.elements.CountdownElement
 import com.iktwo.piktographs.elements.WebElement
 import kotlinx.coroutines.Dispatchers
@@ -23,8 +24,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
-import org.jetbrains.compose.resources.InternalResourceApi
-import org.jetbrains.compose.resources.readResourceBytes
+import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 val json = Json { prettyPrint = true }
 val kodices = Kodices(
@@ -35,11 +35,12 @@ val kodices = Kodices(
 enum class Tabs(val displayName: String) {
     TabSamples("Samples"),
     ComponentCatalog("Catalog"),
+
     //    Websockets("Websockets"),
     Input("Dynamic Input"),
 }
 
-@OptIn(InternalResourceApi::class)
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun App() {
     val orderedTabs = Tabs.entries
@@ -53,7 +54,7 @@ fun App() {
     val scope = rememberCoroutineScope()
 
     scope.launch(Dispatchers.IO) {
-        val result = readResourceBytes("files/catalog.json").decodeToString()
+        val result = Res.readBytes("files/catalog.json").decodeToString()
         withContext(Dispatchers.Main) {
             catalogContent = result
         }

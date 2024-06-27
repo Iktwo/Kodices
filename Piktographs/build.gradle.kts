@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.serialization)
 }
 
@@ -45,17 +46,17 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api(project(":Kodices"))
+        commonMain.dependencies {
+            api(project(":Kodices"))
 
-                implementation(compose.foundation)
-                implementation(compose.material)
-                implementation(compose.runtime)
-                implementation(libs.kotlinx.datetime)
-                implementation(libs.kotlinx.serialization.json)
-            }
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.runtime)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.lifecycle.viewmodel)
         }
+
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
@@ -68,8 +69,6 @@ kotlin {
                 implementation(libs.androidx.core)
                 implementation(libs.kotlinx.coroutines.android)
                 implementation(compose.preview)
-
-                api(libs.androidx.lifecycle.viewmodel)
             }
         }
         val androidUnitTest by getting {
@@ -84,6 +83,8 @@ kotlin {
         }
         val desktopTest by getting
     }
+
+    task("testClasses")
 }
 
 android {
