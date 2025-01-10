@@ -1,4 +1,5 @@
 rootProject.name = "KodicesProject"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(
     ":Kodices",

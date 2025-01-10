@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
@@ -6,7 +7,6 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.serialization)
     alias(libs.plugins.kover)
-    alias(libs.plugins.skie)
 }
 //endregion
 
@@ -19,15 +19,15 @@ repositories {
 //region multiplatform configuration
 kotlin {
     jvmToolchain(17)
+
     //region JVM
     jvm {
-        val main by compilations.getting {
-            compilerOptions.configure {
-                jvmTarget.set(JvmTarget.JVM_17)
-            }
-        }
-
         withJava()
+
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
 
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
@@ -73,39 +73,37 @@ kotlin {
 //endregion
 
 //region kover
-koverReport {
-    filters {
-        includes {
-            classes("com.iktwo.kodices*")
-        }
+kover {
+    reports {
+        total {
+            filters {
+                includes {
+                    classes("com.iktwo.kodices*")
+                }
 
-        excludes {
-            annotatedBy("*Generated*")
-        }
-    }
+                excludes {
+                    annotatedBy("*Generated*")
+                }
+            }
 
-    defaults {
-        html {
-            onCheck = true
+            html {
+                onCheck = true
+                htmlDir = layout.buildDirectory.dir("reports/html-result")
+            }
 
-            setReportDir(layout.buildDirectory.dir("reports/html-result"))
-        }
+            verify {
+                onCheck = true
 
-        verify {
-            onCheck = true
-
-            rule {
-                isEnabled = true
-
-                entity = kotlinx.kover.gradle.plugin.dsl.GroupingEntityType.APPLICATION
-
-                bound {
-                    minValue = 70
-                    metric = kotlinx.kover.gradle.plugin.dsl.MetricType.LINE
-                    aggregation = kotlinx.kover.gradle.plugin.dsl.AggregationType.COVERED_PERCENTAGE
+                rule {
+                    bound {
+                        minValue = 70
+                        aggregationForGroup = kotlinx.kover.gradle.plugin.dsl.AggregationType.COVERED_PERCENTAGE
+                    }
                 }
             }
         }
     }
+
+
 }
 //endregion
