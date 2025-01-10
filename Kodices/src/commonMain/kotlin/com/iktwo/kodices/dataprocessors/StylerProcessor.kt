@@ -16,11 +16,16 @@ enum class StylerStyle {
 
     companion object {
         fun fromString(name: String): StylerStyle {
-            return values().firstOrNull { it.name.equals(name, ignoreCase = true) } ?: UNKNOWN
+            return entries.firstOrNull { it.name.equals(name, ignoreCase = true) } ?: UNKNOWN
         }
     }
 }
 
+/**
+ * [DataProcessor] to style values.
+ *
+ * This can be used to transform strings into UPPERCASE, lowercase, or pretty print JSON.
+ */
 @Serializable
 data class StylerProcessor(val element: String) : DataProcessor {
     override val type = TYPE

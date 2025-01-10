@@ -11,6 +11,9 @@ import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 
+/**
+ * Interface that represents an action that can be performed.
+ */
 @Serializable(with = Action.Companion::class)
 interface Action {
     val type: String

@@ -18,6 +18,15 @@ import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 
+/**
+ * [DataProcessor] used to retrieve data from a JSON object.
+ *
+ * This expects a list of [JSONRoute], which can be a String or a Number.
+ *
+ * String represent JSON keys.
+ *
+ * Numbers represent indexes of values in JSON arrays.
+ */
 data class JSONDrillerProcessor(val elements: List<JSONRoute>) : DataProcessor {
     constructor(element: JSONRoute) : this(listOf(element))
 
