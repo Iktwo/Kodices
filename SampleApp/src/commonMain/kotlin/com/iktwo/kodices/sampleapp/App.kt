@@ -3,6 +3,7 @@ package com.iktwo.kodices.sampleapp
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
@@ -60,7 +61,7 @@ fun App() {
         }
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.safeDrawingPadding().fillMaxSize()) {
         TabRow(selectedTabIndex = orderedTabs.indexOf(selectedTab)) {
             orderedTabs.map {
                 Tab(selected = true, onClick = {
