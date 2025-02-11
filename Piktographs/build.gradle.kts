@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
@@ -20,17 +19,11 @@ repositories {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 
     androidTarget()
 
-    jvm("desktop") {
-        val main by compilations.getting {
-            compilerOptions.configure {
-                jvmTarget.set(JvmTarget.JVM_17)
-            }
-        }
-    }
+    jvm("desktop")
 
     val xcf = XCFramework()
 
@@ -93,11 +86,6 @@ android {
 
     defaultConfig {
         minSdk = 24
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
     }
 
     namespace = "com.iktwo.piktographs"

@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 //region plugins
@@ -18,16 +16,9 @@ repositories {
 
 //region multiplatform configuration
 kotlin {
-    jvmToolchain(17)
-
     //region JVM
     jvm {
         withJava()
-
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
 
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
