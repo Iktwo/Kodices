@@ -33,21 +33,23 @@ kotlin {
         val desktopMain by getting
 
         commonMain.dependencies {
-            implementation(project(":Piktographs"))
+            implementation(projects.piktographs)
 
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.runtime)
             implementation(compose.components.resources)
+
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.cio)
             implementation(libs.ktor.client.websockets)
-
             implementation(libs.androidx.datastore.core)
             implementation(libs.androidx.datastore.core.okio)
+            implementation(libs.material.icons.core)
+            implementation(libs.material.icons.extended)
         }
 
         val commonTest by getting {

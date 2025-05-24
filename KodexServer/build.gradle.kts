@@ -21,6 +21,8 @@ kotlin {
     }
 
     sourceSets {
+        jvm("desktop")
+
         val nativeMain by creating {
             dependencies {
                 implementation(project(":Kodices"))
