@@ -27,7 +27,9 @@ import kotlinx.serialization.json.jsonObject
  *
  * Numbers represent indexes of values in JSON arrays.
  */
-data class JSONDrillerProcessor(val elements: List<JSONRoute>) : DataProcessor {
+data class JSONDrillerProcessor(
+    val elements: List<JSONRoute>,
+) : DataProcessor {
     constructor(element: JSONRoute) : this(listOf(element))
 
     override val type = TYPE
@@ -44,7 +46,7 @@ data class JSONDrillerProcessor(val elements: List<JSONRoute>) : DataProcessor {
             when (element) {
                 is JSONRoute.StringRoute -> {
                     if (tempValue is JsonObject) {
-                        tempValue?.jsonObject?.get(element.value)?.let {
+                        tempValue.jsonObject[element.value]?.let {
                             tempValue = it
                         } ?: run {
                             Kodices.logger.warn(

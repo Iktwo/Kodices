@@ -13,7 +13,7 @@ typealias ElementBuilder = (
     processedValues: Map<String, JsonElement?>,
     nestedElements: List<ProcessedElement>,
     actions: List<Action>,
-    json: Json
+    json: Json,
 ) -> ProcessedElement
 
 interface ElementDescriptor {

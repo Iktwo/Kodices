@@ -62,12 +62,13 @@ class StringProcessorTest {
         )
         assertEquals(
             "Value: 8, Another value: 5",
-            processor.process(
-                buildJsonArray {
-                    add(JsonPrimitive(5))
-                    add(JsonPrimitive(8))
-                },
-            ).asString(),
+            processor
+                .process(
+                    buildJsonArray {
+                        add(JsonPrimitive(5))
+                        add(JsonPrimitive(8))
+                    },
+                ).asString(),
         )
     }
 }

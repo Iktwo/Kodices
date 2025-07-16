@@ -27,12 +27,13 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.InternalResourceApi
-import org.jetbrains.compose.resources.readResourceBytes
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun ResourceContentPage(resourceFilename: String, dataFilename: String?) {
+fun ResourceContentPage(
+    resourceFilename: String,
+    dataFilename: String?,
+) {
     val scope = rememberCoroutineScope()
     var contentString by remember { mutableStateOf("") }
     var dataString by remember { mutableStateOf("") }
@@ -101,7 +102,8 @@ fun ResourceContentPage(resourceFilename: String, dataFilename: String?) {
                     onInputIdsPopulated = {
                         scope.launch {
                             val restored = restoreForm(textInputData.keys)
-                            restored.filter { (_, value) -> value != null }
+                            restored
+                                .filter { (_, value) -> value != null }
                                 .forEach { (key, value) ->
                                     textInputData[key] = value
                                 }
@@ -110,15 +112,16 @@ fun ResourceContentPage(resourceFilename: String, dataFilename: String?) {
                     },
                     onInputUpdated = {
                         scope.launch {
-                            val validValues = textInputData.mapNotNull { (key, value) ->
-                                if (validityMap.containsKey(key) && value != null) key to value else null
-                            }.toMap()
+                            val validValues = textInputData
+                                .mapNotNull { (key, value) ->
+                                    if (validityMap.containsKey(key) && value != null) key to value else null
+                                }.toMap()
 
                             if (validValues.isNotEmpty()) {
                                 saveForm(validValues)
                             }
                         }
-                    }
+                    },
                 )
             }
         }
@@ -127,18 +130,23 @@ fun ResourceContentPage(resourceFilename: String, dataFilename: String?) {
 
 suspend fun saveForm(formData: Map<String, String>) {
     dataStore.edit { preferences ->
-        formData.map { (key, value) ->
-            Pair(stringPreferencesKey(key), value)
-        }.forEach { (key, value) ->
-            preferences[key] = value
-        }
+        formData
+            .map { (key, value) ->
+                Pair(stringPreferencesKey(key), value)
+            }.forEach { (key, value) ->
+                preferences[key] = value
+            }
     }
 }
 
 suspend fun restoreForm(keys: Set<String>): Map<String, String?> {
-    return dataStore.data.map { preferences ->
-        keys.map { key ->
-            key to preferences[stringPreferencesKey(key)]
-        }.filter { (_, value) -> value != null }
-    }.stateIn(CoroutineScope(Dispatchers.Default)).value.toMap()
+    return dataStore.data
+        .map { preferences ->
+            keys
+                .map { key ->
+                    key to preferences[stringPreferencesKey(key)]
+                }.filter { (_, value) -> value != null }
+        }.stateIn(CoroutineScope(Dispatchers.Default))
+        .value
+        .toMap()
 }

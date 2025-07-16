@@ -16,10 +16,14 @@ import com.iktwo.kodices.utils.asBooleanOrNull
 private const val CHECKED_KEY = "checked"
 
 @Composable
-fun CheckboxUI(element: InputElement, inputHandler: InputHandler, inputData: Boolean?) {
+fun CheckboxUI(
+    element: InputElement,
+    inputHandler: InputHandler,
+    inputData: Boolean?,
+) {
     Column(
         modifier = Modifier.fillMaxWidth().padding(DefaultTheme.current.dimensions.padding),
-        verticalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.verticalSpacing)
+        verticalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.verticalSpacing),
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.horizontalSpacing)) {
             val checked = element.jsonValues[CHECKED_KEY]?.asBooleanOrNull()

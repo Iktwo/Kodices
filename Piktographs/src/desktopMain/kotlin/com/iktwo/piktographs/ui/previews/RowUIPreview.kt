@@ -13,7 +13,7 @@ fun RowUIPreview() {
             type = "row",
             id = "row",
             text = "Row title",
-            textSecondary = "Row subtitle"
-        )
+            textSecondary = "Row subtitle",
+        ),
     )
 }

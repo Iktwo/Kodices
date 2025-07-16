@@ -30,19 +30,20 @@ fun ElementUI(
     inputHandler: InputHandler,
     textInputData: SnapshotStateMap<String, String?>,
     booleanInputData: SnapshotStateMap<String, Boolean>,
-    validityMap: SnapshotStateMap<String, Boolean>
+    validityMap: SnapshotStateMap<String, Boolean>,
 ) {
     Box(
-        modifier = Modifier.then(debugModifier())
+        modifier = Modifier.then(debugModifier()),
     ) {
         var updatedElement = element
 
         if (element.requiresValidElements.isNotEmpty()) {
             val enabled by remember {
                 derivedStateOf {
-                    element.requiresValidElements.map { requiredElementId ->
-                        validityMap[requiredElementId] ?: false
-                    }.firstOrNull { !it } == null
+                    element.requiresValidElements
+                        .map { requiredElementId ->
+                            validityMap[requiredElementId] ?: false
+                        }.firstOrNull { !it } == null
                 }
             }
             updatedElement = updatedElement.copy(enabled = enabled)

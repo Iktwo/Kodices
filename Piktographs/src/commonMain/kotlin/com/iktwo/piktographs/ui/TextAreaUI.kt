@@ -12,10 +12,14 @@ import com.iktwo.kodices.elements.InputElement
 import com.iktwo.kodices.elements.InputHandler
 
 @Composable
-fun TextAreaUI(element: InputElement, inputHandler: InputHandler, inputData: String?) {
+fun TextAreaUI(
+    element: InputElement,
+    inputHandler: InputHandler,
+    inputData: String?,
+) {
     Column(
         modifier = Modifier.fillMaxWidth().padding(DefaultTheme.current.dimensions.padding),
-        verticalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.verticalSpacing)
+        verticalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.verticalSpacing),
     ) {
         TextField(
             value = inputData ?: element.text ?: "",
@@ -26,6 +30,7 @@ fun TextAreaUI(element: InputElement, inputHandler: InputHandler, inputData: Str
                 element.textSecondary?.let { placeholder ->
                     Text(placeholder)
                 }
-            })
+            },
+        )
     }
 }

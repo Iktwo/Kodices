@@ -29,7 +29,7 @@ object Constants {
         STYLE,
         ENABLED_KEY,
         VALIDATION_KEY,
-        REQUIRES_VALID_ELEMENTS_KEY
+        REQUIRES_VALID_ELEMENTS_KEY,
     )
 
     val jsonPrettyPrinter = Json { prettyPrint = true }

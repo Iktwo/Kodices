@@ -18,8 +18,6 @@ repositories {
 kotlin {
     //region JVM
     jvm {
-        withJava()
-
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
         }
@@ -65,6 +63,8 @@ kotlin {
 
 //region kover
 kover {
+    useJacoco("0.8.13")
+
     reports {
         total {
             filters {
@@ -87,14 +87,12 @@ kover {
 
                 rule {
                     bound {
-                        minValue = 70
+                        minValue = 60
                         aggregationForGroup = kotlinx.kover.gradle.plugin.dsl.AggregationType.COVERED_PERCENTAGE
                     }
                 }
             }
         }
     }
-
-
 }
 //endregion

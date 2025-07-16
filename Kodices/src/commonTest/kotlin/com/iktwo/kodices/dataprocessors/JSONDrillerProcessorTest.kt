@@ -16,6 +16,7 @@ import kotlinx.serialization.json.put
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class JSONDrillerProcessorTest {
     @Test
@@ -78,11 +79,14 @@ class JSONDrillerProcessorTest {
 
         assertEquals(
             "data",
-            jsonDrillerProcessor.process(
-                buildJsonObject {
-                    put("key", "data")
-                },
-            )?.jsonObject?.get("key")?.asStringOrNull(),
+            jsonDrillerProcessor
+                .process(
+                    buildJsonObject {
+                        put("key", "data")
+                    },
+                )?.jsonObject
+                ?.get("key")
+                ?.asStringOrNull(),
         )
     }
 
@@ -95,14 +99,17 @@ class JSONDrillerProcessorTest {
 
         assertEquals(
             1,
-            jsonDrillerProcessor.process(
-                JsonArray(
-                    listOf(
-                        JsonPrimitive("0"),
-                        JsonPrimitive("1"),
+            jsonDrillerProcessor
+                .process(
+                    JsonArray(
+                        listOf(
+                            JsonPrimitive("0"),
+                            JsonPrimitive("1"),
+                        ),
                     ),
-                ),
-            )?.jsonPrimitive?.double?.toInt(),
+                )?.jsonPrimitive
+                ?.double
+                ?.toInt(),
         )
     }
 
@@ -115,42 +122,89 @@ class JSONDrillerProcessorTest {
 
         assertEquals(
             "data",
-            jsonDrillerProcessor.process(
-                buildJsonObject {
-                    put("key", "data")
-                },
-            )?.asStringOrNull(),
+            jsonDrillerProcessor
+                .process(
+                    buildJsonObject {
+                        put("key", "data")
+                    },
+                )?.asStringOrNull(),
         )
     }
 
     @Test
     fun testJSONPathProcessorProcessMixed() {
-        val jsonDrillerProcessor =
-            Json.decodeFromString(
-                JSONDrillerProcessor.Companion,
-                "{\"type\":\"${JSONDrillerProcessor.TYPE}\", \"elements\":[\"key\", 0, \"nested_key\", 1]}",
-            )
+        val jsonDrillerProcessor = Json.decodeFromString(
+            JSONDrillerProcessor.Companion,
+            "{\"type\":\"${JSONDrillerProcessor.TYPE}\", \"elements\":[\"key\", 0, \"nested_key\", 1]}",
+        )
 
         assertEquals(
             "data",
-            jsonDrillerProcessor.process(
-                buildJsonObject {
-                    put(
-                        "key",
-                        buildJsonArray {
-                            addJsonObject {
-                                put(
-                                    "nested_key",
-                                    buildJsonArray {
-                                        add(true)
-                                        add("data")
-                                    },
-                                )
-                            }
-                        },
-                    )
-                },
-            )?.asStringOrNull(),
+            jsonDrillerProcessor
+                .process(
+                    buildJsonObject {
+                        put(
+                            "key",
+                            buildJsonArray {
+                                addJsonObject {
+                                    put(
+                                        "nested_key",
+                                        buildJsonArray {
+                                            add(true)
+                                            add("data")
+                                        },
+                                    )
+                                }
+                            },
+                        )
+                    },
+                )?.asStringOrNull(),
+        )
+    }
+
+    @Test
+    fun testJSONPathProcessorProcessMixedEmptyArray() {
+        val jsonDrillerProcessor = Json.decodeFromString(
+            JSONDrillerProcessor.Companion,
+            "{\"type\":\"${JSONDrillerProcessor.TYPE}\", \"elements\":[\"key\", 0, \"nested_key\", 0]}",
+        )
+
+        assertNull(
+            jsonDrillerProcessor
+                .process(
+                    buildJsonObject {
+                        put(
+                            "key",
+                            buildJsonArray {
+                                addJsonObject {
+                                    put(
+                                        "nested_key",
+                                        buildJsonArray {},
+                                    )
+                                }
+                            },
+                        )
+                    },
+                )?.asStringOrNull(),
+        )
+
+        assertNull(
+            jsonDrillerProcessor
+                .process(
+                    buildJsonObject {
+                        put(
+                            "key",
+                            buildJsonArray {
+                                addJsonObject {
+                                    put(
+                                        "nested_key",
+                                        true,
+                                    )
+                                }
+                            },
+                        )
+                    },
+                )?.asStringOrNull(),
         )
     }
 }

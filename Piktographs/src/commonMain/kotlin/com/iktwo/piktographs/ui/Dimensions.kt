@@ -11,7 +11,7 @@ data class Dimensions(
     val padding: Dp = SPACING,
     val verticalSpacing: Dp = VERTICAL_SPACING,
     val horizontalSpacing: Dp = HORIZONTAL_SPACING,
-    val separator: Dp = SEPARATOR_SIZE
+    val separator: Dp = SEPARATOR_SIZE,
 )
 
 private val SPACING = 8.dp
@@ -21,7 +21,7 @@ private val SEPARATOR_SIZE = 8.dp
 
 data class FontSizes(
     val primary: TextUnit = FONT_SIZE_PRIMARY,
-    val secondary: TextUnit = FONT_SIZE_SECONDARY
+    val secondary: TextUnit = FONT_SIZE_SECONDARY,
 )
 
 private val FONT_SIZE_PRIMARY = 18.sp
@@ -40,7 +40,7 @@ private val SEPARATOR_COLOR = Color(0xFF282828)
 data class Theme(
     val fonts: FontSizes = FontSizes(),
     val colors: Colors = Colors(),
-    val dimensions: Dimensions = Dimensions()
+    val dimensions: Dimensions = Dimensions(),
 )
 
 val DefaultTheme = compositionLocalOf { Theme() }

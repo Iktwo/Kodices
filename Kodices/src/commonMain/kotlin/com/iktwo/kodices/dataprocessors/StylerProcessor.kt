@@ -27,7 +27,9 @@ enum class StylerStyle {
  * This can be used to transform strings into UPPERCASE, lowercase, or pretty print JSON.
  */
 @Serializable
-data class StylerProcessor(val element: String) : DataProcessor {
+data class StylerProcessor(
+    val element: String,
+) : DataProcessor {
     override val type = TYPE
 
     override fun process(data: JsonElement?): JsonElement? {

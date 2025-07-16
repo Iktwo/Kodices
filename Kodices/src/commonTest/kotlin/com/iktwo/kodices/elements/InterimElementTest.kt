@@ -1,6 +1,5 @@
 package com.iktwo.kodices.elements
 
-import com.iktwo.kodices.Kodices
 import com.iktwo.kodices.sampleArrayData
 import com.iktwo.kodices.sampleInterimElementSource
 import com.iktwo.kodices.sampleInterimElementSourceWithAction

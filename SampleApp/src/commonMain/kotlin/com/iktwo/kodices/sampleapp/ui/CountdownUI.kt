@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.iktwo.kodices.sampleapp.ui
 
 import androidx.compose.foundation.layout.Column
@@ -11,15 +13,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.sp
+import com.iktwo.kodices.sampleapp.theme.SPACING
 import com.iktwo.piktographs.elements.CountdownElement
 import com.iktwo.piktographs.elements.CountdownStyle
-import com.iktwo.kodices.sampleapp.theme.SPACING
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.isDistantPast
 import kotlinx.datetime.periodUntil
 import kotlinx.datetime.toInstant
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @Composable
 fun CountdownUI(

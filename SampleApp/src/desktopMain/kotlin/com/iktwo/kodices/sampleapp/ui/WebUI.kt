@@ -6,8 +6,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.iktwo.piktographs.elements.WebElement
 import com.iktwo.kodices.sampleapp.theme.SPACING
+import com.iktwo.piktographs.elements.WebElement
 
 @Composable
 actual fun WebUI(element: WebElement) {

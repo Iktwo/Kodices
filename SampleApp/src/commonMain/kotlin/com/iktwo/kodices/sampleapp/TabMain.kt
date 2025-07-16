@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.iktwo.kodices.sampleapp
 
 import androidx.compose.foundation.layout.Column
@@ -22,16 +24,15 @@ import androidx.compose.ui.unit.dp
 import com.iktwo.kodices.actions.Action
 import com.iktwo.kodices.actions.ActionPerformer
 import com.iktwo.kodices.actions.SimpleAction
+import com.iktwo.kodices.sampleapp.data.InMemoryCountdownRepository
+import com.iktwo.kodices.sampleapp.ui.ElementOverride
 import com.iktwo.kodices.utils.Constants
 import com.iktwo.piktographs.PageUI
 import com.iktwo.piktographs.data.Countdown
 import com.iktwo.piktographs.elements.CountdownElement
 import com.iktwo.piktographs.ui.ContentDialog
-import com.iktwo.kodices.sampleapp.data.InMemoryCountdownRepository
-import com.iktwo.kodices.sampleapp.ui.ElementOverride
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.JsonElement
@@ -40,6 +41,8 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonArray
 import kotlinx.serialization.json.putJsonObject
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 val emptyActionPerformer = object : ActionPerformer {
     override fun onAction(action: Action) {
@@ -52,7 +55,10 @@ val LastSecond = compositionLocalOf { Clock.System.now() }
 
 val inMemoryCountdownRepository = InMemoryCountdownRepository()
 
-data class ContentContainer(val content: JsonElement, val data: JsonElement? = null)
+data class ContentContainer(
+    val content: JsonElement,
+    val data: JsonElement? = null,
+)
 
 // TODO: migrate the actions implemented in here in a generic way so that countdown.json works as expected
 @Composable

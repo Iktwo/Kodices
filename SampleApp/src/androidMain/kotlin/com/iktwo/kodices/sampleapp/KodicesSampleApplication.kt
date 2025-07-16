@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 
 class KodicesSampleApplication : Application() {
-
     init {
         instance = this
     }

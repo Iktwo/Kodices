@@ -6,7 +6,6 @@ import com.iktwo.kodices.actions.InterimAction
 import com.iktwo.kodices.dataprocessors.DataProcessor
 import com.iktwo.kodices.dataprocessors.DataProcessorException
 import com.iktwo.kodices.dataprocessors.DataProcessorRegistry
-import com.iktwo.kodices.inputvalidation.Validation
 import com.iktwo.kodices.utils.Constants
 import com.iktwo.kodices.utils.asJSONArrayOrNull
 import com.iktwo.kodices.utils.asJSONObjectOrNull
@@ -111,45 +110,48 @@ sealed interface Element {
                     }
                 }
 
-                val dataProcessors = processors?.map { (property, jsonElement) ->
-                    when (jsonElement) {
-                        is JsonArray -> {
-                            return@map property to jsonElement.jsonArray.map {
-                                DataProcessorRegistry.fromJsonObject(it.jsonObject)
-                                    ?.let { dataProcessorBuilder ->
-                                        dataProcessorBuilder(decoder.json, it.jsonObject)
-                                    } ?: run {
-                                    throw DataProcessorException("invalid ${jsonElement.jsonObject} in ${DataProcessor::class.simpleName} not supported")
+                val dataProcessors = processors
+                    ?.map { (property, jsonElement) ->
+                        when (jsonElement) {
+                            is JsonArray -> {
+                                return@map property to jsonElement.jsonArray.map {
+                                    DataProcessorRegistry
+                                        .fromJsonObject(it.jsonObject)
+                                        ?.let { dataProcessorBuilder ->
+                                            dataProcessorBuilder(decoder.json, it.jsonObject)
+                                        } ?: run {
+                                        throw DataProcessorException("invalid ${jsonElement.jsonObject} in ${DataProcessor::class.simpleName} not supported")
+                                    }
                                 }
                             }
-                        }
 
-                        is JsonObject -> {
-                            DataProcessorRegistry.fromJsonObject(jsonElement.jsonObject)
-                                ?.let { dataProcessorBuilder ->
-                                    return@map property to
-                                        listOf(
-                                            dataProcessorBuilder(
-                                                decoder.json,
-                                                jsonElement.jsonObject,
-                                            ),
-                                        )
-                                } ?: run {
-                                throw DataProcessorException("$property ${DataProcessor::class.simpleName} not registered")
+                            is JsonObject -> {
+                                DataProcessorRegistry
+                                    .fromJsonObject(jsonElement.jsonObject)
+                                    ?.let { dataProcessorBuilder ->
+                                        return@map property to
+                                            listOf(
+                                                dataProcessorBuilder(
+                                                    decoder.json,
+                                                    jsonElement.jsonObject,
+                                                ),
+                                            )
+                                    } ?: run {
+                                    throw DataProcessorException("$property ${DataProcessor::class.simpleName} not registered")
+                                }
+                            }
+
+                            else -> {
+                                throw DataProcessorException("invalid ${jsonElement.jsonObject} in ${DataProcessor::class.simpleName} not supported")
                             }
                         }
-
-                        else -> {
-                            throw DataProcessorException("invalid ${jsonElement.jsonObject} in ${DataProcessor::class.simpleName} not supported")
-                        }
-                    }
-                }?.toMap() ?: emptyMap()
+                    }?.toMap() ?: emptyMap()
 
                 return InterimElement(
                     type = type,
                     nestedElements = nestedElements?.map {
                         decoder.json.decodeFromJsonElement<Element>(
-                            it
+                            it,
                         )
                     } ?: emptyList(),
                     id = id,
@@ -171,7 +173,10 @@ sealed interface Element {
          *
          * Note: Creating a [ProcessedElement] this way does not support [Action]
          */
-        private fun resolveProcessedElement(jsonObject: JsonObject, json: Json): ProcessedElement {
+        private fun resolveProcessedElement(
+            jsonObject: JsonObject,
+            json: Json,
+        ): ProcessedElement {
             val type = jsonObject[Constants.TYPE]?.asStringOrNull()
 
             checkNotNull(type) {
@@ -187,7 +192,8 @@ sealed interface Element {
 
             val commonElementProperties = jsonObject.toCommonElementProperties(json)
 
-            return ElementRegistry.getElement(type)
+            return ElementRegistry
+                .getElement(type)
                 ?.let { builder ->
                     builder(
                         type,
@@ -195,7 +201,7 @@ sealed interface Element {
                         jsonObject.asMap().toMutableMap(),
                         nestedElements,
                         emptyList(),
-                        json
+                        json,
                     )
                 } ?: ProcessedElement(
                 type = type,
@@ -238,8 +244,11 @@ sealed interface Element {
                 is JsonArray -> {
                     actionsValue.map { actionJsonContent ->
                         InterimAction(
-                            actionJsonContent.asJSONObjectOrNull()?.get(Constants.TYPE)
-                                ?.asStringOrNull() ?: "invalid", actionJsonContent
+                            actionJsonContent
+                                .asJSONObjectOrNull()
+                                ?.get(Constants.TYPE)
+                                ?.asStringOrNull() ?: "invalid",
+                            actionJsonContent,
                         )
                     }
                 }
@@ -248,8 +257,9 @@ sealed interface Element {
                     listOf(
                         InterimAction(
                             actionsValue.asJSONObjectOrNull()?.get(Constants.TYPE)?.asStringOrNull()
-                                ?: "invalid", actionsValue
-                        )
+                                ?: "invalid",
+                            actionsValue,
+                        ),
                     )
                 }
 

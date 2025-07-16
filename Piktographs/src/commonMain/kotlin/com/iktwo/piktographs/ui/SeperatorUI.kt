@@ -29,8 +29,10 @@ fun SeperatorUI(element: ProcessedElement) {
 
         SeparatorStyle.LINE -> {
             Box(
-                modifier = Modifier.height(size).fillMaxWidth()
-                    .background(DefaultTheme.current.colors.separatorColor)
+                modifier = Modifier
+                    .height(size)
+                    .fillMaxWidth()
+                    .background(DefaultTheme.current.colors.separatorColor),
             )
         }
     }

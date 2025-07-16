@@ -38,8 +38,23 @@ class ElementTest {
         assertEquals("Top row", element.text)
         assertEquals("Test row", element.nestedElements.first().text)
         assertEquals("Top row", element.text)
-        assertEquals("Two level nested row", element.nestedElements.first().nestedElements.first().text)
-        assertEquals("some_value", element.nestedElements.first().nestedElements.first().jsonValues["another_key"]?.asStringOrNull())
+        assertEquals(
+            "Two level nested row",
+            element.nestedElements
+                .first()
+                .nestedElements
+                .first()
+                .text,
+        )
+        assertEquals(
+            "some_value",
+            element.nestedElements
+                .first()
+                .nestedElements
+                .first()
+                .jsonValues["another_key"]
+                ?.asStringOrNull(),
+        )
     }
 
     @Test

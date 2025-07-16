@@ -33,13 +33,13 @@ class CountdownElement(
     val target: LocalDateTime,
     val elementStyle: CountdownStyle,
 ) : ProcessedElement(
-    type = type,
-    nestedElements = nestedElements,
-    id = id,
-    text = title,
-    actions = actions,
-    jsonValues = jsonValues,
-) {
+        type = type,
+        nestedElements = nestedElements,
+        id = id,
+        text = title,
+        actions = actions,
+        jsonValues = jsonValues,
+    ) {
     companion object : ElementDescriptor {
         override val type = "countdown"
 
@@ -67,7 +67,7 @@ class CountdownElement(
                 actions = actions,
                 target = target,
                 title = title,
-                elementStyle = CountdownStyle.fromString(styleValue)
+                elementStyle = CountdownStyle.fromString(styleValue),
             )
         }
     }

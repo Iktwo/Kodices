@@ -21,7 +21,9 @@ import kotlinx.serialization.json.JsonObject
  * Class that represents content that has to be processed.
  */
 @Serializable(with = InterimContent.Companion::class)
-data class InterimContent(val elements: List<Element>) {
+data class InterimContent(
+    val elements: List<Element>,
+) {
     constructor(element: Element) : this(listOf(element))
     constructor() : this(emptyList())
 
@@ -30,19 +32,23 @@ data class InterimContent(val elements: List<Element>) {
      *
      * @param data optional [JsonElement] that represents data to process elements.
      */
-    fun process(data: JsonElement?, json: Json): Content {
+    fun process(
+        data: JsonElement?,
+        json: Json,
+    ): Content {
         return Content(
-            elements.mapIndexed { index, element ->
-                when (element) {
-                    is ProcessedElement -> {
-                        listOf(element)
-                    }
+            elements
+                .mapIndexed { index, element ->
+                    when (element) {
+                        is ProcessedElement -> {
+                            listOf(element)
+                        }
 
-                    is InterimElement -> {
-                        element.process(index = index, data = data, json = json).toList()
+                        is InterimElement -> {
+                            element.process(index = index, data = data, json = json).toList()
+                        }
                     }
-                }
-            }.flatten(),
+                }.flatten(),
         )
     }
 

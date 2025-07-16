@@ -7,7 +7,10 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.jsonObject
 
 @Serializable
-data class MessageAction(val text: String, val style: MessageStyle) : Action {
+data class MessageAction(
+    val text: String,
+    val style: MessageStyle,
+) : Action {
     override val type = TYPE
 
     companion object {
@@ -18,8 +21,10 @@ data class MessageAction(val text: String, val style: MessageStyle) : Action {
 
             // TODO: add support for actions (a button in the message)
             override val builder: ActionBuilder = { action, _ ->
-                val text = action.jsonObject[Constants.CONSTANTS]?.asJSONObjectOrNull()
-                    ?.get(Constants.TEXT_KEY)?.asStringOrNull()
+                val text = action.jsonObject[Constants.CONSTANTS]
+                    ?.asJSONObjectOrNull()
+                    ?.get(Constants.TEXT_KEY)
+                    ?.asStringOrNull()
 
                 val style = MessageStyle.fromString(action.jsonObject[Constants.STYLE]?.asStringOrNull())
 
@@ -36,7 +41,8 @@ data class MessageAction(val text: String, val style: MessageStyle) : Action {
 enum class MessageStyle {
     TOAST,
     SNACK_BAR,
-    DIALOG;
+    DIALOG,
+    ;
 
     companion object {
         fun fromString(name: String?): MessageStyle {

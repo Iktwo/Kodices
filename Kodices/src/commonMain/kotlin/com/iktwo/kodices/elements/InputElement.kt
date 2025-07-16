@@ -14,20 +14,21 @@ class InputElement(
     override val style: String? = null,
     override val validation: Validation? = null,
     override val requiresValidElements: List<String> = emptyList(),
-    override val enabled: Boolean = true
+    override val enabled: Boolean = true,
 ) : ProcessedElement(
-    type = type,
-    nestedElements = nestedElements,
-    id = id,
-    text = text,
-    textSecondary = textSecondary,
-    actions = actions,
-    jsonValues = jsonValues,
-    style = style,
-    validation = validation,
-    requiresValidElements = requiresValidElements,
-    enabled = enabled
-), InputProvider {
+        type = type,
+        nestedElements = nestedElements,
+        id = id,
+        text = text,
+        textSecondary = textSecondary,
+        actions = actions,
+        jsonValues = jsonValues,
+        style = style,
+        validation = validation,
+        requiresValidElements = requiresValidElements,
+        enabled = enabled,
+    ),
+    InputProvider {
     override val isValid: Boolean
         get() = validation == null || validation.validate(text)
 
@@ -42,7 +43,7 @@ class InputElement(
         style: String?,
         validation: Validation?,
         requiresValidElements: List<String>,
-        enabled: Boolean
+        enabled: Boolean,
     ): InputElement {
         return InputElement(
             id = id,
@@ -55,7 +56,7 @@ class InputElement(
             style = style,
             validation = validation,
             requiresValidElements = requiresValidElements,
-            enabled = enabled
+            enabled = enabled,
         )
     }
 
@@ -73,7 +74,7 @@ class InputElement(
                 textSecondary = commonElementProperties.textSecondary,
                 style = commonElementProperties.style,
                 validation = commonElementProperties.validation,
-                requiresValidElements = commonElementProperties.requiresValidElements
+                requiresValidElements = commonElementProperties.requiresValidElements,
             )
         }
     }

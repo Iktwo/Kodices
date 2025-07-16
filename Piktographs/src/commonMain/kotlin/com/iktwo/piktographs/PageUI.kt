@@ -6,9 +6,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Modifier
@@ -36,7 +34,7 @@ fun PageUI(
         mutableStateMapOf()
     },
     onInputIdsPopulated: () -> Unit = { },
-    onInputUpdated: () -> Unit = { }
+    onInputUpdated: () -> Unit = { },
 ) {
     CompositionLocalProvider(DefaultTheme provides theme) {
         content.elements.forEach { element ->
@@ -52,7 +50,10 @@ fun PageUI(
         }
 
         val inputHandler = object : InputHandler {
-            override fun onTextInput(element: ProcessedElement, value: String) {
+            override fun onTextInput(
+                element: ProcessedElement,
+                value: String,
+            ) {
                 textInputData[element.id] = value
 
                 if (element is InputElement) {
@@ -62,7 +63,10 @@ fun PageUI(
                 onInputUpdated()
             }
 
-            override fun onBooleanInput(element: ProcessedElement, value: Boolean) {
+            override fun onBooleanInput(
+                element: ProcessedElement,
+                value: Boolean,
+            ) {
                 booleanInputData[element.id] = value
             }
         }
@@ -76,7 +80,7 @@ fun PageUI(
                         inputHandler,
                         textInputData,
                         booleanInputData,
-                        validityMap
+                        validityMap,
                     )
                 }
             }
@@ -89,7 +93,7 @@ fun PageUI(
                         inputHandler,
                         textInputData,
                         booleanInputData,
-                        validityMap
+                        validityMap,
                     )
                 }
             }

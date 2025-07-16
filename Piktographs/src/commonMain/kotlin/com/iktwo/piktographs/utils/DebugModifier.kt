@@ -7,12 +7,16 @@ import com.iktwo.kodices.Kodices
 import kotlin.random.Random
 
 fun debugModifier(): Modifier {
-    return if (Kodices.debug) Modifier.background(
-        Color(
-            red = Random.nextInt(255),
-            green = Random.nextInt(255),
-            blue = Random.nextInt(255),
-            alpha = 100
+    return if (Kodices.debug) {
+        Modifier.background(
+            Color(
+                red = Random.nextInt(255),
+                green = Random.nextInt(255),
+                blue = Random.nextInt(255),
+                alpha = 100,
+            ),
         )
-    ) else Modifier
+    } else {
+        Modifier
+    }
 }

@@ -15,7 +15,7 @@ import kotlinx.serialization.json.buildJsonObject
 class WakeOnLANAction(
     val ipFieldName: String,
     val macFieldName: String,
-    val portFieldName: String
+    val portFieldName: String,
 ) : Action {
     override val type = TYPE
 
@@ -31,7 +31,7 @@ class WakeOnLANAction(
             WakeOnLANAction(
                 ipFieldName = constants[FIELD_IP]?.asStringOrNull() ?: "",
                 macFieldName = constants[FIELD_MAC]?.asStringOrNull() ?: "",
-                portFieldName = constants[FIELD_PORT]?.asStringOrNull() ?: ""
+                portFieldName = constants[FIELD_PORT]?.asStringOrNull() ?: "",
             )
         }
     }

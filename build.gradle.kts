@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
-
 buildscript {
     dependencies {
         classpath(libs.gradle)
@@ -27,18 +25,15 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 
     configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
         debug.set(true)
         verbose.set(true)
-    }
 
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>()
-        .configureEach {
-            if (this is KotlinNativeCompile) {
-                compilerOptions.freeCompilerArgs.add("-opt")
-            }
+        filter {
+            exclude("**/generated/**")
+            include("**/kotlin/**")
         }
+    }
 }

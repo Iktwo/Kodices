@@ -49,7 +49,7 @@ open class ProcessedElement(
             style = style,
             validation = validation,
             requiresValidElements = requiresValidElements,
-            enabled = enabled
+            enabled = enabled,
         )
     }
 }

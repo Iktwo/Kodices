@@ -17,7 +17,9 @@ import kotlinx.serialization.json.JsonPrimitive
  * You can provide number replacements, like %0, %1, etc.
  */
 @Serializable
-data class StringProcessor(val element: String) : DataProcessor {
+data class StringProcessor(
+    val element: String,
+) : DataProcessor {
     override val type = TYPE
 
     override fun process(data: JsonElement?): JsonElement {

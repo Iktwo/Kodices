@@ -19,7 +19,7 @@ const val ROW_ELEMENT_TYPE = "row"
 fun RowUI(element: ProcessedElement) {
     Column(
         modifier = Modifier.fillMaxWidth().padding(DefaultTheme.current.dimensions.padding),
-        verticalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.verticalSpacing)
+        verticalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.verticalSpacing),
     ) {
         element.text?.let {
             Box {
@@ -31,9 +31,9 @@ fun RowUI(element: ProcessedElement) {
                         fontSize = DefaultTheme.current.fonts.primary,
                         lineHeightStyle = LineHeightStyle(
                             alignment = LineHeightStyle.Alignment.Proportional,
-                            trim = LineHeightStyle.Trim.Both
-                        )
-                    )
+                            trim = LineHeightStyle.Trim.Both,
+                        ),
+                    ),
                 )
             }
         }
@@ -47,9 +47,9 @@ fun RowUI(element: ProcessedElement) {
                     fontSize = DefaultTheme.current.fonts.secondary,
                     lineHeightStyle = LineHeightStyle(
                         alignment = LineHeightStyle.Alignment.Proportional,
-                        trim = LineHeightStyle.Trim.Both
-                    )
-                )
+                        trim = LineHeightStyle.Trim.Both,
+                    ),
+                ),
             )
         }
     }

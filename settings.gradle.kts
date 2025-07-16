@@ -5,7 +5,7 @@ include(
     ":Kodices",
     ":Piktographs",
     ":SampleApp",
-    ":KodexServer"
+    ":KodexServer",
 )
 
 pluginManagement {

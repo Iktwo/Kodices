@@ -15,19 +15,12 @@ import androidx.compose.material.Button
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.iktwo.kodices.Kodices
-import com.iktwo.kodices.actions.Action
-import com.iktwo.kodices.actions.ActionPerformer
-import com.iktwo.kodices.actions.MessageAction
-import com.iktwo.kodices.sampleapp.actions.WakeOnLANAction
-import com.iktwo.kodices.sampleapp.actions.WakeOnLan
 
 @Composable
 fun TabSamples() {
@@ -37,12 +30,14 @@ fun TabSamples() {
         AnimatedContent(selectedSample, transitionSpec = {
             if (targetState != null) {
                 (slideInHorizontally { width -> width } + fadeIn()).togetherWith(
-                    slideOutHorizontally { width -> -width } + fadeOut())
+                    slideOutHorizontally { width -> -width } + fadeOut(),
+                )
             } else {
                 (slideInHorizontally { width -> -width } + fadeIn()).togetherWith(
-                    slideOutHorizontally { width -> width } + fadeOut())
+                    slideOutHorizontally { width -> width } + fadeOut(),
+                )
             }.using(
-                SizeTransform(clip = false)
+                SizeTransform(clip = false),
             )
         }) { sample ->
             when (sample) {
@@ -64,14 +59,15 @@ fun TabSamples() {
                     Column(modifier = Modifier.fillMaxSize()) {
                         Button(
                             modifier = Modifier.padding(8.dp),
-                            onClick = { selectedSample = null }) {
+                            onClick = { selectedSample = null },
+                        ) {
                             Text(text = "Back")
                         }
 
                         selectedSample?.resourceFilename?.let { resourceFilename ->
                             ResourceContentPage(
                                 resourceFilename,
-                                selectedSample?.dataFilename
+                                selectedSample?.dataFilename,
                             )
                         }
                     }
@@ -84,12 +80,12 @@ fun TabSamples() {
 enum class Samples(
     val displayName: String,
     val resourceFilename: String,
-    val dataFilename: String? = null
+    val dataFilename: String? = null,
 ) {
     WakeOnLan("Wake On LAN", resourceFilename = "wol.json"),
     Countdown(
         "Countdown",
         resourceFilename = "countdown.json",
-        dataFilename = "data_countdown.json"
-    )
+        dataFilename = "data_countdown.json",
+    ),
 }

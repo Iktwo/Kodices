@@ -3,7 +3,6 @@ package com.iktwo.kodices.elements
 import com.iktwo.kodices.Kodices
 import com.iktwo.kodices.actions.InterimAction
 import com.iktwo.kodices.dataprocessors.DataProcessor
-import com.iktwo.kodices.inputvalidation.Validation
 import com.iktwo.kodices.utils.Constants
 import com.iktwo.kodices.utils.asStringOrNull
 import kotlinx.serialization.json.Json
@@ -11,7 +10,6 @@ import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonArray
 
 typealias ProcessedValues = MutableMap<String, JsonElement?>
@@ -30,7 +28,7 @@ data class InterimElement(
         index: Int = 0,
         data: JsonElement? = null,
         parentId: String? = null,
-        json: Json
+        json: Json,
     ): List<ProcessedElement> {
         // If there are processors for expansion, then the result of executing them should be an array
         if (processorsForExpansion.isNotEmpty()) {
@@ -45,18 +43,21 @@ data class InterimElement(
             }
 
             return if (processedData is JsonArray) {
-                processedData?.jsonArray?.mapIndexed { repeatingIndex, jsonElement ->
-                    // Create an interim element for every array element, but do not set processors for expansion
-                    val repeatingElement = InterimElement(type, nestedElements, id, constants, processors, emptyList())
+                processedData
+                    ?.jsonArray
+                    ?.mapIndexed { repeatingIndex, jsonElement ->
+                        // Create an interim element for every array element, but do not set processors for expansion
+                        val repeatingElement = InterimElement(type, nestedElements, id, constants, processors, emptyList())
 
-                    // Process element with element from the array
-                    repeatingElement.process(
-                        repeatingIndex,
-                        jsonElement,
-                        "${if (parentId != null) "${parentId}_" else "${type}_"}index$index",
-                        json
-                    )
-                }?.flatten()?.toList() ?: emptyList()
+                        // Process element with element from the array
+                        repeatingElement.process(
+                            repeatingIndex,
+                            jsonElement,
+                            "${if (parentId != null) "${parentId}_" else "${type}_"}index$index",
+                            json,
+                        )
+                    }?.flatten()
+                    ?.toList() ?: emptyList()
             } else {
                 Kodices.logger.warn(
                     "${InterimElement::class.simpleName} expansion failed. $processedData is not a ${JsonArray::class.simpleName}. processedData: $processedData",
@@ -117,17 +118,18 @@ data class InterimElement(
         // When id is not provided use the type and index
         val processedId = id ?: "${parentId ?: ""}${type}_$index"
 
-        val nestedElements = nestedElements.mapIndexed { nestedIndex, element ->
-            when (element) {
-                is ProcessedElement -> {
-                    listOf(element)
-                }
+        val nestedElements = nestedElements
+            .mapIndexed { nestedIndex, element ->
+                when (element) {
+                    is ProcessedElement -> {
+                        listOf(element)
+                    }
 
-                is InterimElement -> {
-                    element.process(nestedIndex, data, processedId, json).toList()
+                    is InterimElement -> {
+                        element.process(nestedIndex, data, processedId, json).toList()
+                    }
                 }
-            }
-        }.flatten()
+            }.flatten()
 
         if (action != null && actions.isNotEmpty()) {
             Kodices.logger.warn(
@@ -150,7 +152,7 @@ data class InterimElement(
                     processedValues,
                     nestedElements,
                     processedActions,
-                    json
+                    json,
                 ),
             )
         } ?: listOf(
@@ -166,7 +168,7 @@ data class InterimElement(
                 style = style,
                 validation = commonElementProperties.validation,
                 enabled = commonElementProperties.enabled,
-                requiresValidElements = commonElementProperties.requiresValidElements
+                requiresValidElements = commonElementProperties.requiresValidElements,
             ),
         )
     }

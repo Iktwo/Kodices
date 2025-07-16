@@ -16,12 +16,16 @@ sealed class JSONRoute {
     /**
      * Class that represents a key in a JSON object
      */
-    class StringRoute(val value: String) : JSONRoute()
+    class StringRoute(
+        val value: String,
+    ) : JSONRoute()
 
     /**
      * Class that represents an index in a JSON array
      */
-    class NumberRoute(val value: Int) : JSONRoute()
+    class NumberRoute(
+        val value: Int,
+    ) : JSONRoute()
 
     companion object : KSerializer<JSONRoute> {
         override val descriptor = JsonObject.serializer().descriptor

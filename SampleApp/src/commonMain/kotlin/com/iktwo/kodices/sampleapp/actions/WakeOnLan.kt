@@ -4,13 +4,18 @@ import io.ktor.network.selector.SelectorManager
 import io.ktor.network.sockets.Datagram
 import io.ktor.network.sockets.InetSocketAddress
 import io.ktor.network.sockets.aSocket
-import io.ktor.utils.io.core.ByteReadPacket
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.runBlocking
+import kotlinx.io.Buffer
+import kotlinx.io.Source
 
 object WakeOnLan {
-    fun wakeDevice(macAddress: String, broadcastIP: String, port: Int = 9) {
+    fun wakeDevice(
+        macAddress: String,
+        broadcastIP: String,
+        port: Int = 9,
+    ) {
         try {
             val macAddressBytes = macAddress.split(":").map { it.toInt(16).toByte() }.toByteArray()
             val bytes = ByteArray(6 + macAddressBytes.size * 16)
@@ -22,7 +27,7 @@ object WakeOnLan {
                     bytes,
                     6 + (i * macAddressBytes.size),
                     0,
-                    macAddressBytes.size
+                    macAddressBytes.size,
                 )
             }
 
@@ -33,13 +38,15 @@ object WakeOnLan {
                     broadcast = true
                 }
 
+                val source: Source = Buffer().apply { write(bytes) }
+
                 val packet = Datagram(
-                    ByteReadPacket(bytes),
-                    InetSocketAddress(broadcastIP, port)
+                    source,
+                    InetSocketAddress(broadcastIP, port),
                 )
 
                 socket.send(
-                    packet
+                    packet,
                 )
             }
         } catch (e: Exception) {

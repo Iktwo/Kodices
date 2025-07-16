@@ -21,6 +21,6 @@ actual fun getDataStore(): DataStore<Preferences> {
             error = null,
         )
 
-        (requireNotNull(documentDirectory).path + "/${dataStoreFile}.preferences_pb").toPath()
+        (requireNotNull(documentDirectory).path + "/$DATA_STORE_FILE.preferences_pb").toPath()
     }
 }

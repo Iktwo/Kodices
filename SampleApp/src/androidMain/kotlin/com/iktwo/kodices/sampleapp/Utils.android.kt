@@ -6,5 +6,12 @@ import androidx.datastore.preferences.core.Preferences
 import okio.Path.Companion.toPath
 
 actual fun getDataStore(): DataStore<Preferences> {
-    return PreferenceDataStoreFactory.createWithPath { KodicesSampleApplication.applicationContext().filesDir.resolve("${dataStoreFile}.preferences_pb").absolutePath.toPath() }
+    return PreferenceDataStoreFactory.createWithPath {
+        KodicesSampleApplication
+            .applicationContext()
+            .filesDir
+            .resolve("$DATA_STORE_FILE.preferences_pb")
+            .absolutePath
+            .toPath()
+    }
 }

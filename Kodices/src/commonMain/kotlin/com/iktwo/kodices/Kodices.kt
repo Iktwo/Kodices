@@ -19,17 +19,18 @@ import kotlinx.serialization.json.jsonObject
 
 class Kodices(
     elements: List<ElementDescriptor> = listOf(),
-    actions: List<ActionDescriptor> = listOf()
+    actions: List<ActionDescriptor> = listOf(),
 ) {
     private val json: Json = Json { ignoreUnknownKeys = true }
 
     init {
-        val inputElements = DefaultInputElements.map { elementType ->
-            object : ElementDescriptor {
-                override val type = elementType
-                override val builder = InputElement.builder
-            }
-        }.toList()
+        val inputElements = DefaultInputElements
+            .map { elementType ->
+                object : ElementDescriptor {
+                    override val type = elementType
+                    override val builder = InputElement.builder
+                }
+            }.toList()
         ElementRegistry.addElements(inputElements.plus(elements))
 
         val defaultActions = listOf(MessageAction.descriptor)

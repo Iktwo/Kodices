@@ -30,10 +30,12 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 val json = Json { prettyPrint = true }
 val kodices = Kodices(
     elements = listOf(WebElement, CountdownElement),
-    actions = listOf(WakeOnLANAction)
+    actions = listOf(WakeOnLANAction),
 )
 
-enum class Tabs(val displayName: String) {
+enum class Tabs(
+    val displayName: String,
+) {
     TabSamples("Samples"),
     ComponentCatalog("Catalog"),
 
