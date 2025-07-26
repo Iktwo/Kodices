@@ -36,7 +36,7 @@ kotlin {
             implementation(projects.piktographs)
 
             implementation(compose.foundation)
-            implementation(compose.material)
+            implementation(compose.material3)
             implementation(compose.runtime)
             implementation(compose.components.resources)
 

@@ -5,7 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,7 +27,7 @@ fun RowUI(element: ProcessedElement) {
                 Text(
                     it,
                     modifier = Modifier.fillMaxWidth(),
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onSurface,
                     style = TextStyle(
                         fontSize = DefaultTheme.current.fonts.primary,
                         lineHeightStyle = LineHeightStyle(
@@ -42,7 +43,7 @@ fun RowUI(element: ProcessedElement) {
             Text(
                 it,
                 modifier = Modifier.fillMaxWidth(),
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = TextStyle(
                     fontSize = DefaultTheme.current.fonts.secondary,
                     lineHeightStyle = LineHeightStyle(

@@ -1,8 +1,8 @@
 package com.iktwo.kodices.sampleapp
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -14,7 +14,7 @@ import com.iktwo.kodices.Kodices
 import com.iktwo.kodices.actions.Action
 import com.iktwo.kodices.actions.ActionPerformer
 import com.iktwo.kodices.actions.MessageAction
-import com.iktwo.kodices.sampleapp.ui.ElementOverride
+import com.iktwo.kodices.sampleapp.ui.elementOverride
 import com.iktwo.piktographs.PageUI
 import com.iktwo.piktographs.ui.ContentDialog
 import kotlinx.serialization.json.JsonElement
@@ -50,7 +50,7 @@ fun TabCatalog(contentString: String) {
                     content = content,
                     modifier = Modifier.fillMaxSize(),
                     elementOverrides = {
-                        ElementOverride(it)
+                        elementOverride(it)
                     },
                 )
 

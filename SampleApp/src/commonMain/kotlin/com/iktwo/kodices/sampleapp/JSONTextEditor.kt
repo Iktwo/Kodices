@@ -2,10 +2,10 @@ package com.iktwo.kodices.sampleapp
 
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
@@ -57,7 +57,7 @@ fun JSONTextEditor(
         isError = !validJSON,
         trailingIcon = {
             if (!validJSON) {
-                Icon(Icons.Filled.Warning, "error", tint = MaterialTheme.colors.error)
+                Icon(Icons.Filled.Warning, "error", tint = MaterialTheme.colorScheme.error)
             }
         },
     )

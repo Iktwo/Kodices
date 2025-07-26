@@ -5,10 +5,9 @@ package com.iktwo.kodices.sampleapp.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -41,7 +40,6 @@ fun CountdownUI(
         countdownElement.text?.let {
             Text(
                 text = it,
-                color = Color.Black,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 style = TextStyle(textDecoration = if (isTargetInThePast) TextDecoration.LineThrough else null),
@@ -94,7 +92,6 @@ fun CountdownUI(
 
         Text(
             text = timeFrames.joinToString(separator = ", "),
-            color = Color.Black,
             fontSize = 18.sp,
             style = TextStyle(textDecoration = if (isTargetInThePast) TextDecoration.LineThrough else null),
         )

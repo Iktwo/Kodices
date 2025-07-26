@@ -9,7 +9,7 @@ import com.iktwo.piktographs.elements.CountdownElement
 import kotlin.time.ExperimentalTime
 
 @Composable
-fun ElementOverride(element: ProcessedElement): Boolean {
+fun elementOverride(element: ProcessedElement): Boolean {
     when {
         element.type == BUTTON_ELEMENT_TYPE -> {
             ButtonUI(element)

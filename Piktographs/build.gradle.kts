@@ -43,7 +43,7 @@ kotlin {
             api(project(":Kodices"))
 
             implementation(compose.foundation)
-            implementation(compose.material)
+            implementation(compose.material3)
             implementation(compose.runtime)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)

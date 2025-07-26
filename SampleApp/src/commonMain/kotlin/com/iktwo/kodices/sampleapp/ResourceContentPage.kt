@@ -17,7 +17,7 @@ import com.iktwo.kodices.actions.ActionPerformer
 import com.iktwo.kodices.sampleapp.actions.WakeOnLANAction
 import com.iktwo.kodices.sampleapp.actions.WakeOnLan
 import com.iktwo.kodices.sampleapp.resources.Res
-import com.iktwo.kodices.sampleapp.ui.ElementOverride
+import com.iktwo.kodices.sampleapp.ui.elementOverride
 import com.iktwo.piktographs.PageUI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -67,64 +67,61 @@ fun ResourceContentPage(
     }
 
     if (contentString.isNotBlank()) {
-        kodices.parseJSONToContent(contentString, dataString)?.let { content ->
-            val actionPerformer = object : ActionPerformer {
-                override fun onAction(action: Action) {
-                    when (action) {
-                        is WakeOnLANAction -> {
-                            val port =
-                                textInputData.getOrElse(action.portFieldName) { "0" }?.toIntOrNull()
-                                    ?: 0
-                            val ip = textInputData.getOrElse(action.ipFieldName) { "" } ?: ""
-                            val macAddress =
-                                textInputData.getOrElse(action.macFieldName) { "" } ?: ""
+        val actionPerformer = object : ActionPerformer {
+            override fun onAction(action: Action) {
+                when (action) {
+                    is WakeOnLANAction -> {
+                        val port =
+                            textInputData.getOrElse(action.portFieldName) { "0" }?.toIntOrNull()
+                                ?: 0
+                        val ip = textInputData.getOrElse(action.ipFieldName) { "" } ?: ""
+                        val macAddress =
+                            textInputData.getOrElse(action.macFieldName) { "" } ?: ""
 
-                            if (macAddress.isNotBlank()) {
-                                WakeOnLan.wakeDevice(macAddress, ip, port)
-                            } else {
-                                // TODO: show error message
-                            }
+                        if (macAddress.isNotBlank()) {
+                            WakeOnLan.wakeDevice(macAddress, ip, port)
+                        } else {
+                            // TODO: show error message
                         }
                     }
                 }
             }
-
-            CompositionLocalProvider(DefaultActionPerformer provides actionPerformer) {
-                PageUI(
-                    content = content,
-                    modifier = Modifier.fillMaxSize(),
-                    elementOverrides = {
-                        ElementOverride(it)
-                    },
-                    textInputData = textInputData,
-                    booleanInputData = booleanInputData,
-                    validityMap = validityMap,
-                    onInputIdsPopulated = {
-                        scope.launch {
-                            val restored = restoreForm(textInputData.keys)
-                            restored
-                                .filter { (_, value) -> value != null }
-                                .forEach { (key, value) ->
-                                    textInputData[key] = value
-                                }
-                            // TODO: restoring after coming back on this "page" clears one of the fields. Something must be wrong.
-                        }
-                    },
-                    onInputUpdated = {
-                        scope.launch {
-                            val validValues = textInputData
-                                .mapNotNull { (key, value) ->
-                                    if (validityMap.containsKey(key) && value != null) key to value else null
-                                }.toMap()
-
-                            if (validValues.isNotEmpty()) {
-                                saveForm(validValues)
-                            }
-                        }
-                    },
-                )
-            }
         }
+
+        JsonContent(
+            contentString = contentString,
+            dataString = dataString,
+            actionPerformer = actionPerformer,
+            textInputData = textInputData,
+            booleanInputData = booleanInputData,
+            validityMap = validityMap,
+            elementOverrides = {
+                elementOverride(it)
+            },
+            onInputIdsPopulated = {
+                scope.launch {
+                    val restored = restoreForm(textInputData.keys)
+                    restored
+                        .filter { (_, value) -> value != null }
+                        .forEach { (key, value) ->
+                            textInputData[key] = value
+                        }
+                    // TODO: restoring after coming back on this "page" clears one of the fields. Something must be wrong.
+                }
+            },
+            onInputUpdated = {
+                scope.launch {
+                    val validValues = textInputData
+                        .mapNotNull { (key, value) ->
+                            if (validityMap.containsKey(key) && value != null) key to value else null
+                        }.toMap()
+
+                    if (validValues.isNotEmpty()) {
+                        saveForm(validValues)
+                    }
+                }
+            },
+        )
     }
 }
 
