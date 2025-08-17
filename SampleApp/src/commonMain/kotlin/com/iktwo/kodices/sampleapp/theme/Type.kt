@@ -10,13 +10,9 @@ import org.jetbrains.compose.resources.Font
 
 @Composable
 fun appTypography(): Typography {
-    val bodyFontFamily = FontFamily(
-        Font(Res.font.AlbertSans_Variable)
-    )
+    val bodyFontFamily = FontFamily(Font(Res.font.AlbertSans_Variable))
 
-    val displayFontFamily = FontFamily(
-        Font(Res.font.NotoSansDisplay_Variable)
-    )
+    val displayFontFamily = FontFamily(Font(Res.font.NotoSansDisplay_Variable))
 
     // Default Material 3 typography values
     val baseline = Typography()

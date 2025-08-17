@@ -1,15 +1,12 @@
 package com.iktwo.kodices.sampleapp
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.iktwo.kodices.actions.Action
@@ -18,7 +15,6 @@ import com.iktwo.kodices.sampleapp.actions.WakeOnLANAction
 import com.iktwo.kodices.sampleapp.actions.WakeOnLan
 import com.iktwo.kodices.sampleapp.resources.Res
 import com.iktwo.kodices.sampleapp.ui.elementOverride
-import com.iktwo.piktographs.PageUI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO

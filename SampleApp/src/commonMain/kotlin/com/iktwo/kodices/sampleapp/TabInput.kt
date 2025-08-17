@@ -20,7 +20,7 @@ fun TabInput(
     Row {
         JSONTextEditor(
             initialValue = initialContentString,
-            modifier = Modifier.weight(1f).fillMaxHeight()
+            modifier = Modifier.weight(1f).fillMaxHeight(),
         ) {
             jsonContent = it
             onJSONTextChanged(it)
@@ -30,7 +30,7 @@ fun TabInput(
             contentString = jsonContent,
             dataString = "",
             elementOverrides = { elementOverride(it) },
-            modifier = Modifier.weight(1f).fillMaxHeight()
+            modifier = Modifier.weight(1f).fillMaxHeight(),
         )
     }
 }

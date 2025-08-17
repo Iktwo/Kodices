@@ -17,6 +17,7 @@ plugins {
     alias(libs.plugins.ktor).apply(false)
     alias(libs.plugins.org.jetbrains.kotlin.jvm).apply(false)
     alias(libs.plugins.serialization).apply(false)
+    alias(libs.plugins.skie).apply(false)
 }
 
 allprojects {

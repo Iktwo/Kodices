@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.serialization)
     alias(libs.plugins.kover)
+    alias(libs.plugins.skie)
 }
 //endregion
 
@@ -35,6 +36,7 @@ kotlin {
         macosX64(),
     ).forEach {
         it.binaries.framework {
+            binaryOption("bundleId", "com.iktwo.kodices")
             baseName = "Kodices"
             xcf.add(this)
         }
@@ -47,7 +49,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.kotlinx.serialization.json)
+                api(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.coroutines.core)
             }
         }

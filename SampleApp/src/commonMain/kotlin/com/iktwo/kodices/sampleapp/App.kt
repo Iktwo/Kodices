@@ -82,7 +82,7 @@ fun App() {
             Tabs.Input -> {
                 TabInput(
                     initialContentString = activeContent,
-                    onJSONTextChanged = { activeContent = it }
+                    onJSONTextChanged = { activeContent = it },
                 )
             }
 

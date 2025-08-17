@@ -295,4 +295,3 @@ val warningDarkHighContrast = Color(0xFFFFEDE0)
 val onWarningDarkHighContrast = Color(0xFF000000)
 val warningContainerDarkHighContrast = Color(0xFFFFBF85)
 val onWarningContainerDarkHighContrast = Color(0xFF281200)
-
