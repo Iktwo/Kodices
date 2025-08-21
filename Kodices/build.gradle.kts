@@ -39,6 +39,7 @@ kotlin {
             binaryOption("bundleId", "com.iktwo.kodices")
             baseName = "Kodices"
             xcf.add(this)
+            isStatic = true
         }
     }
     //endregion

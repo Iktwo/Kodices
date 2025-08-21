@@ -1,7 +1,7 @@
 [versions]
 accompanist-webview = "0.36.0"
 android-compileSdk = "36"
-android-gradle-plugin = "8.12.0"
+android-gradle-plugin = "8.12.1"
 android-minSdk = "28"
 android-targetSdk = "36"
 androidx-activity-compose = "1.10.1"
@@ -11,7 +11,7 @@ appcompat = "1.7.1"
 benchmark = "0.4.14"
 compose-jetbrains = "1.9.0-beta03"
 junit = "4.13.2"
-kotlin = "2.2.0"
+kotlin = "2.2.10"
 kotlinx-coroutines = "1.10.2"
 kotlinx-datetime = "0.7.1"
 kotlinx-serialization = "1.9.0"
@@ -21,7 +21,7 @@ ktor = "3.2.3"
 lifecycle = "2.9.2"
 material-icons = "1.7.3"
 okio = "3.16.0"
-skie = "0.10.5"
+skie = "0.10.6"
 
 [libraries]
 accompanist-webview = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanist-webview" }
