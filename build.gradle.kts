@@ -29,7 +29,7 @@ publishing {
 
 allprojects {
     group = "com.github.iktwo"
-    version = "0.1.0"
+    version = "0.1.1"
 
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
 
