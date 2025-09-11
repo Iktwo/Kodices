@@ -18,13 +18,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.jvm).apply(false)
     alias(libs.plugins.serialization).apply(false)
     alias(libs.plugins.skie).apply(false)
-    `maven-publish`
-}
-
-publishing {
-    publications {
-        
-    }
+    alias(libs.plugins.vanniktech.publish).apply(false)
 }
 
 allprojects {

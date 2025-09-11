@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.iktwo.kodices.Kodices
+import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.actions.Action
 import com.iktwo.kodices.actions.ActionPerformer
 import com.iktwo.kodices.actions.MessageAction
@@ -28,7 +28,7 @@ fun TabCatalog(contentString: String) {
     var dialogMessage by remember { mutableStateOf("") }
     var isDialogOpen by remember { mutableStateOf(false) }
 
-    kodices.parseJSONToContent(contentString, dataString)?.let { content ->
+    kodicesParser.parseJSONToContent(contentString, dataString)?.let { content ->
         val actionPerformer = object : ActionPerformer {
             override fun onAction(action: Action) {
                 when (action) {
@@ -38,7 +38,7 @@ fun TabCatalog(contentString: String) {
                     }
 
                     else -> {
-                        Kodices.logger.warn("Unhandled action $action")
+                        KodicesParser.logger.warn("Unhandled action $action")
                     }
                 }
             }

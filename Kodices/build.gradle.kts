@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.serialization)
     alias(libs.plugins.kover)
     alias(libs.plugins.skie)
+    alias(libs.plugins.vanniktech.publish)
 }
 //endregion
 
@@ -26,7 +27,8 @@ kotlin {
     //endregion
 
     //region iOS/MacOS
-    val xcf = XCFramework()
+    val frameworkName = "Kodices"
+    val xcf = XCFramework(frameworkName)
 
     listOf(
         iosX64(),
@@ -37,7 +39,7 @@ kotlin {
     ).forEach {
         it.binaries.framework {
             binaryOption("bundleId", "com.iktwo.kodices")
-            baseName = "Kodices"
+            baseName = frameworkName
             xcf.add(this)
             isStatic = true
         }
@@ -99,3 +101,37 @@ kover {
     }
 }
 //endregion
+
+mavenPublishing {
+    publishToMavenCentral()
+
+    signAllPublications()
+
+    coordinates(group.toString(), "kodices", version.toString())
+
+    pom {
+        name = "Kodices library"
+        description = "Library to parse JSON models that describe user interfaces."
+        inceptionYear = "2023"
+        url = "https://github.com/iktwo/kodices"
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+        developers {
+            developer {
+                id = "iktwo"
+                name = "Isaac SH"
+                url = "https://github.com/iktwo/"
+            }
+        }
+        scm {
+            url = "https://github.com/iktwo/kodices"
+            connection = "scm:git:git://github.com/iktwo/kodices.git"
+            developerConnection = "scm:git:ssh://git@github.com/iktwo/kodices.git"
+        }
+    }
+}

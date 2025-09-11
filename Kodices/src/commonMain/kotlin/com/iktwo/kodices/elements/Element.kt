@@ -1,6 +1,6 @@
 package com.iktwo.kodices.elements
 
-import com.iktwo.kodices.Kodices
+import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.actions.Action
 import com.iktwo.kodices.actions.InterimAction
 import com.iktwo.kodices.dataprocessors.DataProcessor
@@ -235,7 +235,7 @@ sealed interface Element {
             jsonObject: JsonObject,
         ): List<InterimAction> {
             if (jsonObject.containsKey(Constants.ACTIONS) && jsonObject.containsKey(Constants.ACTION)) {
-                Kodices.logger.warn("An element provided both ${Constants.ACTION} and ${Constants.ACTIONS}. That is usually a mistake. ${Constants.ACTIONS} will be used.")
+                KodicesParser.logger.warn("An element provided both ${Constants.ACTION} and ${Constants.ACTIONS}. That is usually a mistake. ${Constants.ACTIONS} will be used.")
             }
 
             val actionsValue = jsonObject[Constants.ACTIONS] ?: jsonObject[Constants.ACTION]
@@ -265,7 +265,7 @@ sealed interface Element {
 
                 else -> {
                     if (actionsValue != null) {
-                        Kodices.logger.warn(
+                        KodicesParser.logger.warn(
                             "Invalid type found for ${Action::class.simpleName}. It must be either an object or an array, provided value: $actionsValue",
                         )
                     }

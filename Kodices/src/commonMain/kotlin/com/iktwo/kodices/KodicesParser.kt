@@ -17,7 +17,7 @@ import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
 
-class Kodices(
+class KodicesParser(
     elements: List<ElementDescriptor> = listOf(),
     actions: List<ActionDescriptor> = listOf(),
 ) {
@@ -88,7 +88,7 @@ class Kodices(
         }
     }
 
-    companion object {
+    companion object Companion {
         var debug: Boolean = false
 
         private val defaultLogger = object : Logger {

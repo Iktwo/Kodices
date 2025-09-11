@@ -1,7 +1,7 @@
-import com.iktwo.kodices.Kodices
+import com.iktwo.kodices.KodicesParser
 
 fun main() {
-    Kodices.logger.info("--Kodices--")
-    Kodices.debug = true
-    Kodices().parseJSONToContent("{\"elements\":[{\"type\":\"sample\"}]}")
+    KodicesParser.logger.info("--Kodices--")
+    KodicesParser.debug = true
+    KodicesParser().parseJSONToContent("{\"elements\":[{\"type\":\"sample\"}]}")
 }

@@ -29,7 +29,7 @@ fun JsonContent(
     onInputIdsPopulated: () -> Unit = { },
     onInputUpdated: () -> Unit = { },
 ) {
-    kodices.parseJSONToContent(contentString, dataString)?.let { content ->
+    kodicesParser.parseJSONToContent(contentString, dataString)?.let { content ->
         CompositionLocalProvider(DefaultActionPerformer provides (actionPerformer ?: emptyActionPerformer)) {
             PageUI(
                 content = content,

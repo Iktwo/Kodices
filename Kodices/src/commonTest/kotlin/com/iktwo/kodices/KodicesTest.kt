@@ -7,26 +7,26 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class KodicesTest {
-    private val kodices = Kodices()
+    private val kodicesParser = KodicesParser()
 
     @Test
     fun testParseJSONToContentWithArray() {
-        assertNull(kodices.parseJSONToContent("[]"))
+        assertNull(kodicesParser.parseJSONToContent("[]"))
     }
 
     @Test
     fun testParseJSONToContentWithEmptyJSONObject() {
-        assertNotNull(kodices.parseJSONToContent("{}"))
+        assertNotNull(kodicesParser.parseJSONToContent("{}"))
     }
 
     @Test
     fun testParseJSONToContentWithEmptyElementsArray() {
-        assertNotNull(kodices.parseJSONToContent("{\"elements\":[]}"))
+        assertNotNull(kodicesParser.parseJSONToContent("{\"elements\":[]}"))
     }
 
     @Test
     fun testParseJSONToContentWithSingleElement() {
-        val content = kodices.parseJSONToContent("{\"element\":{\"type\":\"sample\"}}")
+        val content = kodicesParser.parseJSONToContent("{\"element\":{\"type\":\"sample\"}}")
         assertNotNull(content)
 
         assertEquals(1, content.elements.size)
@@ -35,7 +35,7 @@ class KodicesTest {
     @Test
     fun testParseJSONToContentSingleRowWithWithArrayData() {
         val content =
-            kodices.parseJSONToContent(
+            kodicesParser.parseJSONToContent(
                 "{\"element\":{\"type\":\"row\", \"processors\": {\"text\":{\"type\":\"${JSONDrillerProcessor.TYPE}\", \"elements\":[0, \"scientificName\"]}}}}",
                 sampleArrayData,
             )
@@ -48,7 +48,7 @@ class KodicesTest {
     @Test
     fun testParseJSONToContentWithArrayDataAndSingleProcessor() {
         val content =
-            kodices.parseJSONToContent(
+            kodicesParser.parseJSONToContent(
                 "{\"element\":{\"type\":\"row\", \"expandWithProcessor\": {\"type\":\"${JSONDrillerProcessor.TYPE}\", \"elements\":[]}, \"processors\": {\"text\":{\"type\":\"${JSONDrillerProcessor.TYPE}\", \"elements\":[\"scientificName\"]}}}}",
                 sampleArrayData.toString(),
             )
@@ -61,7 +61,7 @@ class KodicesTest {
     @Test
     fun testParseJSONToContentWithArrayDataMultipleProcessors() {
         val content =
-            kodices.parseJSONToContent(
+            kodicesParser.parseJSONToContent(
                 "{\"element\":{\"type\":\"row\", \"expandWithProcessors\": [{\"type\":\"${JSONDrillerProcessor.TYPE}\"}],\"processors\": {\"text\":{\"type\":\"${JSONDrillerProcessor.TYPE}\", \"elements\":[\"scientificName\"]}}}}",
                 sampleArrayData.toString(),
             )
@@ -73,7 +73,7 @@ class KodicesTest {
 
     @Test
     fun testParseJSONToContentWithElementsArrayAndArrayDataMultipleProcessors() {
-        val content = kodices.parseJSONToContent(
+        val content = kodicesParser.parseJSONToContent(
             sampleContent.toString(),
             sampleArrayData,
         )
@@ -85,7 +85,7 @@ class KodicesTest {
 
     @Test
     fun testParseJSONElementToContent() {
-        val content = kodices.parseJSONElementToContent(
+        val content = kodicesParser.parseJSONElementToContent(
             sampleContent,
             sampleArrayData,
         )
@@ -97,7 +97,7 @@ class KodicesTest {
 
     @Test
     fun testParseJSONElementToContentNoData() {
-        val content = kodices.parseJSONElementToContent(
+        val content = kodicesParser.parseJSONElementToContent(
             sampleContentThatNeedsNoData,
             null,
         )

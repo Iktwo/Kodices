@@ -1,6 +1,6 @@
 package com.iktwo.kodices.elements
 
-import com.iktwo.kodices.Kodices
+import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.actions.InterimAction
 import com.iktwo.kodices.dataprocessors.DataProcessor
 import com.iktwo.kodices.utils.Constants
@@ -59,7 +59,7 @@ data class InterimElement(
                     }?.flatten()
                     ?.toList() ?: emptyList()
             } else {
-                Kodices.logger.warn(
+                KodicesParser.logger.warn(
                     "${InterimElement::class.simpleName} expansion failed. $processedData is not a ${JsonArray::class.simpleName}. processedData: $processedData",
                 )
                 emptyList()
@@ -92,7 +92,7 @@ data class InterimElement(
                         processedValue?.asStringOrNull()?.let {
                             processedText = it
                         } ?: run {
-                            Kodices.logger.warn("${InterimElement::class.simpleName} $key was provided but processed value is not as expected $processedValue")
+                            KodicesParser.logger.warn("${InterimElement::class.simpleName} $key was provided but processed value is not as expected $processedValue")
                         }
                     }
 
@@ -100,7 +100,7 @@ data class InterimElement(
                         processedValue?.asStringOrNull()?.let {
                             processedTextSecondary = it
                         } ?: run {
-                            Kodices.logger.warn("${InterimElement::class.simpleName} $key was provided but processed value is not as expected $processedValue")
+                            KodicesParser.logger.warn("${InterimElement::class.simpleName} $key was provided but processed value is not as expected $processedValue")
                         }
                     }
 
@@ -108,7 +108,7 @@ data class InterimElement(
                         processedValue?.asStringOrNull()?.let {
                             style = it
                         } ?: run {
-                            Kodices.logger.warn("${InterimElement::class.simpleName} $key was provided but processed value is not as expected $processedValue")
+                            KodicesParser.logger.warn("${InterimElement::class.simpleName} $key was provided but processed value is not as expected $processedValue")
                         }
                     }
                 }
@@ -132,7 +132,7 @@ data class InterimElement(
             }.flatten()
 
         if (action != null && actions.isNotEmpty()) {
-            Kodices.logger.warn(
+            KodicesParser.logger.warn(
                 "${InterimElement::class.simpleName} $type provided both an action and a list of actions. That is not recommended. The single action will be appended to the actions.",
             )
         }

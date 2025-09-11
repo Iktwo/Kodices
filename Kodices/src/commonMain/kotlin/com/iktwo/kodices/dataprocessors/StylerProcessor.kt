@@ -1,6 +1,6 @@
 package com.iktwo.kodices.dataprocessors
 
-import com.iktwo.kodices.Kodices
+import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.utils.asString
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -51,7 +51,7 @@ data class StylerProcessor(
             }
 
             StylerStyle.UNKNOWN -> {
-                Kodices.logger.warn("Unknown Style in ${StylerProcessor::class.simpleName}: $element")
+                KodicesParser.logger.warn("Unknown Style in ${StylerProcessor::class.simpleName}: $element")
                 // When Style is unknown the data returned without modifications
                 data
             }

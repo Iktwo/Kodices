@@ -1,6 +1,6 @@
 package com.iktwo.kodices.dataprocessors
 
-import com.iktwo.kodices.Kodices
+import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.utils.Constants
 import com.iktwo.kodices.utils.asStringOrNull
 import kotlinx.serialization.KSerializer
@@ -49,13 +49,13 @@ data class JSONDrillerProcessor(
                         tempValue.jsonObject[element.value]?.let {
                             tempValue = it
                         } ?: run {
-                            Kodices.logger.warn(
+                            KodicesParser.logger.warn(
                                 "Missing key ${element.value} at $tempValue in ${JSONDrillerProcessor::class.simpleName}, object was expected",
                             )
                             return null
                         }
                     } else {
-                        Kodices.logger.warn(
+                        KodicesParser.logger.warn(
                             "Unable to process element $element in ${JSONDrillerProcessor::class.simpleName}, object was expected",
                         )
                         return null
@@ -67,11 +67,11 @@ data class JSONDrillerProcessor(
                         if (element.value < (tempValue?.jsonArray?.size ?: 0)) {
                             tempValue = tempValue?.jsonArray?.get(element.value)
                         } else {
-                            Kodices.logger.warn("Invalid index ${element.value} in ${JSONDrillerProcessor::class.simpleName}")
+                            KodicesParser.logger.warn("Invalid index ${element.value} in ${JSONDrillerProcessor::class.simpleName}")
                             return null
                         }
                     } else {
-                        Kodices.logger.warn(
+                        KodicesParser.logger.warn(
                             "Unable to process element $element in ${JSONDrillerProcessor::class.simpleName}, ${JsonArray::class.simpleName} was expected",
                         )
                         return null

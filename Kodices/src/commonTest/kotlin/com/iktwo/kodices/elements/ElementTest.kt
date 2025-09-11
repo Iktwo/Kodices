@@ -1,6 +1,6 @@
 package com.iktwo.kodices.elements
 
-import com.iktwo.kodices.Kodices
+import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.sampleInterimElement
 import com.iktwo.kodices.sampleInvalidDataProcessorInElement
 import com.iktwo.kodices.sampleProcessedElementWithNestedElements
@@ -17,7 +17,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class ElementTest {
-    val kodices = Kodices()
+    val kodicesParser = KodicesParser()
 
     @Test
     fun `Test that a ProcessedElement can be deserialized`() {

@@ -8,12 +8,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.iktwo.kodices.Kodices
+import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.elements.ProcessedElement
 
 @Composable
 fun UnknownElementUI(processedElement: ProcessedElement) {
-    if (Kodices.debug) {
+    if (KodicesParser.debug) {
         Text(
             "${processedElement.type} element is not supported. $processedElement",
             modifier = Modifier.fillMaxWidth().padding(

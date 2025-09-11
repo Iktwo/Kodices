@@ -147,7 +147,7 @@ fun TabCountdownDashboard() {
         )
     }
 
-    kodices.parseJSONElementToContent(state.content, state.data)?.let { content ->
+    kodicesParser.parseJSONElementToContent(state.content, state.data)?.let { content ->
         println("New content size: ${content.elements.size} content: ${state.content}")
         var openDialog by remember { mutableStateOf(false) }
 

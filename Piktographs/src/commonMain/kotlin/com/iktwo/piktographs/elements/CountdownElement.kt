@@ -1,6 +1,6 @@
 package com.iktwo.piktographs.elements
 
-import com.iktwo.kodices.Kodices
+import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.actions.Action
 import com.iktwo.kodices.elements.ElementBuilder
 import com.iktwo.kodices.elements.ElementDescriptor
@@ -56,7 +56,7 @@ class CountdownElement(
             try {
                 target = LocalDateTime.parse(targetValue)
             } catch (e: IllegalArgumentException) {
-                Kodices.logger.error("Unable to parse date: $targetValue")
+                KodicesParser.logger.error("Unable to parse date: $targetValue")
                 throw Exception("Unable to create CountdownElement")
             }
 
