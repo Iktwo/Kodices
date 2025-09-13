@@ -13,16 +13,16 @@ struct ComposeView: UIViewControllerRepresentable {
 struct ContentView: View {
     var body: some View {
         TabView {
-                    ComposeView()
-                        .tabItem {
-                            Label("Compose", systemImage: "square.and.pencil")
-                        }
-                        .ignoresSafeArea(.keyboard)
-
-                    KodicesSwiftUIContentView()
-                        .tabItem {
-                            Label("SwiftUI", systemImage: "swift")
-                        }
+            ComposeView()
+                .tabItem {
+                    Label("Compose", systemImage: "square.and.pencil")
                 }
+                .ignoresSafeArea(.keyboard)
+
+            KodicesSwiftUIContentView()
+                .tabItem {
+                    Label("SwiftUI", systemImage: "swift")
+                }
+        }
     }
 }

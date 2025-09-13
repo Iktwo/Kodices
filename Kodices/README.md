@@ -4,6 +4,20 @@
 
 Kotlin multiplatform library to parse JSON models that describe user interfaces.
 
+## Usage
+
+### Consuming in a Gradle
+
+Add this to your dependencies:
+
+    implementation("com.iktwo:kodices:kodices_version")
+
+### Consuming through Swift Package Manager:
+
+You can point to this repository to consume this as a Swift Package:
+
+    https://github.com/Iktwo/Kodices-iOS
+
 ## Core Concepts
 
 ### Element
