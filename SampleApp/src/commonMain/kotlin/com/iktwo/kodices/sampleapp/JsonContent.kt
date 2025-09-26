@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import com.iktwo.kodices.actions.ActionPerformer
 import com.iktwo.kodices.elements.ProcessedElement
 import com.iktwo.piktographs.PageUI
+import com.iktwo.piktographs.mapSaver
 
 @Composable
 fun JsonContent(
@@ -17,13 +18,13 @@ fun JsonContent(
     modifier: Modifier = Modifier,
     actionPerformer: ActionPerformer? = null,
     elementOverrides: (@Composable (ProcessedElement) -> Boolean)? = null,
-    textInputData: SnapshotStateMap<String, String?> = rememberSaveable {
+    textInputData: SnapshotStateMap<String, String?> = rememberSaveable(saver = mapSaver()) {
         mutableStateMapOf()
     },
-    booleanInputData: SnapshotStateMap<String, Boolean> = rememberSaveable {
+    booleanInputData: SnapshotStateMap<String, Boolean> = rememberSaveable(saver = mapSaver()) {
         mutableStateMapOf()
     },
-    validityMap: SnapshotStateMap<String, Boolean> = rememberSaveable {
+    validityMap: SnapshotStateMap<String, Boolean> = rememberSaveable(saver = mapSaver()) {
         mutableStateMapOf()
     },
     onInputIdsPopulated: () -> Unit = { },

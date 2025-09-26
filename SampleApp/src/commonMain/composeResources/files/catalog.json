@@ -33,9 +33,22 @@
       }
     },
     {
+      "type": "textInput",
+      "constants": {
+        "enabled": false,
+        "textSecondary": "Disabled Text Input"
+      }
+    },
+    {
       "type": "checkbox",
       "constants": {
         "checked": true
+      }
+    },
+    {
+      "type": "checkbox",
+      "constants": {
+        "enabled": false
       }
     }
   ]

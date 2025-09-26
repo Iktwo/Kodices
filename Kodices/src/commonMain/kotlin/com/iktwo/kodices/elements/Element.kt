@@ -51,6 +51,15 @@ sealed interface Element {
         get() = true
 
     /**
+     * [Boolean] that defines if this [Element] is visible.
+     * This does not enforce any behavior, elements may use this in different ways.
+     *
+     * Defaults to true.
+     */
+    val visible: Boolean
+        get() = true
+
+    /**
      * [List] of [Action] for this [Element].
      */
     val actions: List<Action>

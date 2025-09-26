@@ -22,6 +22,7 @@ fun TextInputUI(
     ) {
         TextField(
             singleLine = true,
+            enabled = element.enabled,
             value = element.text ?: "",
             onValueChange = { newText ->
                 inputHandler.onTextInput(element.copy(text = newText), newText)

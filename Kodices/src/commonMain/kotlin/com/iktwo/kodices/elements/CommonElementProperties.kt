@@ -16,6 +16,7 @@ data class CommonElementProperties(
     val validation: Validation?,
     val requiresValidElements: List<String>,
     val enabled: Boolean,
+    val visible: Boolean,
 )
 
 fun Map<String, JsonElement?>.toCommonElementProperties(json: Json): CommonElementProperties {
@@ -23,6 +24,7 @@ fun Map<String, JsonElement?>.toCommonElementProperties(json: Json): CommonEleme
     val textSecondary = get(Constants.TEXT_SECONDARY_KEY)?.asStringOrNull()
     val style = get(Constants.STYLE)?.asStringOrNull()
     val enabled = get(Constants.ENABLED_KEY)?.asBooleanOrNull() ?: true
+    val visible = get(Constants.VISIBLE_KEY)?.asBooleanOrNull() ?: true
 
     val validation = get(Constants.VALIDATION_KEY)?.let {
         json.decodeFromJsonElement<Validation>(it)
@@ -37,5 +39,6 @@ fun Map<String, JsonElement?>.toCommonElementProperties(json: Json): CommonEleme
         validation = validation,
         requiresValidElements = requiresValidElements ?: emptyList(),
         enabled = enabled,
+        visible = visible,
     )
 }

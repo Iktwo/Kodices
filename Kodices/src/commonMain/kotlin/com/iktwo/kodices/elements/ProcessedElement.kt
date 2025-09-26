@@ -18,6 +18,7 @@ open class ProcessedElement(
     open val validation: Validation? = null,
     open val requiresValidElements: List<String> = emptyList(),
     override val enabled: Boolean = true,
+    override val visible: Boolean = true,
     // TODO: add a generic way to represent conditionals to toggle enablement or visibility
 ) : Element {
     override fun toString(): String {
@@ -36,6 +37,7 @@ open class ProcessedElement(
         validation: Validation? = this.validation,
         requiresValidElements: List<String> = this.requiresValidElements,
         enabled: Boolean = this.enabled,
+        visible: Boolean = this.visible,
     ): ProcessedElement {
         return ProcessedElement(
             type = type,
@@ -50,6 +52,7 @@ open class ProcessedElement(
             validation = validation,
             requiresValidElements = requiresValidElements,
             enabled = enabled,
+            visible = visible,
         )
     }
 }

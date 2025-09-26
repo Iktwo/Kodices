@@ -4,6 +4,7 @@ import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.actions.InterimAction
 import com.iktwo.kodices.dataprocessors.DataProcessor
 import com.iktwo.kodices.utils.Constants
+import com.iktwo.kodices.utils.asBooleanOrNull
 import com.iktwo.kodices.utils.asStringOrNull
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
@@ -11,6 +12,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
+import kotlin.let
 
 typealias ProcessedValues = MutableMap<String, JsonElement?>
 
@@ -44,8 +46,8 @@ data class InterimElement(
 
             return if (processedData is JsonArray) {
                 processedData
-                    ?.jsonArray
-                    ?.mapIndexed { repeatingIndex, jsonElement ->
+                    .jsonArray
+                    .mapIndexed { repeatingIndex, jsonElement ->
                         // Create an interim element for every array element, but do not set processors for expansion
                         val repeatingElement = InterimElement(type, nestedElements, id, constants, processors, emptyList())
 
@@ -56,8 +58,9 @@ data class InterimElement(
                             "${if (parentId != null) "${parentId}_" else "${type}_"}index$index",
                             json,
                         )
-                    }?.flatten()
-                    ?.toList() ?: emptyList()
+                    }
+                    .flatten()
+                    .toList()
             } else {
                 KodicesParser.logger.warn(
                     "${InterimElement::class.simpleName} expansion failed. $processedData is not a ${JsonArray::class.simpleName}. processedData: $processedData",
@@ -110,6 +113,14 @@ data class InterimElement(
                         } ?: run {
                             KodicesParser.logger.warn("${InterimElement::class.simpleName} $key was provided but processed value is not as expected $processedValue")
                         }
+                    }
+
+                    Constants.ENABLED_KEY -> {
+                        processedValues[Constants.ENABLED_KEY] = processedValue
+                    }
+
+                    Constants.VISIBLE_KEY -> {
+                        processedValues[Constants.VISIBLE_KEY] = processedValue
                     }
                 }
             }
@@ -168,6 +179,7 @@ data class InterimElement(
                 style = style,
                 validation = commonElementProperties.validation,
                 enabled = commonElementProperties.enabled,
+                visible = commonElementProperties.visible,
                 requiresValidElements = commonElementProperties.requiresValidElements,
             ),
         )

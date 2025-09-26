@@ -28,9 +28,13 @@ fun CheckboxUI(
         Row(horizontalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.horizontalSpacing)) {
             val checked = element.jsonValues[CHECKED_KEY]?.asBooleanOrNull()
 
-            Checkbox(inputData ?: checked ?: false, onCheckedChange = { newCheckedValue ->
-                inputHandler.onBooleanInput(element, newCheckedValue)
-            })
+            Checkbox(
+                checked = inputData ?: checked ?: false,
+                enabled = element.enabled,
+                onCheckedChange = { newCheckedValue ->
+                    inputHandler.onBooleanInput(element, newCheckedValue)
+                },
+            )
 
             element.text?.let { text ->
                 Text(text)

@@ -15,19 +15,21 @@ class InputElement(
     override val validation: Validation? = null,
     override val requiresValidElements: List<String> = emptyList(),
     override val enabled: Boolean = true,
+    override val visible: Boolean = true,
 ) : ProcessedElement(
-        type = type,
-        nestedElements = nestedElements,
-        id = id,
-        text = text,
-        textSecondary = textSecondary,
-        actions = actions,
-        jsonValues = jsonValues,
-        style = style,
-        validation = validation,
-        requiresValidElements = requiresValidElements,
-        enabled = enabled,
-    ),
+    type = type,
+    nestedElements = nestedElements,
+    id = id,
+    text = text,
+    textSecondary = textSecondary,
+    actions = actions,
+    jsonValues = jsonValues,
+    style = style,
+    validation = validation,
+    requiresValidElements = requiresValidElements,
+    enabled = enabled,
+    visible = visible,
+),
     InputProvider {
     override val isValid: Boolean
         get() = validation == null || validation.validate(text)
@@ -44,6 +46,7 @@ class InputElement(
         validation: Validation?,
         requiresValidElements: List<String>,
         enabled: Boolean,
+        visible: Boolean,
     ): InputElement {
         return InputElement(
             id = id,
@@ -57,6 +60,7 @@ class InputElement(
             validation = validation,
             requiresValidElements = requiresValidElements,
             enabled = enabled,
+            visible = visible,
         )
     }
 
@@ -75,6 +79,8 @@ class InputElement(
                 style = commonElementProperties.style,
                 validation = commonElementProperties.validation,
                 requiresValidElements = commonElementProperties.requiresValidElements,
+                enabled = commonElementProperties.enabled,
+                visible = commonElementProperties.visible,
             )
         }
     }

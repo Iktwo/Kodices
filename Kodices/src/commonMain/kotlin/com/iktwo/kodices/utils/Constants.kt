@@ -21,6 +21,7 @@ object Constants {
     const val STYLE = "style"
     const val VALIDATION_KEY = "validation"
     const val ENABLED_KEY = "enabled"
+    const val VISIBLE_KEY = "visible"
     const val REQUIRES_VALID_ELEMENTS_KEY = "requiresValidElements"
 
     val GENERIC_ELEMENT_KEYS = listOf(
@@ -28,6 +29,7 @@ object Constants {
         TEXT_SECONDARY_KEY,
         STYLE,
         ENABLED_KEY,
+        VISIBLE_KEY,
         VALIDATION_KEY,
         REQUIRES_VALID_ELEMENTS_KEY,
     )

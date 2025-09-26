@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Modifier
@@ -24,13 +25,13 @@ fun PageUI(
     pageStyle: PageStyle = VerticalListPageStyle,
     elementOverrides: @Composable (ProcessedElement) -> Boolean,
     theme: Theme = Theme(),
-    textInputData: SnapshotStateMap<String, String?> = rememberSaveable {
+    textInputData: SnapshotStateMap<String, String?> = rememberSaveable(saver = mapSaver()) {
         mutableStateMapOf()
     },
-    booleanInputData: SnapshotStateMap<String, Boolean> = rememberSaveable {
+    booleanInputData: SnapshotStateMap<String, Boolean> = rememberSaveable(saver = mapSaver()) {
         mutableStateMapOf()
     },
-    validityMap: SnapshotStateMap<String, Boolean> = rememberSaveable {
+    validityMap: SnapshotStateMap<String, Boolean> = rememberSaveable(saver = mapSaver()) {
         mutableStateMapOf()
     },
     onInputIdsPopulated: () -> Unit = { },
@@ -115,3 +116,13 @@ fun LazyListScope.renderElements(
         }
     }
 }
+
+fun <K, V> mapSaver(): Saver<SnapshotStateMap<K, V>, Any> = Saver(
+    save = { originalMap -> originalMap.toList() },
+    restore = { savedList ->
+        @Suppress("UNCHECKED_CAST")
+        (savedList as? List<Pair<K, V>>)?.toTypedArray()?.let {
+            mutableStateMapOf(*it)
+        } ?: mutableStateMapOf()
+    }
+)
