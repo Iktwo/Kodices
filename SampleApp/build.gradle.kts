@@ -2,24 +2,28 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.serialization)
 }
 
 kotlin {
     jvmToolchain(21)
 
-    androidTarget()
+    android {
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
+
+        namespace = "com.iktwo.sampleapp"
+    }
 
     jvm("desktop")
 
     val xcf = XCFramework()
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64(),
     ).forEach {
@@ -35,19 +39,18 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.piktographs)
 
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.runtime)
-            implementation(compose.components.resources)
-
-            implementation(libs.kotlinx.datetime)
-            implementation(libs.kotlinx.serialization.json)
-            implementation(libs.kotlinx.coroutines.core)
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.cio)
-            implementation(libs.ktor.client.websockets)
             implementation(libs.androidx.datastore.core)
             implementation(libs.androidx.datastore.core.okio)
+            implementation(libs.compose.components.resources)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.runtime)
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.ktor.client.cio)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.websockets)
             implementation(libs.material.icons.core)
             implementation(libs.material.icons.extended)
         }
@@ -60,18 +63,11 @@ kotlin {
         }
 
         androidMain.dependencies {
-            implementation(libs.androidx.activity.compose)
             implementation(libs.accompanist.webview)
             implementation(libs.androidx.appcompat)
             implementation(libs.androidx.core)
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.ktor.client.okhttp)
-        }
-
-        val androidUnitTest by getting {
-            dependencies {
-                implementation(libs.junit)
-            }
         }
 
         desktopMain.dependencies {
@@ -83,8 +79,6 @@ kotlin {
             implementation(libs.ktor.client.darwin)
         }
     }
-
-    task("testClasses")
 }
 
 compose.desktop {
@@ -103,17 +97,4 @@ compose.resources {
     publicResClass = true
     packageOfResClass = "com.iktwo.kodices.sampleapp.resources"
     generateResClass = always
-}
-
-android {
-    namespace = "com.iktwo.kodices.sampleapp"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
-
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
-    }
 }

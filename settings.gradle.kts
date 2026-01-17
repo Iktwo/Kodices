@@ -16,3 +16,4 @@ pluginManagement {
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 }
+include(":SampleApp:sample_android")

@@ -4,7 +4,6 @@ import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.actions.InterimAction
 import com.iktwo.kodices.dataprocessors.DataProcessor
 import com.iktwo.kodices.utils.Constants
-import com.iktwo.kodices.utils.asBooleanOrNull
 import com.iktwo.kodices.utils.asStringOrNull
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray

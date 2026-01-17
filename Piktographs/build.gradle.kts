@@ -3,8 +3,8 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.serialization)
 }
 
@@ -21,14 +21,18 @@ repositories {
 kotlin {
     jvmToolchain(21)
 
-    androidTarget()
+    android {
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
+
+        namespace = "com.iktwo.piktographs"
+    }
 
     jvm("desktop")
 
     val xcf = XCFramework()
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64(),
     ).forEach {
@@ -42,9 +46,10 @@ kotlin {
         commonMain.dependencies {
             api(project(":Kodices"))
 
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.ui.tooling.preview)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.lifecycle.viewmodel)
@@ -61,36 +66,9 @@ kotlin {
                 implementation(libs.androidx.appcompat)
                 implementation(libs.androidx.core)
                 implementation(libs.kotlinx.coroutines.android)
-                implementation(compose.preview)
             }
         }
-        val androidUnitTest by getting {
-            dependencies {
-                implementation(libs.junit)
-            }
-        }
-        val desktopMain by getting {
-            dependencies {
-                implementation(compose.preview)
-            }
-        }
-        val desktopTest by getting
     }
 
     task("testClasses")
-}
-
-android {
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-    }
-
-    namespace = "com.iktwo.piktographs"
-
-    dependencies {
-        implementation(libs.accompanist.webview)
-    }
 }

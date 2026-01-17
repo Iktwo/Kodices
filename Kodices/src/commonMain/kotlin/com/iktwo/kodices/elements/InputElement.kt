@@ -3,6 +3,7 @@ package com.iktwo.kodices.elements
 import com.iktwo.kodices.actions.Action
 import com.iktwo.kodices.inputvalidation.Validation
 
+@Suppress("ktlint:standard:indent")
 class InputElement(
     id: String,
     nestedElements: List<ProcessedElement> = emptyList(),

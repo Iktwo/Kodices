@@ -117,12 +117,14 @@ fun LazyListScope.renderElements(
     }
 }
 
-fun <K, V> mapSaver(): Saver<SnapshotStateMap<K, V>, Any> = Saver(
-    save = { originalMap -> originalMap.toList() },
-    restore = { savedList ->
-        @Suppress("UNCHECKED_CAST")
-        (savedList as? List<Pair<K, V>>)?.toTypedArray()?.let {
-            mutableStateMapOf(*it)
-        } ?: mutableStateMapOf()
-    }
-)
+fun <K, V> mapSaver(): Saver<SnapshotStateMap<K, V>, Any> {
+    return Saver(
+        save = { originalMap -> originalMap.toList() },
+        restore = { savedList ->
+            @Suppress("UNCHECKED_CAST")
+            (savedList as? List<Pair<K, V>>)?.toTypedArray()?.let {
+                mutableStateMapOf(*it)
+            } ?: mutableStateMapOf()
+        },
+    )
+}

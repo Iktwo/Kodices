@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -64,7 +64,7 @@ fun App() {
     }
 
     Column(modifier = Modifier.safeDrawingPadding().fillMaxSize()) {
-        TabRow(selectedTabIndex = orderedTabs.indexOf(selectedTab)) {
+        SecondaryTabRow(selectedTabIndex = orderedTabs.indexOf(selectedTab)) {
             orderedTabs.map {
                 Tab(selected = true, onClick = {
                     selectedTab = it
