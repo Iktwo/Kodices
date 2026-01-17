@@ -1,160 +1,126 @@
-<img src="../resources/images/kodices.svg" alt="Auto Dismiss" style="width:50%; height:auto;">
+<img src="../resources/images/kodices.svg" alt="Kodices" style="width:50%; height:auto;">
 
-# Kodices
+# Kodices Module
 
-Kotlin multiplatform library to parse JSON models that describe user interfaces.
-
-## Usage
-
-### Consuming in a Gradle
-
-Add this to your dependencies:
-
-    implementation("com.iktwo:kodices:kodices_version")
-
-### Consuming through Swift Package Manager:
-
-You can point to this repository to consume this as a Swift Package:
-
-    https://github.com/Iktwo/Kodices-iOS
+This is the core module of the Kodices framework. It is a Kotlin Multiplatform library responsible for parsing JSON definitions into a platform-agnostic UI model.
 
 ## Core Concepts
 
+The Kodices framework is built around a few core concepts:
+
 ### Element
 
-Used to describe what is usually mapped to some UI element.
+An `Element` is a platform-agnostic representation of a UI component. It defines the type of the component (e.g., "text", "button", "image") and its properties.
+
+Here is an example of a simple "Text" element defined in JSON:
+
+```json
+{
+  "type": "text",
+  "constants": {
+    "text": "Sample text"
+  }
+}
+```
+
+Elements can also have more complex properties, such as styles, actions, and data bindings.
 
 ### Action
 
-An operation that may be triggered from an element.
+An `Action` is an operation that can be triggered by an element, usually in response to a user interaction. The base library includes a `MessageAction` for showing simple messages.
 
-Built-in actions include:
-
-* MessageAction: Used to show a message.
-
-New actions can be added through the ActionsRegistry. 
+Actions are extensible, so you can define your own custom actions to handle navigation, network requests, or any other operation you need.
 
 ### DataProcessor
 
-Operations that define how to transform data.
+A `DataProcessor` is a component that transforms data. This is a powerful feature that allows you to manipulate data from your server before it is displayed in the UI.
 
 #### JSONDrillerProcessor
 
-A processor that can retrieve data.
+This processor is used to "drill down" into a JSON object to extract a specific value.
 
-You can reference a JSON key as a string or use a number for the index of an item in an array. 
+**Example:**
+Given the following data:
+```json
+{
+  "user": {
+    "name": "John Doe",
+    "email": "john.doe@example.com"
+  }
+}
+```
 
-Sample JSON:
-
-    {
-        "name": "Kodices",
-        "metadata": {
-            "language": "Kotlin",
-            "supportedPlatforms": ["Android", "iOS", "Linux", "MacOS", "Windows"]
-        }
-    }
-
-Sample 1:
-
-    JSONDrillerProcessor(
-        listOf(
-            StringRoute("name")
-        )    
-    )
-
-Result:
-
-    "Kodices"
-
-Sample 2:
-
-    JSONDrillerProcessor(
-        listOf(
-            StringRoute("metadata"),
-            StringRoute("language")
-        )    
-    )
-
-Result: "Kotlin"
-
-Sample 3:
-
-    JSONDrillerProcessor(
-        listOf(
-            StringRoute("metadata"),
-            StringRoute("supportedPlatforms"),
-            NumberRoute(0)
-        )    
-    )
-
-Result: 
-
-    "Android"
-
-##### Creating from JSON
-
-You can create a JSONDrillerProcessor with this JSON:
-
-    {
-        "type" : "path",
-        "elements" : [..]
-    }
+You can use a `JSONDrillerProcessor` to extract the user's name:
+```json
+{
+  "type": "path",
+  "elements": ["user", "name"]
+}
+```
+**Result:** `"John Doe"`
 
 #### StringProcessor
 
-A processor to inject data in a string. Typically used to show data alongside some text.
+This processor is used to format a string with data.
 
-Sample JSON:
-
-    {
-        "name": "Kodices",
-        "metadata": {
-            "language": "Kotlin",
-            "supportedPlatforms": ["Android", "iOS", "Linux", "MacOS", "Windows"]
-        }
-    }
-
-Sample 1:
-
-    StringProcessor(
-        "Project name: %"    
-    )
-
-Processing that with "Kodices" (in combination with a **JSONDrillerProcessor**) will result in:
-
-    "Project name: Kodices"
-
-##### Creating from JSON
-
-You can create a StringProcessor with this JSON:
-
-    {
-        "type" : "string",
-        "elements" : ".."
-    }
+**Example:**
+To create a greeting message, you can use a `StringProcessor`:
+```json
+{
+  "type": "string",
+  "elements": "Hello, %"
+}
+```
+When combined with the result of the `JSONDrillerProcessor` above, the final output will be: `"Hello, John Doe"`
 
 #### StylerProcessor
 
-A processor to style values.
+This processor is used to apply simple styling transformations to a string, such as converting it to uppercase or lowercase.
 
-This is generally used to transform how data looks like. For example to display a string as UPPERCASE or lowercase.
+## Customization
 
-Sample JSON:
+Kodices is designed to be extensible. You can add your own custom `Element`s and `Action`s to suit the needs of your application.
 
-    {
-        "name": "Kodices",
-        "metadata": {
-            "language": "Kotlin",
-            "supportedPlatforms": ["Android", "iOS", "Linux", "MacOS", "Windows"]
-        }
+### Custom Elements
+
+To create a custom element, you need to define an `ElementDescriptor` and register it with the `KodicesParser`.
+
+**1. Define the ElementDescriptor:**
+```kotlin
+object CountdownElement : ElementDescriptor {
+    override val type = "countdown"
+    override val builder = Element.Builder { id, type, attributes, _ ->
+        // Your custom element logic here
     }
+}
+```
 
-Sample 1:
+**2. Register the ElementDescriptor:**
+```kotlin
+val kodicesParser = KodicesParser(
+    elements = listOf(CountdownElement)
+)
+```
 
-    StylerProcessor(
-        "UPPERCASE"    
-    )
+### Custom Actions
 
-Processing that with "Kodices" (in combination with a **JSONDrillerProcessor**) will result in:
+Similarly, you can create custom actions by defining an `ActionDescriptor` and registering it.
 
-    "KODICES"
+**1. Define the ActionDescriptor:**
+```kotlin
+object WakeOnLANAction : ActionDescriptor {
+    override val type = "wol"
+    override val builder = Action.Builder { attributes ->
+        // Your custom action logic here
+    }
+}
+```
+
+**2. Register the ActionDescriptor:**
+```kotlin
+val kodicesParser = KodicesParser(
+    actions = listOf(WakeOnLANAction)
+)
+```
+
+For a complete example of custom elements and actions, see the `App.kt` file in the `SampleApp` module.
