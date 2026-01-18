@@ -12,19 +12,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
 import com.iktwo.kodices.elements.ProcessedElement
+import com.iktwo.piktographs.ElementUI
+import com.iktwo.piktographs.LocalBooleanInputData
+import com.iktwo.piktographs.LocalElementOverrides
+import com.iktwo.piktographs.LocalInputHandler
+import com.iktwo.piktographs.LocalTextInputData
+import com.iktwo.piktographs.LocalValidityMap
 
 const val ROW_ELEMENT_TYPE = "row"
 
 @Composable
 fun RowUI(element: ProcessedElement) {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(DefaultTheme.current.dimensions.padding),
+        modifier = Modifier.fillMaxWidth().padding(vertical = DefaultTheme.current.dimensions.padding),
         verticalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.verticalSpacing),
     ) {
         element.text?.let {
-            Box {
+            Box(modifier = Modifier.padding(horizontal = DefaultTheme.current.dimensions.padding)) {
                 Text(
-                    it,
+                    text = it,
                     modifier = Modifier.fillMaxWidth(),
                     color = MaterialTheme.colorScheme.onSurface,
                     style = TextStyle(
@@ -40,8 +46,8 @@ fun RowUI(element: ProcessedElement) {
 
         element.textSecondary?.let {
             Text(
-                it,
-                modifier = Modifier.fillMaxWidth(),
+                text = it,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = DefaultTheme.current.dimensions.padding),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = TextStyle(
                     fontSize = DefaultTheme.current.fonts.secondary,
@@ -51,6 +57,10 @@ fun RowUI(element: ProcessedElement) {
                     ),
                 ),
             )
+        }
+
+        for (nestedElement in element.nestedElements) {
+            NestedElementUI(nestedElement)
         }
     }
 }
