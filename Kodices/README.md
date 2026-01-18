@@ -129,6 +129,8 @@ val kodicesParser = KodicesParser(
 
 This example demonstrates displaying a simple text element.
 
+![alt text](../SampleImages/example_1.png "Example 1")
+
 ```json
 {
   "elements": [
@@ -145,6 +147,8 @@ This example demonstrates displaying a simple text element.
 ### Example 2: Button with an Action
 
 This example shows how to create a button that triggers a wake-on-LAN action (This assumes you defined the type **WakeOnLAN**, as shown in the sample application). 
+
+![alt text](../SampleImages/example_2.png "Example 2")
 
 ```json
 {
@@ -171,6 +175,8 @@ This example shows how to create a button that triggers a wake-on-LAN action (Th
 
 This example shows how to create a text input field with validation.
 
+![alt text](../SampleImages/example_3.png "Example 3")
+
 ```json
 {
   "elements": [
@@ -192,6 +198,8 @@ This example shows how to create a text input field with validation.
 
 This example shows how to create a checkbox with associated text.
 
+![alt text](../SampleImages/example_4.png "Example 4")
+
 ```json
 {
   "elements": [
@@ -209,6 +217,8 @@ This example shows how to create a checkbox with associated text.
 ### Example 5: Repetitions
 
 This example shows how to create a list from an array.
+
+![alt text](../SampleImages/example_5.png "Example 5")
 
 ```json
 {
