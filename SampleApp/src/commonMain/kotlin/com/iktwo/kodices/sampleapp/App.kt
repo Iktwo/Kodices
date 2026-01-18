@@ -52,6 +52,7 @@ fun App() {
     val sampleInitialContent = "{}"
 
     var activeContent by remember { mutableStateOf(sampleInitialContent) }
+    var activeData by remember { mutableStateOf(sampleInitialContent) }
     var catalogContent by remember { mutableStateOf("") }
 
     val scope = rememberCoroutineScope()
@@ -82,6 +83,7 @@ fun App() {
             Tabs.Input -> {
                 TabInput(
                     initialContentString = activeContent,
+                    initialDataString = activeData,
                     onJSONTextChanged = { activeContent = it },
                 )
             }

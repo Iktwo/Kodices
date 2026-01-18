@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,12 +15,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 
 @Composable
 fun JSONTextEditor(
     initialValue: String = "{}",
+    title: String = "UI",
     modifier: Modifier = Modifier.fillMaxWidth().fillMaxHeight(),
     onJSONTextChanged: (String) -> Unit,
 ) {
@@ -36,23 +39,16 @@ fun JSONTextEditor(
 
             layoutText = jsonString
 
-            validJSON =
-                try {
-                    val element = Json.parseToJsonElement(jsonString)
-                    onJSONTextChanged(jsonString)
-
-                    val stringified = json.encodeToString(JsonElement.serializer(), element)
-
-                    if (jsonString != stringified) {
-                        layoutText = stringified
-                    }
-
-                    true
-                } catch (e: Exception) {
-                    false
-                }
+            @Suppress("AssignedValueIsNeverRead")
+            validJSON = try {
+                Json.parseToJsonElement(jsonString)
+                onJSONTextChanged(jsonString)
+                true
+            } catch (e: SerializationException) {
+                false
+            }
         },
-        label = { Text("layout") },
+        label = { Text(title) },
         maxLines = Int.MAX_VALUE,
         isError = !validJSON,
         trailingIcon = {
@@ -61,4 +57,20 @@ fun JSONTextEditor(
             }
         },
     )
+
+    Button(
+        onClick = {
+            try {
+                val element = Json.parseToJsonElement(layoutText)
+                @Suppress("AssignedValueIsNeverRead")
+                layoutText = Json.encodeToString(JsonElement.serializer(), element)
+                validJSON = true
+            } catch (e: SerializationException) {
+                validJSON = false
+            }
+        },
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text("Format JSON")
+    }
 }
