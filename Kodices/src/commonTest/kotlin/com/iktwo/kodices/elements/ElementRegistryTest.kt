@@ -30,4 +30,48 @@ class ElementRegistryTest {
 
         assertNotNull(builder)
     }
+
+    @Test
+    fun testAddMultipleElements() {
+        val elementDescriptor1 = object : ElementDescriptor {
+            override val type = "element1"
+            override val builder: ElementBuilder = { _, id, _, nestedElements, _, _ ->
+                ProcessedElement(type = type, nestedElements = nestedElements, id = id)
+            }
+        }
+
+        val elementDescriptor2 = object : ElementDescriptor {
+            override val type = "element2"
+            override val builder: ElementBuilder = { _, id, _, nestedElements, _, _ ->
+                ProcessedElement(type = type, nestedElements = nestedElements, id = id)
+            }
+        }
+
+        ElementRegistry.addElements(listOf(elementDescriptor1, elementDescriptor2))
+
+        assertNotNull(ElementRegistry.getElement("element1"))
+        assertNotNull(ElementRegistry.getElement("element2"))
+    }
+
+    @Test
+    fun testRetrieveElementAfterAddingMultipleElements() {
+        val elementDescriptor1 = object : ElementDescriptor {
+            override val type = "element1"
+            override val builder: ElementBuilder = { _, id, _, nestedElements, _, _ ->
+                ProcessedElement(type = type, nestedElements = nestedElements, id = id)
+            }
+        }
+
+        val elementDescriptor2 = object : ElementDescriptor {
+            override val type = "element2"
+            override val builder: ElementBuilder = { _, id, _, nestedElements, _, _ ->
+                ProcessedElement(type = type, nestedElements = nestedElements, id = id)
+            }
+        }
+
+        ElementRegistry.addElements(listOf(elementDescriptor1, elementDescriptor2))
+
+        assertNotNull(ElementRegistry.getElement("element1"))
+        assertNotNull(ElementRegistry.getElement("element2"))
+    }
 }
