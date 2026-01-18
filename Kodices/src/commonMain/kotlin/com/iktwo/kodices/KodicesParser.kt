@@ -52,6 +52,13 @@ class KodicesParser(
         }
     }
 
+    /**
+     * Parses a JSON string into a [Content] object.
+     *
+     * @param jsonString The JSON string to parse.
+     * @param data An optional [JsonElement] representing additional data to be used during parsing.
+     * @return A [Content] object representing the parsed UI model, or null if parsing fails.
+     */
     fun parseJSONToContent(
         jsonString: String,
         data: JsonElement? = null,

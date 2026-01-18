@@ -123,4 +123,143 @@ val kodicesParser = KodicesParser(
 )
 ```
 
+## Examples
+
+### Example 1: Simple Text Display
+
+This example demonstrates displaying a simple text element.
+
+```json
+{
+  "elements": [
+    {
+      "type": "row",
+      "constants": {
+        "text": "Welcome to Kodices!"
+      }
+    }
+  ]
+}
+```
+
+### Example 2: Button with an Action
+
+This example shows how to create a button that triggers a wake-on-LAN action (This assumes you defined the type **WakeOnLAN**, as shown in the sample application). 
+
+```json
+{
+  "elements": [
+    {
+      "type": "button",
+      "constants": {
+        "text": "Wake On LAN"
+      },
+      "action": {
+        "type": "WakeOnLAN",
+        "constants": {
+          "ip": "192.168.1.100",
+          "mac": "00:1A:2B:3C:4D:5E",
+          "port": 9
+        }
+      }
+    }
+  ]
+}
+```
+
+### Example 3: Text Input with Validation
+
+This example shows how to create a text input field with validation.
+
+```json
+{
+  "elements": [
+    {
+      "type": "textInput",
+      "constants": {
+        "text": "Enter your email",
+        "textSecondary": "Email must be valid"
+      },
+      "validation": {
+        "regex": "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}"
+      }
+    }
+  ]
+}
+```
+
+### Example 4: Checkbox with Text
+
+This example shows how to create a checkbox with associated text.
+
+```json
+{
+  "elements": [
+    {
+      "type": "checkbox",
+      "constants": {
+        "text": "Agree to terms and conditions"
+      },
+      "checked": false
+    }
+  ]
+}
+```
+
+### Example 5: Repetitions
+
+This example shows how to create a list from an array.
+
+```json
+{
+  "elements": [
+    {
+      "type": "row",
+      "constants": {
+        "text": "User List"
+      }
+    },
+    {
+      "type": "separator",
+      "id": "userListSeparator"
+    },
+    {
+      "type": "row",
+      "processors": {
+        "text": {
+          "type": "path",
+          "element": "name"
+        },
+        "textSecondary": {
+          "type": "path",
+          "elements": [
+            "email"
+          ]
+        }
+      },
+      "expandWithProcessor": {
+        "type": "path",
+        "element": "users"
+      }
+    }
+  ]
+}
+```
+
+Sample data:
+```json
+{
+    "users": [
+        {
+            "name": "John Doe",
+            "email": "john.doe@example.com"
+        },
+        {
+            "name": "Jane Smith",
+            "email": "jane.smith@example.com"
+        }
+    ]
+}
+```
+
 For a complete example of custom elements and actions, see the `App.kt` file in the `SampleApp` module.
