@@ -30,8 +30,6 @@
       }
     }
   ],
-
-
   "processors": {
     "target": {
       "type": "path",
@@ -41,9 +39,5 @@
       "type": "path",
       "element": "name"
     }
-  },
-
-
-
+  }
 }
-

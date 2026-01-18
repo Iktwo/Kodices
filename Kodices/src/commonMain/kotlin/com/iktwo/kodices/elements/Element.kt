@@ -194,10 +194,9 @@ sealed interface Element {
 
             val id = jsonObject[Constants.ID]?.asStringOrNull() ?: "id"
 
-            val nestedElements =
-                jsonObject[Constants.NESTED_ELEMENTS]?.asJSONArrayOrNull()?.mapNotNull {
-                    if (it is JsonObject) resolveProcessedElement(it, json) else null
-                } ?: emptyList()
+            val nestedElements = jsonObject[Constants.NESTED_ELEMENTS]?.asJSONArrayOrNull()?.mapNotNull {
+                if (it is JsonObject) resolveProcessedElement(it, json) else null
+            } ?: emptyList()
 
             val commonElementProperties = jsonObject.toCommonElementProperties(json)
 
