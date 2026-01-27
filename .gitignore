@@ -87,4 +87,4 @@ Thumbs.db
 venv
 node_modules
 .sass-cache
-repomix-output.xml
+repomix-output*
