@@ -16,6 +16,11 @@ open class ProcessedElement(
     val jsonValues: ProcessedValues = mutableMapOf(),
     open val style: String? = null,
     open val validation: Validation? = null,
+    /**
+     * Used to define if this element will be enabled only if the list in here passes their validations.
+     *
+     * This is useful for buttons in forms.
+     */
     open val requiresValidElements: List<String> = emptyList(),
     override val enabled: Boolean = true,
     override val visible: Boolean = true,

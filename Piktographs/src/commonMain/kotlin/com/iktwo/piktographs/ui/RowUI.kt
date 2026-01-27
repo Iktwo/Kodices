@@ -12,12 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
 import com.iktwo.kodices.elements.ProcessedElement
-import com.iktwo.piktographs.ElementUI
-import com.iktwo.piktographs.LocalBooleanInputData
-import com.iktwo.piktographs.LocalElementOverrides
-import com.iktwo.piktographs.LocalInputHandler
-import com.iktwo.piktographs.LocalTextInputData
-import com.iktwo.piktographs.LocalValidityMap
 
 const val ROW_ELEMENT_TYPE = "row"
 

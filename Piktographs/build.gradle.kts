@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
@@ -42,9 +43,23 @@ kotlin {
         }
     }
 
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+    }
+
+    js()
+
     sourceSets {
+        androidMain.dependencies {
+            implementation(libs.androidx.appcompat)
+            implementation(libs.androidx.core)
+            implementation(libs.kotlinx.coroutines.android)
+            implementation(libs.ktor.client.cio)
+        }
+
         commonMain.dependencies {
-            api(project(":Kodices"))
+            api(projects.kodices)
 
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor3)
@@ -57,18 +72,19 @@ kotlin {
             implementation(libs.lifecycle.viewmodel)
         }
 
-        val commonTest by getting {
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+            implementation(libs.kotlinx.coroutines.core)
+        }
+
+        val desktopMain by getting {
             dependencies {
-                implementation(kotlin("test"))
-                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.ktor.client.cio)
             }
         }
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.androidx.appcompat)
-                implementation(libs.androidx.core)
-                implementation(libs.kotlinx.coroutines.android)
-            }
+
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
     }
 

@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 //region plugins
@@ -47,18 +48,21 @@ kotlin {
     linuxX64()
     mingwX64()
 
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+    }
+
+    js()
+
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api(libs.kotlinx.serialization.json)
-                implementation(libs.kotlinx.coroutines.core)
-            }
+        commonMain.dependencies {
+            api(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.coroutines.core)
         }
 
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
         }
     }
 }

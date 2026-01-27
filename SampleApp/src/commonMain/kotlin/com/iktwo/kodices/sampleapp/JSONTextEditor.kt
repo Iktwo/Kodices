@@ -69,7 +69,7 @@ fun JSONTextEditor(
                 validJSON = false
             }
         },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Text("Format JSON")
     }

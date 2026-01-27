@@ -1,5 +1,4 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     alias(libs.plugins.androidLibrary)
@@ -21,15 +20,12 @@ kotlin {
 
     jvm("desktop")
 
-    val xcf = XCFramework()
-
     listOf(
         iosArm64(),
         iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
             baseName = "KodicesSampleApp"
-            xcf.add(this)
         }
     }
 
@@ -67,7 +63,7 @@ kotlin {
             implementation(libs.androidx.appcompat)
             implementation(libs.androidx.core)
             implementation(libs.kotlinx.coroutines.android)
-            implementation(libs.ktor.client.okhttp)
+            implementation(libs.ktor.client.cio)
         }
 
         desktopMain.dependencies {
