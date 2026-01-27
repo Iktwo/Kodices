@@ -46,6 +46,8 @@ kotlin {
         commonMain.dependencies {
             api(project(":Kodices"))
 
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor3)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
             implementation(libs.compose.runtime)

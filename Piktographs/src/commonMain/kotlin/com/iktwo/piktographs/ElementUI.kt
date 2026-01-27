@@ -16,6 +16,8 @@ import com.iktwo.kodices.elements.InputElement
 import com.iktwo.kodices.elements.InputHandler
 import com.iktwo.kodices.elements.ProcessedElement
 import com.iktwo.piktographs.ui.CheckboxUI
+import com.iktwo.piktographs.ui.IMAGE_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.ImageUI
 import com.iktwo.piktographs.ui.ROW_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.RowUI
 import com.iktwo.piktographs.ui.SEPARATOR_ELEMENT_TYPE
@@ -115,6 +117,10 @@ fun ElementUI(
 
                 SEPARATOR_ELEMENT_TYPE -> {
                     SeperatorUI(updatedElement)
+                }
+
+                IMAGE_ELEMENT_TYPE -> {
+                    ImageUI(updatedElement)
                 }
 
                 else -> {
