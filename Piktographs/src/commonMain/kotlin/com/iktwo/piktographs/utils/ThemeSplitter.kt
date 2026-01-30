@@ -116,7 +116,7 @@ fun ThemeSplitter(
                 themeBR {
                     ClippedBox(
                         Rect(dividerX, dividerY, parentSize.width, parentSize.height),
-                        content
+                        content,
                     )
                 }
             }

@@ -10,9 +10,6 @@ plugins {
     alias(libs.plugins.vanniktech.publish)
 }
 
-group = "com.iktwo"
-version = "1.0-SNAPSHOT"
-
 repositories {
     gradlePluginPortal()
     google()
@@ -23,14 +20,14 @@ repositories {
 kotlin {
     jvmToolchain(21)
 
-    android {
+    androidLibrary {
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
         namespace = "com.iktwo.piktographs"
     }
 
-    jvm("desktop")
+    jvm()
 
     val xcf = XCFramework()
 
@@ -78,7 +75,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
         }
 
-        val desktopMain by getting {
+        jvmMain {
             dependencies {
                 implementation(libs.ktor.client.cio)
             }
@@ -97,13 +94,13 @@ mavenPublishing {
 
     signAllPublications()
 
-    coordinates("$group.kodices", "piktographs", version.toString())
+    coordinates(group.toString(), "piktographs", version.toString())
 
     pom {
-        name = "Kodices library"
+        name = "Piktographs library"
         description = "Library to parse JSON models that describe user interfaces."
         inceptionYear = "2023"
-        url = "https://github.com/iktwo/kodices"
+        url = "https://github.com/Iktwo/Kodices/tree/main/Piktographs"
         licenses {
             license {
                 name = "The Apache License, Version 2.0"
