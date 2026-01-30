@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.vanniktech.publish)
 }
 
 group = "com.iktwo"
@@ -89,4 +90,38 @@ kotlin {
     }
 
     task("testClasses")
+}
+
+mavenPublishing {
+    publishToMavenCentral()
+
+    signAllPublications()
+
+    coordinates("$group.kodices", "piktographs", version.toString())
+
+    pom {
+        name = "Kodices library"
+        description = "Library to parse JSON models that describe user interfaces."
+        inceptionYear = "2023"
+        url = "https://github.com/iktwo/kodices"
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+        developers {
+            developer {
+                id = "iktwo"
+                name = "Isaac SH"
+                url = "https://github.com/iktwo/"
+            }
+        }
+        scm {
+            url = "https://github.com/iktwo/kodices"
+            connection = "scm:git:git://github.com/iktwo/kodices.git"
+            developerConnection = "scm:git:ssh://git@github.com/iktwo/kodices.git"
+        }
+    }
 }
