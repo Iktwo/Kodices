@@ -206,9 +206,9 @@ This example shows how to create a checkbox with associated text.
     {
       "type": "checkbox",
       "constants": {
-        "text": "Agree to terms and conditions"
-      },
-      "checked": false
+        "text": "Agree to terms and conditions",
+        "checked": false
+      }
     }
   ]
 }
