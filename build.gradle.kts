@@ -22,7 +22,7 @@ plugins {
 
 allprojects {
     group = "com.iktwo"
-    version = "0.2.1"
+    version = "0.3.0"
 
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
 
