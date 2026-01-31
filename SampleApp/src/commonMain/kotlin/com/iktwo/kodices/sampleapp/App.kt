@@ -84,7 +84,8 @@ fun App() {
                 TabInput(
                     initialContentString = activeContent,
                     initialDataString = activeData,
-                    onJSONTextChanged = { activeContent = it },
+                    onJSONUIChanged = { activeContent = it },
+                    onJSONDataChanged = { activeData = it },
                 )
             }
 

@@ -35,6 +35,10 @@ class InputElement(
     override val isValid: Boolean
         get() = validation == null || validation.validate(text)
 
+    fun isValid(text: String): Boolean {
+        return validation == null || validation.validate(text)
+    }
+
     override fun copy(
         id: String,
         index: Int,

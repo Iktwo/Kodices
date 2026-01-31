@@ -10,6 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.iktwo.kodices.elements.InputElement
 import com.iktwo.kodices.elements.InputHandler
+import com.iktwo.piktographs.LocalElementEnabled
+import com.iktwo.piktographs.LocalElementTextInput
+import com.iktwo.piktographs.LocalElementValidity
 
 @Composable
 fun TextInputUI(
@@ -22,17 +25,17 @@ fun TextInputUI(
     ) {
         TextField(
             singleLine = true,
-            enabled = element.enabled,
-            value = element.text ?: "",
+            enabled = LocalElementEnabled.current,
+            value = LocalElementTextInput.current,
             onValueChange = { newText ->
-                inputHandler.onTextInput(element.copy(text = newText), newText)
+                inputHandler.onTextInput(element, newText)
             },
             placeholder = {
                 element.textSecondary?.let { placeholder ->
                     Text(placeholder)
                 }
             },
-            isError = element.text != null && !element.isValid,
+            isError = element.text != null && !LocalElementValidity.current,
         )
     }
 }

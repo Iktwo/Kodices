@@ -1,8 +1,13 @@
 package com.iktwo.piktographs
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -11,13 +16,18 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.iktwo.kodices.content.Content
 import com.iktwo.kodices.elements.InputElement
 import com.iktwo.kodices.elements.InputHandler
 import com.iktwo.kodices.elements.ProcessedElement
+import com.iktwo.piktographs.components.CollapsingTopBar
+import com.iktwo.piktographs.components.TopBarStyle
+import com.iktwo.piktographs.ui.Constants.TOP_BAR_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.DefaultTheme
 import com.iktwo.piktographs.ui.Theme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PageUI(
     content: Content,
@@ -37,6 +47,8 @@ fun PageUI(
     onInputIdsPopulated: () -> Unit = { },
     onInputUpdated: () -> Unit = { },
 ) {
+    val topAppBarState = rememberTopAppBarState()
+
     CompositionLocalProvider(DefaultTheme provides theme) {
         content.elements.forEach { element ->
             if (element is InputElement) {
@@ -72,30 +84,55 @@ fun PageUI(
             }
         }
 
-        when (pageStyle) {
-            HorizontalListPageStyle -> {
-                LazyRow(modifier = modifier) {
-                    renderElements(
-                        content.elements,
-                        elementOverrides,
-                        inputHandler,
-                        textInputData,
-                        booleanInputData,
-                        validityMap,
-                    )
-                }
-            }
+        val topBarElement = content.elements.find { it.type == TOP_BAR_ELEMENT_TYPE }
+        val barStyle = TopBarStyle.fromText(topBarElement?.style)
+        val scrollBehavior = barStyle.scrollBehavior(topAppBarState)
 
-            VerticalListPageStyle -> {
-                LazyColumn(modifier = modifier) {
-                    renderElements(
-                        content.elements,
-                        elementOverrides,
-                        inputHandler,
-                        textInputData,
-                        booleanInputData,
-                        validityMap,
-                    )
+        CompositionLocalProvider(
+            LocalElementOverrides provides elementOverrides,
+            LocalInputHandler provides inputHandler,
+            LocalTextInputData provides textInputData,
+            LocalBooleanInputData provides booleanInputData,
+            LocalValidityMap provides validityMap,
+        ) {
+            Scaffold(
+                modifier = modifier,
+                topBar = {
+                    topBarElement?.let {
+                        CollapsingTopBar(
+                            title = topBarElement.text,
+                            scrollBehavior = scrollBehavior,
+                            style = barStyle,
+                        )
+                    }
+                },
+            ) { innerPadding ->
+                when (pageStyle) {
+                    HorizontalListPageStyle -> {
+                        LazyRow(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(innerPadding)
+                                .nestedScroll(scrollBehavior.nestedScrollConnection),
+                        ) {
+                            renderElements(
+                                content.elements,
+                            )
+                        }
+                    }
+
+                    VerticalListPageStyle -> {
+                        LazyColumn(
+                            modifier = modifier
+                                .fillMaxSize()
+                                .padding(innerPadding)
+                                .nestedScroll(scrollBehavior.nestedScrollConnection),
+                        ) {
+                            renderElements(
+                                content.elements,
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -104,15 +141,10 @@ fun PageUI(
 
 fun LazyListScope.renderElements(
     elements: List<ProcessedElement>,
-    elementOverrides: @Composable (ProcessedElement) -> Boolean,
-    inputHandler: InputHandler,
-    textInputData: SnapshotStateMap<String, String?>,
-    booleanInputData: SnapshotStateMap<String, Boolean>,
-    validityMap: SnapshotStateMap<String, Boolean>,
 ) {
     elements.forEach { element ->
         item(key = element.id) {
-            ElementUI(element, elementOverrides, inputHandler, textInputData, booleanInputData, validityMap)
+            ElementUI(element)
         }
     }
 }

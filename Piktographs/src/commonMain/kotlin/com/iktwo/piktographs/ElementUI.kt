@@ -3,19 +3,22 @@ package com.iktwo.piktographs
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateMap
-import androidx.compose.ui.Modifier
 import com.iktwo.kodices.elements.INPUT_ELEMENT_CHECKBOX
 import com.iktwo.kodices.elements.INPUT_ELEMENT_TEXT_AREA
 import com.iktwo.kodices.elements.INPUT_ELEMENT_TEXT_INPUT
 import com.iktwo.kodices.elements.InputElement
 import com.iktwo.kodices.elements.InputHandler
 import com.iktwo.kodices.elements.ProcessedElement
+import com.iktwo.kodices.utils.asBooleanOrNull
 import com.iktwo.piktographs.ui.CheckboxUI
+import com.iktwo.piktographs.ui.Constants
+import com.iktwo.piktographs.ui.Constants.TOP_BAR_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.IMAGE_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.ImageUI
 import com.iktwo.piktographs.ui.ROW_ELEMENT_TYPE
@@ -25,7 +28,6 @@ import com.iktwo.piktographs.ui.SeperatorUI
 import com.iktwo.piktographs.ui.TextAreaUI
 import com.iktwo.piktographs.ui.TextInputUI
 import com.iktwo.piktographs.ui.UnknownElementUI
-import com.iktwo.piktographs.utils.debugModifier
 
 val LocalElementOverrides = compositionLocalOf<@Composable (ProcessedElement) -> Boolean> { error("No element overrides provided") }
 
@@ -37,98 +39,101 @@ val LocalBooleanInputData = compositionLocalOf<SnapshotStateMap<String, Boolean>
 
 val LocalValidityMap = compositionLocalOf<SnapshotStateMap<String, Boolean>> { error("No validity map provided") }
 
+val LocalElementEnabled = compositionLocalOf { true }
+
+val LocalElementTextInput = compositionLocalOf { "" }
+
+val LocalElementBooleanInput = compositionLocalOf { false }
+
+val LocalElementValidity = compositionLocalOf { true }
+
 @Composable
 fun ElementUI(
     element: ProcessedElement,
-    elementOverrides: @Composable (ProcessedElement) -> Boolean,
-    inputHandler: InputHandler,
-    textInputData: SnapshotStateMap<String, String?>,
-    booleanInputData: SnapshotStateMap<String, Boolean>,
-    validityMap: SnapshotStateMap<String, Boolean>,
 ) {
-    CompositionLocalProvider(
-        LocalElementOverrides provides elementOverrides,
-        LocalInputHandler provides inputHandler,
-        LocalTextInputData provides textInputData,
-        LocalBooleanInputData provides booleanInputData,
-        LocalValidityMap provides validityMap,
-    ) {
-        Box(
-            modifier = Modifier.then(debugModifier()),
-        ) {
-            var updatedElement = element
+    val inputHandler = LocalInputHandler.current
+    val textInputData = LocalTextInputData.current
+    val validityMap = LocalValidityMap.current
+    val booleanInputData = LocalBooleanInputData.current
+    val elementOverrides = LocalElementOverrides.current
 
-            if (element.requiresValidElements.isNotEmpty()) {
-                val enabled by remember {
-                    derivedStateOf {
-                        element.requiresValidElements
-                            .map { requiredElementId ->
-                                validityMap[requiredElementId] ?: false
-                            }.firstOrNull { !it } == null
-                    }
-                }
-                updatedElement = updatedElement.copy(enabled = enabled)
+    val isEnabled by remember(element.requiresValidElements, validityMap) {
+        derivedStateOf {
+            if (element.requiresValidElements.isEmpty()) {
+                true
+            } else {
+                element.requiresValidElements.all { validityMap[it] == true }
             }
+        }
+    }
 
-            when (updatedElement.type) {
-                ROW_ELEMENT_TYPE -> {
-                    RowUI(updatedElement)
-                }
+    val componentContent = @Composable {
+        CompositionLocalProvider(LocalElementEnabled provides isEnabled) {
+            Box {
+                when (element.type) {
+                    ROW_ELEMENT_TYPE -> {
+                        RowUI(element)
+                    }
 
-                INPUT_ELEMENT_TEXT_INPUT if updatedElement is InputElement -> {
-                    val input by remember {
-                        derivedStateOf {
-                            textInputData[updatedElement.id] ?: element.text
+                    INPUT_ELEMENT_TEXT_INPUT if element is InputElement -> {
+                        SideEffect {
+                            val isElementValid = element.isValid(textInputData[element.id] ?: element.text ?: "")
+                            if (validityMap[element.id] != isElementValid) {
+                                validityMap[element.id] = isElementValid
+                            }
                         }
+
+                        TextInputUI(
+                            element = element,
+                            inputHandler = inputHandler,
+                        )
                     }
 
-                    val validity by remember {
-                        derivedStateOf {
-                            validityMap[updatedElement.id]
+                    INPUT_ELEMENT_TEXT_AREA if element is InputElement -> {
+                        TextAreaUI(element, inputHandler)
+                    }
+
+                    INPUT_ELEMENT_CHECKBOX if element is InputElement -> {
+                        CheckboxUI(element, inputHandler)
+                    }
+
+                    SEPARATOR_ELEMENT_TYPE -> {
+                        SeperatorUI(element)
+                    }
+
+                    IMAGE_ELEMENT_TYPE -> {
+                        ImageUI(element)
+                    }
+
+                    TOP_BAR_ELEMENT_TYPE -> {
+                        // Skip this element, as it should be rendered in the Scaffold
+                    }
+
+                    else -> {
+                        if (!elementOverrides(element)) {
+                            UnknownElementUI(element)
                         }
-                    }
-
-                    if (input != null) {
-                        updatedElement = updatedElement.copy(text = input)
-                    }
-
-                    println("id: ${element.id} input: $input updatedElement: ${updatedElement.text} textInputData: ${textInputData.toMap()}")
-
-                    if (validity != updatedElement.isValid) {
-                        validityMap[element.id] = updatedElement.isValid
-                    }
-
-                    TextInputUI(updatedElement, inputHandler)
-                }
-
-                INPUT_ELEMENT_TEXT_AREA if updatedElement is InputElement -> {
-                    val input by remember {
-                        derivedStateOf {
-                            textInputData[updatedElement.id] ?: updatedElement.text
-                        }
-                    }
-                    TextAreaUI(updatedElement, inputHandler, input)
-                }
-
-                INPUT_ELEMENT_CHECKBOX if updatedElement is InputElement -> {
-                    val input by remember { derivedStateOf { booleanInputData[updatedElement.id] } }
-                    CheckboxUI(updatedElement, inputHandler, input)
-                }
-
-                SEPARATOR_ELEMENT_TYPE -> {
-                    SeperatorUI(updatedElement)
-                }
-
-                IMAGE_ELEMENT_TYPE -> {
-                    ImageUI(updatedElement)
-                }
-
-                else -> {
-                    if (!elementOverrides(updatedElement)) {
-                        UnknownElementUI(updatedElement)
                     }
                 }
             }
         }
+    }
+
+    if (element is InputElement) {
+        val currentTextInput = textInputData[element.id] ?: element.text ?: ""
+
+        val currentBooleanInput = booleanInputData[element.id] ?: element.jsonValues[Constants.ACTIVE_KEY]?.asBooleanOrNull() ?: false
+
+        val isValid = validityMap[element.id] ?: element.isValid
+
+        CompositionLocalProvider(
+            LocalElementTextInput provides currentTextInput,
+            LocalElementBooleanInput provides currentBooleanInput,
+            LocalElementValidity provides isValid,
+        ) {
+            componentContent()
+        }
+    } else {
+        componentContent()
     }
 }

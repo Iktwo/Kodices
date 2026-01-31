@@ -40,8 +40,8 @@ import kotlin.math.roundToInt
  * Usage:
  *
  * ThemeSplitter(
- *  { content -> BitBoardTheme(darkTheme = true, content = content) },
- *  { content -> BitBoardTheme(darkTheme = false, content = content) },
+ *  { content -> AppTheme(darkTheme = true, content = content) },
+ *  { content -> AppTheme(darkTheme = false, content = content) },
  * ) {
  *  // Composable to render
  * }

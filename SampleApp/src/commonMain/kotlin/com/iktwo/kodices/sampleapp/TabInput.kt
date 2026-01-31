@@ -3,6 +3,7 @@ package com.iktwo.kodices.sampleapp
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,12 +17,13 @@ import com.iktwo.kodices.sampleapp.ui.elementOverride
 fun TabInput(
     initialContentString: String,
     initialDataString: String,
-    onJSONTextChanged: (String) -> Unit,
+    onJSONDataChanged: (String) -> Unit,
+    onJSONUIChanged: (String) -> Unit,
 ) {
     var jsonContent by remember { mutableStateOf(initialContentString) }
     var jsonData by remember { mutableStateOf(initialContentString) }
 
-    Row {
+    Row(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.weight(1f).fillMaxHeight()) {
             Column(modifier = Modifier.weight(1f).fillMaxHeight()) {
                 JSONTextEditor(
@@ -29,7 +31,7 @@ fun TabInput(
                     modifier = Modifier.weight(1f).fillMaxWidth(),
                 ) {
                     jsonContent = it
-                    onJSONTextChanged(it)
+                    onJSONUIChanged(it)
                 }
             }
 
@@ -40,7 +42,7 @@ fun TabInput(
                     modifier = Modifier.weight(1f).fillMaxWidth(),
                 ) {
                     jsonData = it
-                    onJSONTextChanged(it)
+                    onJSONDataChanged(it)
                 }
             }
         }
@@ -49,7 +51,7 @@ fun TabInput(
             contentString = jsonContent,
             dataString = jsonData,
             elementOverrides = { elementOverride(it) },
-            modifier = Modifier.weight(1f).fillMaxWidth(),
+            modifier = Modifier.weight(1f).fillMaxHeight(),
         )
     }
 }

@@ -12,15 +12,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.iktwo.kodices.elements.InputElement
 import com.iktwo.kodices.elements.InputHandler
-import com.iktwo.kodices.utils.asBooleanOrNull
-
-private const val CHECKED_KEY = "checked"
+import com.iktwo.piktographs.LocalElementBooleanInput
 
 @Composable
 fun CheckboxUI(
     element: InputElement,
     inputHandler: InputHandler,
-    inputData: Boolean?,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth().padding(DefaultTheme.current.dimensions.padding),
@@ -30,10 +27,8 @@ fun CheckboxUI(
             horizontalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.horizontalSpacing),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            val checked = element.jsonValues[CHECKED_KEY]?.asBooleanOrNull()
-
             Checkbox(
-                checked = inputData ?: checked ?: false,
+                checked = LocalElementBooleanInput.current,
                 enabled = element.enabled,
                 onCheckedChange = { newCheckedValue ->
                     inputHandler.onBooleanInput(element, newCheckedValue)

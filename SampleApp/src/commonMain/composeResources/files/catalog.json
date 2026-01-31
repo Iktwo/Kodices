@@ -42,7 +42,7 @@
     {
       "type": "checkbox",
       "constants": {
-        "checked": true
+        "active": true
       }
     },
     {

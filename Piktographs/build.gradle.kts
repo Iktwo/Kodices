@@ -10,13 +10,6 @@ plugins {
     alias(libs.plugins.vanniktech.publish)
 }
 
-repositories {
-    gradlePluginPortal()
-    google()
-    mavenCentral()
-    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-}
-
 kotlin {
     jvmToolchain(21)
 
@@ -25,6 +18,10 @@ kotlin {
         minSdk = libs.versions.android.minSdk.get().toInt()
 
         namespace = "com.iktwo.piktographs"
+
+        androidResources {
+            enable = true
+        }
     }
 
     jvm()
@@ -61,6 +58,7 @@ kotlin {
 
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor3)
+            implementation(libs.compose.components.resources)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
             implementation(libs.compose.runtime)
@@ -68,6 +66,7 @@ kotlin {
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.lifecycle.viewmodel)
+            implementation(libs.material.icons.core)
         }
 
         commonTest.dependencies {
@@ -121,4 +120,10 @@ mavenPublishing {
             developerConnection = "scm:git:ssh://git@github.com/iktwo/kodices.git"
         }
     }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.iktwo.piktographs"
+    generateResClass = auto
 }

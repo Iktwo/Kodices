@@ -10,19 +10,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.iktwo.kodices.elements.InputElement
 import com.iktwo.kodices.elements.InputHandler
+import com.iktwo.piktographs.LocalElementEnabled
+import com.iktwo.piktographs.LocalElementTextInput
 
 @Composable
 fun TextAreaUI(
     element: InputElement,
     inputHandler: InputHandler,
-    inputData: String?,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth().padding(DefaultTheme.current.dimensions.padding),
         verticalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.verticalSpacing),
     ) {
         TextField(
-            value = inputData ?: element.text ?: "",
+            enabled = LocalElementEnabled.current,
+            value = LocalElementTextInput.current,
             onValueChange = { newText ->
                 inputHandler.onTextInput(element, newText)
             },

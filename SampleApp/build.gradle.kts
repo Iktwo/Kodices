@@ -16,6 +16,10 @@ kotlin {
         minSdk = libs.versions.android.minSdk.get().toInt()
 
         namespace = "com.iktwo.sampleapp"
+
+        androidResources {
+            enable = true
+        }
     }
 
     jvm("desktop")
