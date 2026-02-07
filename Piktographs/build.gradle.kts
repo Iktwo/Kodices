@@ -49,6 +49,8 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.androidx.appcompat)
             implementation(libs.androidx.core)
+            implementation(libs.compose.ui.tooling)
+            implementation(libs.compose.ui.tooling.preview)
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.ktor.client.cio)
         }
