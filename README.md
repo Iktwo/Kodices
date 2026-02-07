@@ -4,6 +4,8 @@
 
 [![License](https://img.shields.io/github/license/Iktwo/Kodices)](LICENSE)
 
+[![Publish](https://github.com/Iktwo/Kodices/actions/workflows/publish.yml/badge.svg)](https://github.com/Iktwo/Kodices/actions/workflows/publish.yml)
+
 Kodices is a Server-Driven UI framework for Kotlin Multiplatform. It allows you to define your user interfaces using JSON, which can be fetched from a server at runtime. This enables you to update your app's UI without shipping a new version to the app store. A reference implementation and an example that use Compose multiplatform are provided, however you can integrate Kodices with Native UI or other UI frameworks.
 
 ## Repository content
