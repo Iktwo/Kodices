@@ -108,12 +108,13 @@ fun Modifier.wipOverlay(
         }
 }
 
-fun Modifier.wipOverlayWithAnimationSupport(
+fun Modifier.wipOverlayAnimatedVisibility(
     text: String = "WIP",
     visible: Boolean = true,
     stripColor: Color = Color(0xFFFFD700),
     textColor: Color = Color.Black,
     overlayColor: Color = Color.Yellow.copy(alpha = 0.1f),
+    animationDuration: Int = 2000,
     blockInput: Boolean = true,
 ): Modifier = composed {
     val transition = updateTransition(targetState = visible, label = "WIP Overlay")
@@ -124,7 +125,7 @@ fun Modifier.wipOverlayWithAnimationSupport(
 
     val removalProgress by transition.animateFloat(
         transitionSpec = {
-            tween(durationMillis = 3000, easing = FastOutSlowInEasing)
+            tween(durationMillis = animationDuration, easing = FastOutSlowInEasing)
         },
         label = "Slide"
     ) { isVisible ->
@@ -133,7 +134,7 @@ fun Modifier.wipOverlayWithAnimationSupport(
 
     val alpha by transition.animateFloat(
         transitionSpec = {
-            tween(durationMillis = 3000, easing = LinearEasing)
+            tween(durationMillis = animationDuration, easing = LinearEasing)
         },
         label = "Alpha"
     ) { isVisible ->
@@ -233,7 +234,7 @@ fun PreviewWIPAnimationModifier() {
         ) {
             Text(
                 text = "Text with modifier",
-                modifier = Modifier.wipOverlayWithAnimationSupport(
+                modifier = Modifier.wipOverlayAnimatedVisibility(
                     visible = visible,
                 )
             )
