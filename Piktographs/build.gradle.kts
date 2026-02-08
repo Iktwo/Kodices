@@ -10,6 +10,8 @@ plugins {
     alias(libs.plugins.vanniktech.publish)
 }
 
+version = "0.4.0"
+
 kotlin {
     jvmToolchain(21)
 

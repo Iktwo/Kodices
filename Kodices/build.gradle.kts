@@ -1,7 +1,6 @@
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
-//region plugins
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.serialization)
@@ -9,15 +8,13 @@ plugins {
     alias(libs.plugins.skie)
     alias(libs.plugins.vanniktech.publish)
 }
-//endregion
 
-//region repositories
 repositories {
     mavenCentral()
 }
-//endregion
 
-//region multiplatform configuration
+version = "0.3.1"
+
 kotlin {
     //region JVM
     jvm {
@@ -66,9 +63,7 @@ kotlin {
         }
     }
 }
-//endregion
 
-//region kover
 kover {
     useJacoco("0.8.13")
 
@@ -102,7 +97,6 @@ kover {
         }
     }
 }
-//endregion
 
 mavenPublishing {
     publishToMavenCentral()
