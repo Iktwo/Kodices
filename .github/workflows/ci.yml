@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    # macOS is required: the Kodices and Piktographs iOS/macOS targets cannot be
+    # compiled on Linux, and `build` covers every declared target.
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: zulu
+          java-version: 21
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Cache Kotlin/Native dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.konan
+          key: konan-${{ runner.os }}-${{ hashFiles('gradle/libs.versions.toml') }}
+          restore-keys: konan-${{ runner.os }}-
+
+      - name: ktlint
+        run: ./gradlew ktlintCheck --no-configuration-cache
+
+      # --max-workers bounds how many Kotlin/Native link tasks run at once; `build` links every
+      # iOS/macOS framework and unbounded parallelism exhausts the runner's heap.
+      - name: Build
+        run: ./gradlew build --max-workers=2
+
+      # `check` runs the test suites, the Kover 60% coverage gate on :Kodices,
+      # and `checkLegacyAbi` on both published modules. An unreviewed public API
+      # change fails here; refresh the dump with `./gradlew updateLegacyAbi`.
+      - name: Check
+        run: ./gradlew check
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: |
+            **/build/reports/
+            **/build/test-results/
+          retention-days: 7
+          if-no-files-found: ignore

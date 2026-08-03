@@ -88,3 +88,7 @@ venv
 node_modules
 .sass-cache
 repomix-output*
+
+# Xcode user-specific state
+**/xcuserdata/
+*.xcuserstate
