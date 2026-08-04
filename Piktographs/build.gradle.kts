@@ -100,6 +100,19 @@ kotlin {
 }
 
 
+composeCompiler {
+    // Marks the Kodices model types stable. They are immutable, but live in a module with no
+    // Compose dependency, so they cannot be annotated at the source.
+    stabilityConfigurationFiles.add(layout.projectDirectory.file("compose-stability.conf"))
+
+    // Stability/recomposition report, off by default because it slows compilation.
+    // Run with: ./gradlew :Piktographs:compileKotlinJvm -Pcompose.reports --rerun-tasks
+    // Output:   Piktographs/build/compose-reports/
+    if (project.hasProperty("compose.reports")) {
+        reportsDestination = layout.buildDirectory.dir("compose-reports")
+        metricsDestination = layout.buildDirectory.dir("compose-reports")
+    }
+}
 
 mavenPublishing {
     publishToMavenCentral()

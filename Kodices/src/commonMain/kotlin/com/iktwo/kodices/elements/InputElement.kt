@@ -2,12 +2,13 @@ package com.iktwo.kodices.elements
 
 import com.iktwo.kodices.actions.Action
 import com.iktwo.kodices.inputvalidation.Validation
+import kotlinx.serialization.json.JsonElement
 
 @Suppress("ktlint:standard:indent")
-class InputElement(
+public class InputElement(
     id: String,
     nestedElements: List<ProcessedElement> = emptyList(),
-    jsonValues: ProcessedValues,
+    jsonValues: Map<String, JsonElement?>,
     text: String? = null,
     textSecondary: String? = null,
     actions: List<Action> = emptyList(),
@@ -35,7 +36,7 @@ class InputElement(
     override val isValid: Boolean
         get() = validation == null || validation.validate(text)
 
-    fun isValid(text: String): Boolean {
+    public fun isValid(text: String): Boolean {
         return validation == null || validation.validate(text)
     }
 
@@ -46,7 +47,7 @@ class InputElement(
         text: String?,
         textSecondary: String?,
         actions: List<Action>,
-        jsonValues: ProcessedValues,
+        jsonValues: Map<String, JsonElement?>,
         style: String?,
         validation: Validation?,
         requiresValidElements: List<String>,
@@ -69,14 +70,14 @@ class InputElement(
         )
     }
 
-    companion object {
-        val builder: ElementBuilder = { type, id, processedValues, nestedElements, actions, json ->
+    public companion object {
+        public val builder: ElementBuilder = { type, id, processedValues, nestedElements, actions, json ->
             val commonElementProperties = processedValues.toCommonElementProperties(json)
 
             InputElement(
                 id = id,
                 nestedElements = nestedElements,
-                jsonValues = processedValues.toMutableMap(),
+                jsonValues = processedValues,
                 actions = actions,
                 type = type,
                 text = commonElementProperties.text,

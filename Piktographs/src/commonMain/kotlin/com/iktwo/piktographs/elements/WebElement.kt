@@ -4,19 +4,19 @@ import com.iktwo.kodices.actions.Action
 import com.iktwo.kodices.elements.ElementBuilder
 import com.iktwo.kodices.elements.ElementDescriptor
 import com.iktwo.kodices.elements.ProcessedElement
-import com.iktwo.kodices.elements.ProcessedValues
 import com.iktwo.kodices.utils.asStringOrNull
+import kotlinx.serialization.json.JsonElement
 
-class WebElement(
+public class WebElement(
     id: String,
-    jsonValues: ProcessedValues,
-    val url: String,
-    val jsOnLoad: String?,
+    jsonValues: Map<String, JsonElement?>,
+    public val url: String,
+    public val jsOnLoad: String?,
     nestedElements: List<ProcessedElement> = emptyList(),
     actions: List<Action> = emptyList(),
 ) : ProcessedElement(type = type, nestedElements = nestedElements, id = id, actions = actions) {
-    companion object : ElementDescriptor {
-        override val type = "web"
+    public companion object : ElementDescriptor {
+        override val type: String = "web"
 
         private const val URL = "url"
         private const val JS_ON_LOAD_KEY = "jsOnLoad"
@@ -29,7 +29,7 @@ class WebElement(
                 throw Exception("Unable to create a WebElement without a url")
             }
 
-            WebElement(id, processedValues.toMutableMap(), url, jsOnLoad, nestedElements, actions)
+            WebElement(id, processedValues, url, jsOnLoad, nestedElements, actions)
         }
     }
 }

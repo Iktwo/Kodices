@@ -247,7 +247,7 @@ public sealed interface Element {
                     builder(
                         type,
                         id,
-                        jsonObject.asMap().toMutableMap(),
+                        jsonObject.asMap(),
                         nestedElements,
                         actions,
                         json,
@@ -260,7 +260,7 @@ public sealed interface Element {
                 text = commonElementProperties.text,
                 textSecondary = commonElementProperties.textSecondary,
                 actions = actions,
-                jsonValues = jsonObject.asMap().toMutableMap(),
+                jsonValues = jsonObject.asMap(),
                 style = commonElementProperties.style,
                 validation = commonElementProperties.validation,
                 enabled = commonElementProperties.enabled,

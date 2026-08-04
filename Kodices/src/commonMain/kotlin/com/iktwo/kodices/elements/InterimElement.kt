@@ -173,7 +173,7 @@ public data class InterimElement(
                 text = processedText,
                 textSecondary = processedTextSecondary,
                 actions = processedActions,
-                jsonValues = processedValues,
+                jsonValues = processedValues.toMap(),
                 style = style,
                 validation = commonElementProperties.validation,
                 enabled = commonElementProperties.enabled,

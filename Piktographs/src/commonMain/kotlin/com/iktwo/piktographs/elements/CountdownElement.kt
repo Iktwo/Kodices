@@ -5,18 +5,18 @@ import com.iktwo.kodices.actions.Action
 import com.iktwo.kodices.elements.ElementBuilder
 import com.iktwo.kodices.elements.ElementDescriptor
 import com.iktwo.kodices.elements.ProcessedElement
-import com.iktwo.kodices.elements.ProcessedValues
 import com.iktwo.kodices.utils.Constants
 import com.iktwo.kodices.utils.asStringOrNull
 import kotlinx.datetime.LocalDateTime
+import kotlinx.serialization.json.JsonElement
 
-enum class CountdownStyle {
+public enum class CountdownStyle {
     SHORT,
     DAYS_HOURS_MINUTES_SECONDS,
     ;
 
-    companion object {
-        fun fromString(value: String): CountdownStyle {
+    public companion object {
+        public fun fromString(value: String): CountdownStyle {
             return entries.firstOrNull {
                 it.name.equals(value, ignoreCase = true)
             } ?: DAYS_HOURS_MINUTES_SECONDS
@@ -24,14 +24,14 @@ enum class CountdownStyle {
     }
 }
 
-class CountdownElement(
+public class CountdownElement(
     id: String,
     nestedElements: List<ProcessedElement> = emptyList(),
-    jsonValues: ProcessedValues,
+    jsonValues: Map<String, JsonElement?>,
     title: String? = null,
     actions: List<Action> = emptyList(),
-    val target: LocalDateTime,
-    val elementStyle: CountdownStyle,
+    public val target: LocalDateTime,
+    public val elementStyle: CountdownStyle,
 ) : ProcessedElement(
         type = type,
         nestedElements = nestedElements,
@@ -40,12 +40,12 @@ class CountdownElement(
         actions = actions,
         jsonValues = jsonValues,
     ) {
-    companion object : ElementDescriptor {
-        override val type = "countdown"
+    public companion object : ElementDescriptor {
+        override val type: String = "countdown"
 
         private const val TARGET = "target"
 
-        const val STYLE = "style"
+        public const val STYLE: String = "style"
 
         override val builder: ElementBuilder = { _, id, processedValues, nestedElements, actions, _ ->
             val targetValue = processedValues[TARGET]?.asStringOrNull() ?: ""
@@ -63,7 +63,7 @@ class CountdownElement(
             CountdownElement(
                 id = id,
                 nestedElements = nestedElements,
-                jsonValues = processedValues.toMutableMap(),
+                jsonValues = processedValues,
                 actions = actions,
                 target = target,
                 title = title,

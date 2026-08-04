@@ -3,41 +3,41 @@ package com.iktwo.kodices.elements
 import com.iktwo.kodices.actions.Action
 import com.iktwo.kodices.inputvalidation.Validation
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 
 @Serializable
-open class ProcessedElement(
+public open class ProcessedElement(
     override val type: String,
     override val nestedElements: List<ProcessedElement> = emptyList(),
-    val id: String,
-    val index: Int = 0,
-    val text: String? = null,
-    val textSecondary: String? = null,
+    public val id: String,
+    public val index: Int = 0,
+    public val text: String? = null,
+    public val textSecondary: String? = null,
     override val actions: List<Action> = emptyList(),
-    val jsonValues: ProcessedValues = mutableMapOf(),
-    open val style: String? = null,
-    open val validation: Validation? = null,
+    public val jsonValues: Map<String, JsonElement?> = emptyMap(),
+    public open val style: String? = null,
+    public open val validation: Validation? = null,
     /**
      * Used to define if this element will be enabled only if the list in here passes their validations.
      *
      * This is useful for buttons in forms.
      */
-    open val requiresValidElements: List<String> = emptyList(),
+    public open val requiresValidElements: List<String> = emptyList(),
     override val enabled: Boolean = true,
     override val visible: Boolean = true,
-    // TODO: add a generic way to represent conditionals to toggle enablement or visibility
 ) : Element {
     override fun toString(): String {
         return "ProcessedElement { type: $type, id: $id, text: $text, jsonValues: $jsonValues }"
     }
 
-    open fun copy(
+    public open fun copy(
         id: String = this.id,
         index: Int = this.index,
         nestedElements: List<ProcessedElement> = this.nestedElements,
         text: String? = this.text,
         textSecondary: String? = this.textSecondary,
         actions: List<Action> = this.actions,
-        jsonValues: ProcessedValues = this.jsonValues,
+        jsonValues: Map<String, JsonElement?> = this.jsonValues,
         style: String? = this.style,
         validation: Validation? = this.validation,
         requiresValidElements: List<String> = this.requiresValidElements,
