@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.kover)
     alias(libs.plugins.vanniktech.publish)
 }
 
@@ -116,6 +117,27 @@ tasks.named("check") {
     dependsOn("checkLegacyAbi")
 }
 
+kover {
+    useJacoco("0.8.13")
+
+    reports {
+        total {
+            filters {
+                includes {
+                    classes("com.iktwo.piktographs*")
+                }
+            }
+
+            html {
+                onCheck = true
+                htmlDir = layout.buildDirectory.dir("reports/html-result")
+            }
+
+            // Reporting only, no bound yet: the UI test suite is new and a gate here would just be
+            // a number to game. Add a `verify { }` block once the suite covers the render paths.
+        }
+    }
+}
 
 composeCompiler {
     // Marks the Kodices model types stable. They are immutable, but live in a module with no

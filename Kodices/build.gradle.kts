@@ -106,7 +106,7 @@ kover {
 
                 rule {
                     bound {
-                        minValue = 60
+                        minValue = 75
                         aggregationForGroup = kotlinx.kover.gradle.plugin.dsl.AggregationType.COVERED_PERCENTAGE
                     }
                 }
