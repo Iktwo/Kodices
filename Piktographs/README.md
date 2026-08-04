@@ -2,6 +2,19 @@
 
 Piktographs is a reference implementation that renders UI models from the `Kodices` module using [Jetpack Compose](https://www.jetbrains.com/lp/compose-multiplatform/). It provides a set of pre-built Composables for common UI elements, as well as a mechanism for customizing the look and feel of your server-driven UI.
 
+## Requirements
+
+| | |
+|---|---|
+| Kotlin | 2.3+ |
+| JDK (JVM target) | 17+ |
+| Android | minSdk 28 |
+
+Kotlin 2.3 is a hard floor, not a preference: the Kotlin/Native, JS and wasm artifacts are klibs
+carrying `abi_version=2.3`, and an older compiler cannot read them. It fails as
+`Missing stdlib class` / `KLIB resolver: Could not find ...` rather than a clear version error, so
+check this first if resolution behaves strangely.
+
 ## Usage
 
 To use Piktographs in your Compose Multiplatform app, you first need a `Content` object from the `KodicesParser`. Then, you can pass this object to the `PageUI` Composable.
@@ -50,17 +63,36 @@ PageUI(
 
 ### Styling
 
-You can customize the appearance of the Composables rendered by Piktographs by providing a `Theme` object to the `PageUI` Composable. The `Theme` object allows you to specify your own colors, typography, and other style attributes.
+Pass a `Theme` to `PageUI`. It groups three value classes - `FontSizes`, `Colors` and `Dimensions` -
+and every field has a default, so override only what you need:
 
 ```kotlin
 val myTheme = Theme(
-    primaryColor = Color(0xFF6200EE),
-    textColor = Color.Black,
-    // ... other theme properties
+    colors = Colors(
+        mainTextColor = Color(0xFF6200EE),
+        secondaryTextColor = Color.DarkGray,
+    ),
+    fonts = FontSizes(primary = 20.sp),
+    dimensions = Dimensions(padding = 12.dp),
 )
 
 PageUI(
     content = content,
-    theme = myTheme
+    theme = myTheme,
 )
 ```
+
+### Unsupported element types
+
+When no built-in renderer and no `elementOverrides` entry handles an element, `UnknownElementUI`
+renders a message naming the type. Change that with `LocalUnknownElementPlaceholder`:
+
+```kotlin
+CompositionLocalProvider(
+    LocalUnknownElementPlaceholder provides UnknownElementPlaceholder.Nothing,
+) {
+    PageUI(content = content)
+}
+```
+
+`Verbose` additionally prints the element's parsed contents, which is useful while authoring JSON.

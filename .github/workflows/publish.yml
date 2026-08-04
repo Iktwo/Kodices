@@ -32,3 +32,23 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY_CONTENTS }}
+
+      # Swift Package Manager consumers need a downloadable XCFramework. Attaching it to the release
+      # is what lets Package.swift use a `url:` + `checksum:` binary target instead of a local path.
+      - name: Assemble the Kodices XCFramework
+        run: ./gradlew :Kodices:assembleKodicesReleaseXCFramework --max-workers=2
+
+      - name: Zip the XCFramework and compute its checksum
+        id: xcframework
+        run: |
+          cd Kodices/build/XCFrameworks/release
+          zip -r -q Kodices.xcframework.zip Kodices.xcframework
+          echo "checksum=$(swift package compute-checksum Kodices.xcframework.zip)" >> "$GITHUB_OUTPUT"
+
+      - name: Attach the XCFramework to the release
+        run: |
+          gh release upload "${{ github.event.release.tag_name }}" \
+            Kodices/build/XCFrameworks/release/Kodices.xcframework.zip --clobber
+          echo "Checksum for Package.swift: ${{ steps.xcframework.outputs.checksum }}" >> "$GITHUB_STEP_SUMMARY"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -29,17 +29,15 @@ This tab showcases various UI examples loaded from local JSON files.
 *   **Wake-on-LAN (WoL):** A more advanced example that demonstrates a custom `WakeOnLANAction`. This allows the UI to trigger a platform-specific networking task.
 *   **Catalog:** A comprehensive list of all the standard UI components available in `Piktographs`.
 
-*(placeholder for a screenshot of the Samples tab)*
-
 ### Catalog Tab
 This tab displays a catalog of all the standard elements available in the `Piktographs` library, loaded from `catalog.json`. It's a great way to see all the out-of-the-box components you can use.
-
-*(placeholder for a screenshot of the Catalog tab)*
 
 ### Dynamic Input Tab
 This powerful tab allows you to edit the JSON UI definition in real-time and see the changes instantly. This is an excellent tool for prototyping, debugging, and learning how the Kodices JSON structure works.
 
-*(placeholder for a GIF showing the Dynamic Input tab in action)*
+> Screenshots of these tabs have not been captured yet. Run the sample to see them:
+> `./gradlew :SampleApp:run` for desktop, `./gradlew :SampleApp:sample_android:installDebug` for
+> Android, or open `SampleApp/iosApp/iosApp.xcodeproj` for iOS.
 
 ## Code Tour
 

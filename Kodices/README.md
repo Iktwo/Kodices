@@ -4,6 +4,19 @@
 
 This is the core module of the Kodices framework. It is a Kotlin Multiplatform library responsible for parsing JSON definitions into a platform-agnostic UI model.
 
+## Requirements
+
+| | |
+|---|---|
+| Kotlin | 2.3+ |
+| JDK (JVM target) | 17+ |
+| Android | minSdk 28 |
+
+Kotlin 2.3 is a hard floor, not a preference: the Kotlin/Native, JS and wasm artifacts are klibs
+carrying `abi_version=2.3`, and an older compiler cannot read them. It fails as
+`Missing stdlib class` / `KLIB resolver: Could not find ...` rather than a clear version error, so
+check this first if resolution behaves strangely.
+
 ## Core Concepts
 
 The Kodices framework is built around a few core concepts:
@@ -68,10 +81,23 @@ To create a greeting message, you can use a `StringProcessor`:
 ```json
 {
   "type": "string",
-  "elements": "Hello, %"
+  "element": "Hello, %"
 }
 ```
 When combined with the result of the `JSONDrillerProcessor` above, the final output will be: `"Hello, John Doe"`
+
+`%` is replaced with the incoming value. When the incoming value is an array, use numbered tokens
+instead - `%0`, `%1`, ... - and each is replaced with the entry at that index:
+
+```json
+{
+  "type": "string",
+  "element": "%0 lives in %1"
+}
+```
+
+> Note the key is `element`, singular. `JSONDrillerProcessor` accepts both `element` and `elements`;
+> `StringProcessor` and `StylerProcessor` only accept `element`.
 
 #### StylerProcessor
 
@@ -86,11 +112,26 @@ Kodices is designed to be extensible. You can add your own custom `Element`s and
 To create a custom element, you need to define an `ElementDescriptor` and register it with the `KodicesParser`.
 
 **1. Define the ElementDescriptor:**
+
+`builder` is an [`ElementBuilder`](src/commonMain/kotlin/com/iktwo/kodices/elements/ElementDescriptor.kt):
+a function taking `(type, elementId, processedValues, nestedElements, actions, json)` and returning a
+`ProcessedElement`.
+
 ```kotlin
-object CountdownElement : ElementDescriptor {
-    override val type = "countdown"
-    override val builder = Element.Builder { id, type, attributes, _ ->
-        // Your custom element logic here
+class CountdownElement(
+    id: String,
+    jsonValues: Map<String, JsonElement?>,
+    val endsAt: String,
+) : ProcessedElement(type = type, id = id, jsonValues = jsonValues) {
+    companion object : ElementDescriptor {
+        override val type: String = "countdown"
+
+        override val builder: ElementBuilder = { _, elementId, processedValues, _, _, _ ->
+            val endsAt = processedValues["endsAt"]?.asStringOrNull()
+                ?: throw IllegalArgumentException("countdown requires endsAt")
+
+            CountdownElement(elementId, processedValues, endsAt)
+        }
     }
 }
 ```
@@ -98,7 +139,7 @@ object CountdownElement : ElementDescriptor {
 **2. Register the ElementDescriptor:**
 ```kotlin
 val kodicesParser = KodicesParser(
-    elements = listOf(CountdownElement)
+    registry = KodicesRegistry.of(elements = listOf(CountdownElement)),
 )
 ```
 
@@ -107,11 +148,26 @@ val kodicesParser = KodicesParser(
 Similarly, you can create custom actions by defining an `ActionDescriptor` and registering it.
 
 **1. Define the ActionDescriptor:**
+
+`builder` is an [`ActionBuilder`](src/commonMain/kotlin/com/iktwo/kodices/actions/ActionDescriptor.kt):
+a function taking `(actionSource, data)` and returning an `Action`.
+
 ```kotlin
-object WakeOnLANAction : ActionDescriptor {
-    override val type = "wol"
-    override val builder = Action.Builder { attributes ->
-        // Your custom action logic here
+class WakeOnLANAction(
+    val macFieldName: String,
+) : Action {
+    override val type: String = TYPE
+
+    companion object : ActionDescriptor {
+        const val TYPE: String = "wol"
+
+        override val type: String = TYPE
+
+        override val builder: ActionBuilder = { actionSource, _ ->
+            WakeOnLANAction(
+                macFieldName = actionSource.asJSONObjectOrNull()?.get("macField")?.asStringOrNull() ?: "mac",
+            )
+        }
     }
 }
 ```
@@ -119,7 +175,7 @@ object WakeOnLANAction : ActionDescriptor {
 **2. Register the ActionDescriptor:**
 ```kotlin
 val kodicesParser = KodicesParser(
-    actions = listOf(WakeOnLANAction)
+    registry = KodicesRegistry.of(actions = listOf(WakeOnLANAction)),
 )
 ```
 
@@ -146,7 +202,7 @@ This example demonstrates displaying a simple text element.
 
 ### Example 2: Button with an Action
 
-This example shows how to create a button that triggers a wake-on-LAN action (This assumes you defined the type **WakeOnLAN**, as shown in the sample application). 
+This example shows how to create a button that triggers a wake-on-LAN action (this assumes the **wol** action type is registered, as the sample application does).
 
 ![alt text](../SampleImages/example_2.png "Example 2")
 
