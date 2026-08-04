@@ -69,6 +69,14 @@ _First release._
 
 ## Piktographs
 
+### 0.7.0 - unreleased
+
+**Added**
+
+- Added built-in Material 3 components: `ButtonUI` (supporting filled, outlined, text, elevated variants, and loading spinners), `CardUI` (supporting elevated, outlined, and filled cards), and `ProgressUI` (supporting linear and circular progress indicators).
+- Added `KodicesNavHost` and `KodicesNavController` for multi-page server-driven UI navigation with automatic handling for `NavigateAction` ("navigate") and "back" actions, custom payload fetching, loading states, and error recovery with retry.
+- Added `LocalActionPerformer` and `ActionPerformer` factory function to automatically dispatch element actions on user interaction.
+
 ### 0.6.0 - unreleased
 
 **Breaking**

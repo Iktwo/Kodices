@@ -13,7 +13,7 @@ plugins {
     alias(libs.plugins.vanniktech.publish)
 }
 
-version = "0.6.0"
+version = "0.7.0"
 
 kotlin {
     // Every public declaration must state its visibility and return type, so the published
