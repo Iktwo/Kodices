@@ -29,11 +29,11 @@ import com.iktwo.piktographs.ui.Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PageUI(
+public fun PageUI(
     content: Content,
     modifier: Modifier = Modifier,
     pageStyle: PageStyle = VerticalListPageStyle,
-    elementOverrides: @Composable (ProcessedElement) -> Boolean,
+    elementOverrides: @Composable (ProcessedElement) -> Boolean = { false },
     theme: Theme = Theme(),
     textInputData: SnapshotStateMap<String, String?> = rememberSaveable(saver = mapSaver()) {
         mutableStateMapOf()
@@ -50,15 +50,22 @@ fun PageUI(
     val topAppBarState = rememberTopAppBarState()
 
     CompositionLocalProvider(DefaultTheme provides theme) {
-        content.elements.forEach { element ->
-            if (element is InputElement) {
-                validityMap[element.id] = element.isValid
+        // Seeding runs in an effect, not in the composition body: writing to these maps on every
+        // recomposition would overwrite whatever the user has typed since. Existing keys are left
+        // alone for the same reason - the maps are the source of truth once the user has touched them.
+        LaunchedEffect(content) {
+            content.elements.forEach { element ->
+                if (element is InputElement) {
+                    if (!validityMap.containsKey(element.id)) {
+                        validityMap[element.id] = element.isValid
+                    }
 
-                textInputData[element.id] = element.text
+                    if (!textInputData.containsKey(element.id)) {
+                        textInputData[element.id] = element.text
+                    }
+                }
             }
-        }
 
-        LaunchedEffect(true) {
             onInputIdsPopulated()
         }
 
@@ -122,8 +129,10 @@ fun PageUI(
                     }
 
                     VerticalListPageStyle -> {
+                        // Modifier, not `modifier`: the caller's modifier is already applied to the
+                        // Scaffold above, applying it again here doubles padding and sizing.
                         LazyColumn(
-                            modifier = modifier
+                            modifier = Modifier
                                 .fillMaxSize()
                                 .padding(innerPadding)
                                 .nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -139,7 +148,7 @@ fun PageUI(
     }
 }
 
-fun LazyListScope.renderElements(
+public fun LazyListScope.renderElements(
     elements: List<ProcessedElement>,
 ) {
     elements.forEach { element ->
@@ -149,7 +158,12 @@ fun LazyListScope.renderElements(
     }
 }
 
-fun <K, V> mapSaver(): Saver<SnapshotStateMap<K, V>, Any> {
+/**
+ * [Saver] for the input-state maps [PageUI] takes, so they survive configuration changes.
+ *
+ * Named the same as Compose's own `mapSaver`; import explicitly to avoid ambiguity.
+ */
+public fun <K, V> mapSaver(): Saver<SnapshotStateMap<K, V>, Any> {
     return Saver(
         save = { originalMap -> originalMap.toList() },
         restore = { savedList ->

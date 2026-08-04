@@ -1,3 +1,4 @@
+import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
@@ -76,6 +77,9 @@ kotlin {
         commonTest.dependencies {
             implementation(kotlin("test"))
             implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.coroutines.test)
+            @OptIn(ExperimentalComposeLibrary::class)
+            implementation(compose.uiTest)
         }
 
         jvmMain {
@@ -84,13 +88,18 @@ kotlin {
             }
         }
 
+        // Compose UI tests run on the desktop target; they need the current OS's skiko runtime.
+        jvmTest.dependencies {
+            implementation(compose.desktop.currentOs)
+        }
+
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
     }
-
-    task("testClasses")
 }
+
+
 
 mavenPublishing {
     publishToMavenCentral()
