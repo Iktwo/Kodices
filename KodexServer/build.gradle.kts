@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.ktor)
 }
 
-group = "com.iktwo.kodices"
 version = "0.0.1"
 
 kotlin {
