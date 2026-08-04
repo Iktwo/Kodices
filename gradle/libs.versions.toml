@@ -1,28 +1,32 @@
 [versions]
+#noinspection UnusedVersionCatalogEntry
+android-compileSdk = "37"
+#noinspection UnusedVersionCatalogEntry
+android-minSdk = "28"
+#noinspection UnusedVersionCatalogEntry
+android-targetSdk = "37"
+
+agp = "9.3.1"
 accompanist-webview = "0.36.0"
-agp = "9.0.0" #noinspection UnusedVersionCatalogEntry
-android-compileSdk = "36" #noinspection UnusedVersionCatalogEntry
-android-minSdk = "28" #noinspection UnusedVersionCatalogEntry
-android-targetSdk = "36"
-androidx-activity-compose = "1.12.3"
-androidx-core = "1.17.0"
-androidx-datastore = "1.2.0"
+androidx-activity-compose = "1.13.0"
+androidx-core = "1.19.0"
+androidx-datastore = "1.2.1"
 appcompat = "1.7.1"
-coil = "3.3.0"
-composeMultiplatform = "1.10.0"
-kotlin = "2.3.0"
-kotlinx-coroutines = "1.10.2"
-kotlinx-datetime = "0.7.1"
-kotlinx-serialization = "1.10.0"
-kover = "0.9.4"
-ktlint = "14.0.1"
-ktor = "3.4.0"
-lifecycle = "2.9.6"
+coil = "3.5.0"
+composeMultiplatform = "1.11.1"
+kotlin = "2.4.10"
+kotlinx-coroutines = "1.11.0"
+kotlinx-datetime = "0.8.0"
+kotlinx-serialization = "1.11.0"
+kover = "0.9.9"
+ktlint = "14.2.0"
+ktor = "3.5.2"
+lifecycle = "2.11.0"
 material-icons = "1.7.3"
 material3 = "1.10.0-alpha05"
-okio = "3.16.4"
-skie = "0.10.9"
-vanniktech-publish = "0.36.0"
+okio = "3.18.1"
+skie = "0.10.14"
+vanniktech-publish = "0.37.0"
 
 [libraries]
 accompanist-webview = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanist-webview" }

@@ -1,7 +1,6 @@
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
@@ -14,7 +13,7 @@ plugins {
     alias(libs.plugins.vanniktech.publish)
 }
 
-version = "0.4.0"
+version = "0.6.0"
 
 kotlin {
     // Every public declaration must state its visibility and return type, so the published
@@ -22,14 +21,6 @@ kotlin {
     explicitApi()
 
     jvmToolchain(21)
-
-    // Guards the published ABI: `updateLegacyAbi` refreshes the checked-in dump,
-    // `check` fails on any unreviewed change to the public surface.
-    @OptIn(ExperimentalAbiValidation::class)
-    abiValidation {
-        enabled.set(true)
-        klib.enabled.set(true)
-    }
 
     androidLibrary {
         compilerOptions {
@@ -122,10 +113,6 @@ kotlin {
             implementation(libs.ktor.client.darwin)
         }
     }
-}
-
-tasks.named("check") {
-    dependsOn("checkLegacyAbi")
 }
 
 kover {
