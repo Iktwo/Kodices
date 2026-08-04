@@ -21,7 +21,7 @@ fun TabInput(
     onJSONUIChanged: (String) -> Unit,
 ) {
     var jsonContent by remember { mutableStateOf(initialContentString) }
-    var jsonData by remember { mutableStateOf(initialContentString) }
+    var jsonData by remember { mutableStateOf(initialDataString) }
 
     Row(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.weight(1f).fillMaxHeight()) {

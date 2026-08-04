@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import com.iktwo.kodices.elements.ProcessedElement
 import com.iktwo.kodices.sampleapp.LastSecond
 import com.iktwo.piktographs.elements.CountdownElement
+import com.iktwo.piktographs.elements.WebElement
 import kotlin.time.ExperimentalTime
 
 @Composable
@@ -17,6 +18,10 @@ fun elementOverride(element: ProcessedElement): Boolean {
 
         element is CountdownElement -> {
             CountdownUI(element, LastSecond.current)
+        }
+
+        element is WebElement -> {
+            WebUI(element)
         }
 
         else -> {

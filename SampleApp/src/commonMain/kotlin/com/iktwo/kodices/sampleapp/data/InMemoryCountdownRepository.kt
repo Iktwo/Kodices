@@ -1,6 +1,5 @@
 package com.iktwo.kodices.sampleapp.data
 
-import com.iktwo.kodices.sampleapp.data.CountdownRepository
 import com.iktwo.piktographs.data.Countdown
 
 class InMemoryCountdownRepository : CountdownRepository {

@@ -10,7 +10,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.actions.Action
 import com.iktwo.kodices.actions.ActionPerformer
 import com.iktwo.kodices.actions.MessageAction
@@ -23,7 +22,6 @@ import kotlinx.serialization.json.buildJsonObject
 @Composable
 fun TabCatalog(contentString: String) {
     val dataString = json.encodeToString(JsonElement.serializer(), buildJsonObject { })
-//    Kodices.debug = true
 
     var dialogMessage by remember { mutableStateOf("") }
     var isDialogOpen by remember { mutableStateOf(false) }
@@ -38,7 +36,7 @@ fun TabCatalog(contentString: String) {
                     }
 
                     else -> {
-                        KodicesParser.logger.warn("Unhandled action $action")
+                        sampleLogger.warn("Unhandled action $action")
                     }
                 }
             }
