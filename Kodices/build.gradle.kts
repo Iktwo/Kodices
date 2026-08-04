@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
@@ -31,6 +32,15 @@ kotlin {
 
     //region JVM
     jvm {
+        // Java 17 bytecode. The toolchain still compiles on 21 for a reproducible build; without
+        // this the bytecode would default to the toolchain and force every consumer onto JDK 21.
+        // -Xjdk-release also limits the visible JDK API to 17, so a JDK 21-only method cannot slip
+        // in and fail at runtime on a 17 consumer.
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+            freeCompilerArgs.add("-Xjdk-release=17")
+        }
+
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
         }
