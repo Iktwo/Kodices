@@ -1,9 +1,13 @@
 package com.iktwo.kodices.elements
 
 /**
- * A registry for managing [ElementBuilder] instances.
+ * A process-global registry for [ElementBuilder] instances.
  */
-object ElementRegistry {
+@Deprecated(
+    "Global mutable state shared by every parser. Build a KodicesRegistry and pass it to " +
+        "KodicesParser instead; this is removed in 1.0.",
+)
+public object ElementRegistry {
     private val elements: MutableMap<String, ElementBuilder> = mutableMapOf()
 
     /**
@@ -11,7 +15,7 @@ object ElementRegistry {
      *
      * @param descriptor The [ElementDescriptor] containing the type and builder for the element.
      */
-    fun addElement(descriptor: ElementDescriptor) {
+    public fun addElement(descriptor: ElementDescriptor) {
         elements[descriptor.type] = descriptor.builder
     }
 
@@ -20,7 +24,7 @@ object ElementRegistry {
      *
      * @param descriptors A list of [ElementDescriptor] instances to add.
      */
-    fun addElements(descriptors: List<ElementDescriptor>) {
+    public fun addElements(descriptors: List<ElementDescriptor>) {
         elements.putAll(descriptors.map { Pair(it.type, it.builder) })
     }
 
@@ -30,7 +34,7 @@ object ElementRegistry {
      * @param type The type of element to retrieve.
      * @return The [ElementBuilder] instance, or `null` if the type is not found.
      */
-    fun getElement(type: String): ElementBuilder? {
+    public fun getElement(type: String): ElementBuilder? {
         return elements[type]
     }
 }

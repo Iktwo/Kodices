@@ -1,5 +1,6 @@
 package com.iktwo.kodices.dataprocessors
 
+import com.iktwo.kodices.kodicesContext
 import com.iktwo.kodices.utils.Constants
 import com.iktwo.kodices.utils.asJSONObjectOrNull
 import com.iktwo.kodices.utils.asStringOrNull
@@ -12,7 +13,7 @@ import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 
-class DataProcessorException(
+public class DataProcessorException(
     message: String,
 ) : Exception(message)
 
@@ -20,20 +21,20 @@ class DataProcessorException(
  * Interface that defines a method to process data.
  */
 @Serializable(with = DataProcessor.Companion::class)
-interface DataProcessor {
+public interface DataProcessor {
     /**
      * [String] that represents the type of [DataProcessor]
      */
-    val type: String
+    public val type: String
 
     /**
      * Function to process data.
      * @param data nullable [JsonElement] to be processed.
      */
-    fun process(data: JsonElement?): JsonElement?
+    public fun process(data: JsonElement?): JsonElement?
 
-    companion object : KSerializer<DataProcessor> {
-        override val descriptor = JsonObject.serializer().descriptor
+    public companion object : KSerializer<DataProcessor> {
+        override val descriptor: kotlinx.serialization.descriptors.SerialDescriptor = JsonObject.serializer().descriptor
 
         override fun deserialize(decoder: Decoder): DataProcessor {
             check(decoder is JsonDecoder) {
@@ -46,12 +47,14 @@ interface DataProcessor {
                 "Failed to deserialize ${DataProcessor::class.simpleName}, object expected"
             }
 
-            DataProcessorRegistry.processors
-                .getOrElse(jsonObject[Constants.TYPE]?.asStringOrNull() ?: "") {
-                    throw SerializationException("Unable to deserialize ${DataProcessor::class.simpleName}")
-                }.let { builder ->
-                    return builder(decoder.json, jsonObject)
-                }
+            val type = jsonObject[Constants.TYPE]?.asStringOrNull() ?: ""
+
+            val builder = decoder.json.kodicesContext.registry.dataProcessorBuilder(type)
+                ?: throw SerializationException(
+                    "Unable to deserialize ${DataProcessor::class.simpleName}, \"$type\" is not registered",
+                )
+
+            return builder(decoder.json, jsonObject)
         }
 
         override fun serialize(

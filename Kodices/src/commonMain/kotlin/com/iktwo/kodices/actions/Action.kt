@@ -1,5 +1,6 @@
 package com.iktwo.kodices.actions
 
+import com.iktwo.kodices.kodicesContext
 import com.iktwo.kodices.utils.Constants
 import com.iktwo.kodices.utils.asStringOrNull
 import kotlinx.serialization.KSerializer
@@ -15,11 +16,11 @@ import kotlinx.serialization.json.JsonObject
  * Interface that represents an action that can be performed.
  */
 @Serializable(with = Action.Companion::class)
-interface Action {
-    val type: String
+public interface Action {
+    public val type: String
 
-    companion object : KSerializer<Action> {
-        override val descriptor = JsonObject.serializer().descriptor
+    public companion object : KSerializer<Action> {
+        override val descriptor: kotlinx.serialization.descriptors.SerialDescriptor = JsonObject.serializer().descriptor
 
         override fun deserialize(decoder: Decoder): Action {
             check(decoder is JsonDecoder) {
@@ -38,9 +39,10 @@ interface Action {
                 "Unable to create ${Action::class.simpleName} without type"
             }
 
-            return ActionsRegistry.getAction(type)?.invoke(jsonObject, JsonNull) ?: run {
-                SimpleAction(type)
-            }
+            return decoder.json.kodicesContext.registry
+                .actionBuilder(type)
+                ?.invoke(jsonObject, JsonNull)
+                ?: SimpleAction(type)
         }
 
         override fun serialize(

@@ -1,3 +1,7 @@
+// DataProcessor.process(data) has no Json parameter, so these cannot reach the parser-scoped
+// logger and fall back to the global one.
+@file:Suppress("DEPRECATION")
+
 package com.iktwo.kodices.dataprocessors
 
 import com.iktwo.kodices.KodicesParser
@@ -7,15 +11,15 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonPrimitive
 
-enum class StylerStyle {
+public enum class StylerStyle {
     UPPERCASE,
     LOWERCASE,
     PRETTY,
     UNKNOWN,
     ;
 
-    companion object {
-        fun fromString(name: String): StylerStyle {
+    public companion object {
+        public fun fromString(name: String): StylerStyle {
             return entries.firstOrNull { it.name.equals(name, ignoreCase = true) } ?: UNKNOWN
         }
     }
@@ -27,10 +31,10 @@ enum class StylerStyle {
  * This can be used to transform strings into UPPERCASE, lowercase, or pretty print JSON.
  */
 @Serializable
-data class StylerProcessor(
+public data class StylerProcessor(
     val element: String,
 ) : DataProcessor {
-    override val type = TYPE
+    override val type: String = TYPE
 
     override fun process(data: JsonElement?): JsonElement? {
         if (data == null) {
@@ -58,8 +62,8 @@ data class StylerProcessor(
         }
     }
 
-    companion object {
-        const val TYPE = "styler"
+    public companion object {
+        public const val TYPE: String = "styler"
 
         private val json =
             Json(builderAction = {

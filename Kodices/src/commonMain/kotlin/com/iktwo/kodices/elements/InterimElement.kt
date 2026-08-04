@@ -1,8 +1,8 @@
 package com.iktwo.kodices.elements
 
-import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.actions.InterimAction
 import com.iktwo.kodices.dataprocessors.DataProcessor
+import com.iktwo.kodices.kodicesContext
 import com.iktwo.kodices.utils.Constants
 import com.iktwo.kodices.utils.asStringOrNull
 import kotlinx.serialization.json.Json
@@ -64,7 +64,7 @@ public data class InterimElement(
                     .flatten()
                     .toList()
             } else {
-                KodicesParser.logger.warn(
+                json.kodicesContext.logger.warn(
                     "${InterimElement::class.simpleName} expansion failed. $processedData is not a ${JsonArray::class.simpleName}. processedData: $processedData",
                 )
                 emptyList()
@@ -97,7 +97,7 @@ public data class InterimElement(
                         processedValue?.asStringOrNull()?.let {
                             processedText = it
                         } ?: run {
-                            KodicesParser.logger.warn("${InterimElement::class.simpleName} $key was provided but processed value is not as expected $processedValue")
+                            json.kodicesContext.logger.warn("${InterimElement::class.simpleName} $key was provided but processed value is not as expected $processedValue")
                         }
                     }
 
@@ -105,7 +105,7 @@ public data class InterimElement(
                         processedValue?.asStringOrNull()?.let {
                             processedTextSecondary = it
                         } ?: run {
-                            KodicesParser.logger.warn("${InterimElement::class.simpleName} $key was provided but processed value is not as expected $processedValue")
+                            json.kodicesContext.logger.warn("${InterimElement::class.simpleName} $key was provided but processed value is not as expected $processedValue")
                         }
                     }
 
@@ -113,7 +113,7 @@ public data class InterimElement(
                         processedValue?.asStringOrNull()?.let {
                             style = it
                         } ?: run {
-                            KodicesParser.logger.warn("${InterimElement::class.simpleName} $key was provided but processed value is not as expected $processedValue")
+                            json.kodicesContext.logger.warn("${InterimElement::class.simpleName} $key was provided but processed value is not as expected $processedValue")
                         }
                     }
 
@@ -141,19 +141,19 @@ public data class InterimElement(
             }.flatten()
 
         if (action != null && actions.isNotEmpty()) {
-            KodicesParser.logger.warn(
+            json.kodicesContext.logger.warn(
                 "${InterimElement::class.simpleName} $type provided both an action and a list of actions. That is not recommended. The single action will be appended to the actions.",
             )
         }
 
         val processedActions = actions.plus(action).filterNotNull().map {
-            it.process(data ?: JsonNull)
+            it.process(data ?: JsonNull, json)
         }
 
         val commonElementProperties = processedValues.toCommonElementProperties(json)
 
         // If there is a custom element builder, use it, otherwise create a ProcessedElement
-        return ElementRegistry.getElement(type)?.let { builder ->
+        return json.kodicesContext.registry.elementBuilder(type)?.let { builder ->
             listOf(
                 builder(
                     type,

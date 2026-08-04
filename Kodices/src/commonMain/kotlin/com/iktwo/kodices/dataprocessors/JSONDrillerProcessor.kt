@@ -1,3 +1,7 @@
+// DataProcessor.process(data) has no Json parameter, so these cannot reach the parser-scoped
+// logger and fall back to the global one.
+@file:Suppress("DEPRECATION")
+
 package com.iktwo.kodices.dataprocessors
 
 import com.iktwo.kodices.KodicesParser
@@ -27,12 +31,12 @@ import kotlinx.serialization.json.jsonObject
  *
  * Numbers represent indexes of values in JSON arrays.
  */
-data class JSONDrillerProcessor(
+public data class JSONDrillerProcessor(
     val elements: List<JSONRoute>,
 ) : DataProcessor {
-    constructor(element: JSONRoute) : this(listOf(element))
+    public constructor(element: JSONRoute) : this(listOf(element))
 
-    override val type = TYPE
+    override val type: String = TYPE
 
     override fun process(data: JsonElement?): JsonElement? {
         // When no elements are provided use the data at this level
@@ -87,10 +91,10 @@ data class JSONDrillerProcessor(
         }
     }
 
-    companion object : KSerializer<JSONDrillerProcessor> {
-        const val TYPE = "path"
+    public companion object : KSerializer<JSONDrillerProcessor> {
+        public const val TYPE: String = "path"
 
-        override val descriptor = JsonArray.serializer().descriptor
+        override val descriptor: kotlinx.serialization.descriptors.SerialDescriptor = JsonArray.serializer().descriptor
 
         override fun deserialize(decoder: Decoder): JSONDrillerProcessor {
             check(decoder is JsonDecoder) {

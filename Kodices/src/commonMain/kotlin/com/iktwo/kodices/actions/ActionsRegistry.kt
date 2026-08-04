@@ -4,23 +4,30 @@ import com.iktwo.kodices.utils.Constants
 import com.iktwo.kodices.utils.asStringOrNull
 import kotlinx.serialization.json.JsonObject
 
-object ActionsRegistry {
+/**
+ * A process-global registry for [ActionBuilder] instances.
+ */
+@Deprecated(
+    "Global mutable state shared by every parser. Build a KodicesRegistry and pass it to " +
+        "KodicesParser instead; this is removed in 1.0.",
+)
+public object ActionsRegistry {
     private val actions: MutableMap<String, ActionBuilder> = mutableMapOf()
 
-    fun fromJsonObject(jsonObject: JsonObject): ActionBuilder? {
+    public fun fromJsonObject(jsonObject: JsonObject): ActionBuilder? {
         val type = jsonObject[Constants.TYPE]?.asStringOrNull() ?: ""
         return actions[type]
     }
 
-    fun addAction(descriptor: ActionDescriptor) {
+    public fun addAction(descriptor: ActionDescriptor) {
         actions[descriptor.type] = descriptor.builder
     }
 
-    fun addActions(descriptors: List<ActionDescriptor>) {
+    public fun addActions(descriptors: List<ActionDescriptor>) {
         actions.putAll(descriptors.map { Pair(it.type, it.builder) })
     }
 
-    fun getAction(type: String): ActionBuilder? {
+    public fun getAction(type: String): ActionBuilder? {
         return actions[type]
     }
 }

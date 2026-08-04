@@ -1,11 +1,10 @@
 package com.iktwo.kodices.elements
 
-import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.actions.Action
 import com.iktwo.kodices.actions.InterimAction
 import com.iktwo.kodices.dataprocessors.DataProcessor
 import com.iktwo.kodices.dataprocessors.DataProcessorException
-import com.iktwo.kodices.dataprocessors.DataProcessorRegistry
+import com.iktwo.kodices.kodicesContext
 import com.iktwo.kodices.utils.Constants
 import com.iktwo.kodices.utils.asJSONArrayOrNull
 import com.iktwo.kodices.utils.asJSONObjectOrNull
@@ -146,8 +145,8 @@ public sealed interface Element {
                                             "invalid $entry in $property, every ${DataProcessor::class.simpleName} has to be an object",
                                         )
 
-                                    DataProcessorRegistry
-                                        .fromJsonObject(entryObject)
+                                    json.kodicesContext.registry
+                                        .dataProcessorBuilder(entryObject[Constants.TYPE]?.asStringOrNull() ?: "")
                                         ?.let { dataProcessorBuilder ->
                                             dataProcessorBuilder(json, entryObject)
                                         } ?: run {
@@ -157,8 +156,8 @@ public sealed interface Element {
                             }
 
                             is JsonObject -> {
-                                DataProcessorRegistry
-                                    .fromJsonObject(jsonElement.jsonObject)
+                                json.kodicesContext.registry
+                                    .dataProcessorBuilder(jsonElement.jsonObject[Constants.TYPE]?.asStringOrNull() ?: "")
                                     ?.let { dataProcessorBuilder ->
                                         return@map property to
                                             listOf(
@@ -240,10 +239,10 @@ public sealed interface Element {
             // Actions used to be dropped on this path, so an element that declared an action but no
             // processors or constants silently lost it. There is no data to resolve against here,
             // so actions are built from their own JSON.
-            val actions = getActions(json, jsonObject).map { it.process(JsonNull) }
+            val actions = getActions(json, jsonObject).map { it.process(JsonNull, json) }
 
-            return ElementRegistry
-                .getElement(type)
+            return json.kodicesContext.registry
+                .elementBuilder(type)
                 ?.let { builder ->
                     builder(
                         type,
@@ -287,7 +286,7 @@ public sealed interface Element {
             jsonObject: JsonObject,
         ): List<InterimAction> {
             if (jsonObject.containsKey(Constants.ACTIONS) && jsonObject.containsKey(Constants.ACTION)) {
-                KodicesParser.logger.warn("An element provided both ${Constants.ACTION} and ${Constants.ACTIONS}. That is usually a mistake. ${Constants.ACTIONS} will be used.")
+                json.kodicesContext.logger.warn("An element provided both ${Constants.ACTION} and ${Constants.ACTIONS}. That is usually a mistake. ${Constants.ACTIONS} will be used.")
             }
 
             val actionsValue = jsonObject[Constants.ACTIONS] ?: jsonObject[Constants.ACTION]
@@ -317,7 +316,7 @@ public sealed interface Element {
 
                 else -> {
                     if (actionsValue != null) {
-                        KodicesParser.logger.warn(
+                        json.kodicesContext.logger.warn(
                             "Invalid type found for ${Action::class.simpleName}. It must be either an object or an array, provided value: $actionsValue",
                         )
                     }
