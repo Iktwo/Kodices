@@ -13,10 +13,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
 import com.iktwo.kodices.elements.ProcessedElement
 
-const val ROW_ELEMENT_TYPE = "row"
+public const val ROW_ELEMENT_TYPE: String = "row"
 
 @Composable
-fun RowUI(element: ProcessedElement) {
+public fun RowUI(element: ProcessedElement) {
     Column(
         modifier = Modifier.fillMaxWidth().padding(vertical = DefaultTheme.current.dimensions.padding),
         verticalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.verticalSpacing),

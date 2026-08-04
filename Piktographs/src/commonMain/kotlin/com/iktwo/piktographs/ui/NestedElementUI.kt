@@ -5,7 +5,7 @@ import com.iktwo.kodices.elements.ProcessedElement
 import com.iktwo.piktographs.ElementUI
 
 @Composable
-fun NestedElementUI(nestedElement: ProcessedElement) {
+public fun NestedElementUI(nestedElement: ProcessedElement) {
     ElementUI(
         element = nestedElement,
     )

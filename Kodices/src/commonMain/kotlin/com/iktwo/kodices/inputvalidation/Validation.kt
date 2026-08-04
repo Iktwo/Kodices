@@ -3,12 +3,12 @@ package com.iktwo.kodices.inputvalidation
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Validation(
+public data class Validation(
     val length: RangeValidation? = null,
     val regex: String? = null,
     val nonBlank: Boolean? = null,
 ) {
-    fun validate(text: String?): Boolean {
+    public fun validate(text: String?): Boolean {
         if (length == null && regex == null && nonBlank == null) {
             return true
         }
@@ -43,7 +43,7 @@ data class Validation(
  * Data class that represents a range for validation.
  */
 @Serializable
-data class RangeValidation(
+public data class RangeValidation(
     val min: UInt = 0u,
     val max: UInt = UInt.MAX_VALUE,
 )

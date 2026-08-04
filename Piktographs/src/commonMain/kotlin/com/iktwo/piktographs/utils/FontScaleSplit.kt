@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.Density
 
 @Suppress("unused")
 @Composable
-fun FontScaleSplit(
+public fun FontScaleSplit(
     scaleA: Float = 1f,
     scaleB: Float = 2f,
     content: @Composable () -> Unit,
@@ -28,8 +28,8 @@ fun FontScaleSplit(
                 CompositionLocalProvider(LocalDensity provides densityB) {
                     innerContent()
                 }
-            }
-        )
+            },
+        ),
     ) {
         content()
     }

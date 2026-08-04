@@ -1,7 +1,7 @@
 package com.iktwo.piktographs
 
-sealed interface PageStyle
+public sealed interface PageStyle
 
-object VerticalListPageStyle : PageStyle
+public object VerticalListPageStyle : PageStyle
 
-object HorizontalListPageStyle : PageStyle
+public object HorizontalListPageStyle : PageStyle

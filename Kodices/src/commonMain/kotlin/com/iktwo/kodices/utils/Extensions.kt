@@ -11,7 +11,7 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
-fun JsonElement.asJSONArrayOrNull(): JsonArray? {
+public fun JsonElement.asJSONArrayOrNull(): JsonArray? {
     return try {
         jsonArray
     } catch (e: Exception) {
@@ -19,7 +19,7 @@ fun JsonElement.asJSONArrayOrNull(): JsonArray? {
     }
 }
 
-fun JsonElement.asJSONObjectOrNull(): JsonObject? {
+public fun JsonElement.asJSONObjectOrNull(): JsonObject? {
     return try {
         jsonObject
     } catch (e: Exception) {
@@ -27,7 +27,7 @@ fun JsonElement.asJSONObjectOrNull(): JsonObject? {
     }
 }
 
-fun JsonElement.asStringOrNull(): String? {
+public fun JsonElement.asStringOrNull(): String? {
     return if (this is JsonPrimitive && jsonPrimitive.isString) {
         content
     } else {
@@ -35,7 +35,7 @@ fun JsonElement.asStringOrNull(): String? {
     }
 }
 
-fun JsonElement.asBooleanOrNull(): Boolean? {
+public fun JsonElement.asBooleanOrNull(): Boolean? {
     return if (this is JsonPrimitive) {
         booleanOrNull
     } else {
@@ -43,7 +43,7 @@ fun JsonElement.asBooleanOrNull(): Boolean? {
     }
 }
 
-fun JsonElement.asIntOrNull(): Int? {
+public fun JsonElement.asIntOrNull(): Int? {
     return if (this is JsonPrimitive) {
         intOrNull
     } else {
@@ -51,7 +51,7 @@ fun JsonElement.asIntOrNull(): Int? {
     }
 }
 
-fun JsonElement.asString(): String {
+public fun JsonElement.asString(): String {
     return if (this is JsonArray) {
         jsonArray.joinToString {
             it.asStringOrNull() ?: Constants.json.encodeToString(JsonElement.serializer(), it)
@@ -63,6 +63,6 @@ fun JsonElement.asString(): String {
     }
 }
 
-fun JsonObject.asMap(): Map<String, JsonElement?> {
+public fun JsonObject.asMap(): Map<String, JsonElement?> {
     return entries.associate { it.key to (if (it.value == JsonNull) null else it.value) }
 }

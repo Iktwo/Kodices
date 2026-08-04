@@ -49,7 +49,7 @@ import kotlin.math.roundToInt
  */
 @Suppress("unused")
 @Composable
-fun ThemeSplitter(
+public fun ThemeSplitter(
     vararg themes: @Composable (content: @Composable () -> Unit) -> Unit,
     content: @Composable () -> Unit,
 ) {

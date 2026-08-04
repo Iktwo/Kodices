@@ -1,0 +1,586 @@
+public final class com/iktwo/kodices/KodicesParser {
+	public static final field Companion Lcom/iktwo/kodices/KodicesParser$Companion;
+	public fun <init> (Lcom/iktwo/kodices/KodicesRegistry;Lkotlinx/serialization/json/Json;Lcom/iktwo/kodices/utils/Logger;Z)V
+	public synthetic fun <init> (Lcom/iktwo/kodices/KodicesRegistry;Lkotlinx/serialization/json/Json;Lcom/iktwo/kodices/utils/Logger;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getRegistry ()Lcom/iktwo/kodices/KodicesRegistry;
+	public final fun parseJSONElementToContent (Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;)Lcom/iktwo/kodices/content/Content;
+	public static synthetic fun parseJSONElementToContent$default (Lcom/iktwo/kodices/KodicesParser;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/JsonElement;ILjava/lang/Object;)Lcom/iktwo/kodices/content/Content;
+	public final fun parseJSONToContent (Ljava/lang/String;Ljava/lang/String;)Lcom/iktwo/kodices/content/Content;
+	public final fun parseJSONToContent (Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;)Lcom/iktwo/kodices/content/Content;
+	public static synthetic fun parseJSONToContent$default (Lcom/iktwo/kodices/KodicesParser;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;ILjava/lang/Object;)Lcom/iktwo/kodices/content/Content;
+	public final fun parseJSONWithDataToContent (Ljava/lang/String;)Lcom/iktwo/kodices/content/Content;
+}
+
+public final class com/iktwo/kodices/KodicesParser$Companion {
+	public final fun getDebug ()Z
+	public final fun getLogger ()Lcom/iktwo/kodices/utils/Logger;
+	public final fun setDebug (Z)V
+	public final fun setLogger (Lcom/iktwo/kodices/utils/Logger;)V
+}
+
+public final class com/iktwo/kodices/KodicesRegistry {
+	public static final field Companion Lcom/iktwo/kodices/KodicesRegistry$Companion;
+	public final fun actionBuilder (Ljava/lang/String;)Lkotlin/jvm/functions/Function2;
+	public final fun dataProcessorBuilder (Ljava/lang/String;)Lkotlin/jvm/functions/Function2;
+	public final fun elementBuilder (Ljava/lang/String;)Lkotlin/jvm/functions/Function6;
+}
+
+public final class com/iktwo/kodices/KodicesRegistry$Companion {
+	public final fun of (Ljava/util/List;Ljava/util/List;Ljava/util/Map;ZZLcom/iktwo/kodices/utils/Logger;)Lcom/iktwo/kodices/KodicesRegistry;
+	public static synthetic fun of$default (Lcom/iktwo/kodices/KodicesRegistry$Companion;Ljava/util/List;Ljava/util/List;Ljava/util/Map;ZZLcom/iktwo/kodices/utils/Logger;ILjava/lang/Object;)Lcom/iktwo/kodices/KodicesRegistry;
+}
+
+public abstract interface class com/iktwo/kodices/actions/Action {
+	public static final field Companion Lcom/iktwo/kodices/actions/Action$Companion;
+	public abstract fun getType ()Ljava/lang/String;
+}
+
+public final class com/iktwo/kodices/actions/Action$Companion : kotlinx/serialization/KSerializer {
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/iktwo/kodices/actions/Action;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/iktwo/kodices/actions/Action;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public abstract interface class com/iktwo/kodices/actions/ActionDescriptor {
+	public abstract fun getBuilder ()Lkotlin/jvm/functions/Function2;
+	public abstract fun getType ()Ljava/lang/String;
+}
+
+public abstract interface class com/iktwo/kodices/actions/ActionPerformer {
+	public abstract fun onAction (Lcom/iktwo/kodices/actions/Action;)V
+}
+
+public final class com/iktwo/kodices/actions/ActionsRegistry {
+	public static final field INSTANCE Lcom/iktwo/kodices/actions/ActionsRegistry;
+	public final fun addAction (Lcom/iktwo/kodices/actions/ActionDescriptor;)V
+	public final fun addActions (Ljava/util/List;)V
+	public final fun fromJsonObject (Lkotlinx/serialization/json/JsonObject;)Lkotlin/jvm/functions/Function2;
+	public final fun getAction (Ljava/lang/String;)Lkotlin/jvm/functions/Function2;
+}
+
+public class com/iktwo/kodices/actions/InterimAction : com/iktwo/kodices/actions/Action {
+	public static final field Companion Lcom/iktwo/kodices/actions/InterimAction$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;)V
+	public fun getType ()Ljava/lang/String;
+	public final fun process (Lkotlinx/serialization/json/JsonElement;)Lcom/iktwo/kodices/actions/Action;
+	public final fun process (Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/Json;)Lcom/iktwo/kodices/actions/Action;
+	public static final synthetic fun write$Self (Lcom/iktwo/kodices/actions/InterimAction;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final synthetic class com/iktwo/kodices/actions/InterimAction$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/iktwo/kodices/actions/InterimAction$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/iktwo/kodices/actions/InterimAction;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/iktwo/kodices/actions/InterimAction;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/actions/InterimAction$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/actions/MessageAction : com/iktwo/kodices/actions/Action {
+	public static final field Companion Lcom/iktwo/kodices/actions/MessageAction$Companion;
+	public static final field TYPE Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;Lcom/iktwo/kodices/actions/MessageStyle;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lcom/iktwo/kodices/actions/MessageStyle;
+	public final fun copy (Ljava/lang/String;Lcom/iktwo/kodices/actions/MessageStyle;)Lcom/iktwo/kodices/actions/MessageAction;
+	public static synthetic fun copy$default (Lcom/iktwo/kodices/actions/MessageAction;Ljava/lang/String;Lcom/iktwo/kodices/actions/MessageStyle;ILjava/lang/Object;)Lcom/iktwo/kodices/actions/MessageAction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getStyle ()Lcom/iktwo/kodices/actions/MessageStyle;
+	public final fun getText ()Ljava/lang/String;
+	public fun getType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class com/iktwo/kodices/actions/MessageAction$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/iktwo/kodices/actions/MessageAction$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/iktwo/kodices/actions/MessageAction;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/iktwo/kodices/actions/MessageAction;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/actions/MessageAction$Companion {
+	public final fun getDescriptor ()Lcom/iktwo/kodices/actions/ActionDescriptor;
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/actions/MessageStyle : java/lang/Enum {
+	public static final field Companion Lcom/iktwo/kodices/actions/MessageStyle$Companion;
+	public static final field DIALOG Lcom/iktwo/kodices/actions/MessageStyle;
+	public static final field SNACK_BAR Lcom/iktwo/kodices/actions/MessageStyle;
+	public static final field TOAST Lcom/iktwo/kodices/actions/MessageStyle;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/iktwo/kodices/actions/MessageStyle;
+	public static fun values ()[Lcom/iktwo/kodices/actions/MessageStyle;
+}
+
+public final class com/iktwo/kodices/actions/MessageStyle$Companion {
+	public final fun fromString (Ljava/lang/String;)Lcom/iktwo/kodices/actions/MessageStyle;
+}
+
+public final class com/iktwo/kodices/actions/SimpleAction : com/iktwo/kodices/actions/Action {
+	public fun <init> (Ljava/lang/String;)V
+	public fun getType ()Ljava/lang/String;
+}
+
+public final class com/iktwo/kodices/content/Content {
+	public static final field Companion Lcom/iktwo/kodices/content/Content$Companion;
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lcom/iktwo/kodices/content/Content;
+	public static synthetic fun copy$default (Lcom/iktwo/kodices/content/Content;Ljava/util/List;ILjava/lang/Object;)Lcom/iktwo/kodices/content/Content;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getElements ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class com/iktwo/kodices/content/Content$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/iktwo/kodices/content/Content$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/iktwo/kodices/content/Content;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/iktwo/kodices/content/Content;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/content/Content$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/content/InterimContent {
+	public static final field Companion Lcom/iktwo/kodices/content/InterimContent$Companion;
+	public fun <init> ()V
+	public fun <init> (Lcom/iktwo/kodices/elements/Element;)V
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lcom/iktwo/kodices/content/InterimContent;
+	public static synthetic fun copy$default (Lcom/iktwo/kodices/content/InterimContent;Ljava/util/List;ILjava/lang/Object;)Lcom/iktwo/kodices/content/InterimContent;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getElements ()Ljava/util/List;
+	public fun hashCode ()I
+	public final fun process (Lkotlinx/serialization/json/JsonElement;Lkotlinx/serialization/json/Json;)Lcom/iktwo/kodices/content/Content;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/iktwo/kodices/content/InterimContent$Companion : kotlinx/serialization/KSerializer {
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/iktwo/kodices/content/InterimContent;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/iktwo/kodices/content/InterimContent;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public abstract interface class com/iktwo/kodices/dataprocessors/DataProcessor {
+	public static final field Companion Lcom/iktwo/kodices/dataprocessors/DataProcessor$Companion;
+	public abstract fun getType ()Ljava/lang/String;
+	public abstract fun process (Lkotlinx/serialization/json/JsonElement;)Lkotlinx/serialization/json/JsonElement;
+}
+
+public final class com/iktwo/kodices/dataprocessors/DataProcessor$Companion : kotlinx/serialization/KSerializer {
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/iktwo/kodices/dataprocessors/DataProcessor;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/iktwo/kodices/dataprocessors/DataProcessor;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/dataprocessors/DataProcessorException : java/lang/Exception {
+	public fun <init> (Ljava/lang/String;)V
+}
+
+public final class com/iktwo/kodices/dataprocessors/DataProcessorRegistry {
+	public static final field INSTANCE Lcom/iktwo/kodices/dataprocessors/DataProcessorRegistry;
+	public final fun fromJsonObject (Lkotlinx/serialization/json/JsonObject;)Lkotlin/jvm/functions/Function2;
+	public final fun getProcessors ()Ljava/util/Map;
+}
+
+public final class com/iktwo/kodices/dataprocessors/JSONDrillerProcessor : com/iktwo/kodices/dataprocessors/DataProcessor {
+	public static final field Companion Lcom/iktwo/kodices/dataprocessors/JSONDrillerProcessor$Companion;
+	public static final field TYPE Ljava/lang/String;
+	public fun <init> (Lcom/iktwo/kodices/dataprocessors/JSONRoute;)V
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lcom/iktwo/kodices/dataprocessors/JSONDrillerProcessor;
+	public static synthetic fun copy$default (Lcom/iktwo/kodices/dataprocessors/JSONDrillerProcessor;Ljava/util/List;ILjava/lang/Object;)Lcom/iktwo/kodices/dataprocessors/JSONDrillerProcessor;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getElements ()Ljava/util/List;
+	public fun getType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun process (Lkotlinx/serialization/json/JsonElement;)Lkotlinx/serialization/json/JsonElement;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/iktwo/kodices/dataprocessors/JSONDrillerProcessor$Companion : kotlinx/serialization/KSerializer {
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/iktwo/kodices/dataprocessors/JSONDrillerProcessor;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/iktwo/kodices/dataprocessors/JSONDrillerProcessor;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public abstract class com/iktwo/kodices/dataprocessors/JSONRoute {
+	public static final field Companion Lcom/iktwo/kodices/dataprocessors/JSONRoute$Companion;
+}
+
+public final class com/iktwo/kodices/dataprocessors/JSONRoute$Companion : kotlinx/serialization/KSerializer {
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/iktwo/kodices/dataprocessors/JSONRoute;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/iktwo/kodices/dataprocessors/JSONRoute;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/dataprocessors/JSONRoute$NumberRoute : com/iktwo/kodices/dataprocessors/JSONRoute {
+	public fun <init> (I)V
+	public final fun getValue ()I
+}
+
+public final class com/iktwo/kodices/dataprocessors/JSONRoute$StringRoute : com/iktwo/kodices/dataprocessors/JSONRoute {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun getValue ()Ljava/lang/String;
+}
+
+public final class com/iktwo/kodices/dataprocessors/StringProcessor : com/iktwo/kodices/dataprocessors/DataProcessor {
+	public static final field Companion Lcom/iktwo/kodices/dataprocessors/StringProcessor$Companion;
+	public static final field TYPE Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/iktwo/kodices/dataprocessors/StringProcessor;
+	public static synthetic fun copy$default (Lcom/iktwo/kodices/dataprocessors/StringProcessor;Ljava/lang/String;ILjava/lang/Object;)Lcom/iktwo/kodices/dataprocessors/StringProcessor;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getElement ()Ljava/lang/String;
+	public fun getType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun process (Lkotlinx/serialization/json/JsonElement;)Lkotlinx/serialization/json/JsonElement;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class com/iktwo/kodices/dataprocessors/StringProcessor$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/iktwo/kodices/dataprocessors/StringProcessor$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/iktwo/kodices/dataprocessors/StringProcessor;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/iktwo/kodices/dataprocessors/StringProcessor;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/dataprocessors/StringProcessor$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/dataprocessors/StylerProcessor : com/iktwo/kodices/dataprocessors/DataProcessor {
+	public static final field Companion Lcom/iktwo/kodices/dataprocessors/StylerProcessor$Companion;
+	public static final field TYPE Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/iktwo/kodices/dataprocessors/StylerProcessor;
+	public static synthetic fun copy$default (Lcom/iktwo/kodices/dataprocessors/StylerProcessor;Ljava/lang/String;ILjava/lang/Object;)Lcom/iktwo/kodices/dataprocessors/StylerProcessor;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getElement ()Ljava/lang/String;
+	public fun getType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun process (Lkotlinx/serialization/json/JsonElement;)Lkotlinx/serialization/json/JsonElement;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class com/iktwo/kodices/dataprocessors/StylerProcessor$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/iktwo/kodices/dataprocessors/StylerProcessor$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/iktwo/kodices/dataprocessors/StylerProcessor;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/iktwo/kodices/dataprocessors/StylerProcessor;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/dataprocessors/StylerProcessor$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/dataprocessors/StylerStyle : java/lang/Enum {
+	public static final field Companion Lcom/iktwo/kodices/dataprocessors/StylerStyle$Companion;
+	public static final field LOWERCASE Lcom/iktwo/kodices/dataprocessors/StylerStyle;
+	public static final field PRETTY Lcom/iktwo/kodices/dataprocessors/StylerStyle;
+	public static final field UNKNOWN Lcom/iktwo/kodices/dataprocessors/StylerStyle;
+	public static final field UPPERCASE Lcom/iktwo/kodices/dataprocessors/StylerStyle;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/iktwo/kodices/dataprocessors/StylerStyle;
+	public static fun values ()[Lcom/iktwo/kodices/dataprocessors/StylerStyle;
+}
+
+public final class com/iktwo/kodices/dataprocessors/StylerStyle$Companion {
+	public final fun fromString (Ljava/lang/String;)Lcom/iktwo/kodices/dataprocessors/StylerStyle;
+}
+
+public abstract interface class com/iktwo/kodices/elements/Element {
+	public static final field Companion Lcom/iktwo/kodices/elements/Element$Companion;
+	public abstract fun getActions ()Ljava/util/List;
+	public fun getEnabled ()Z
+	public abstract fun getNestedElements ()Ljava/util/List;
+	public abstract fun getType ()Ljava/lang/String;
+	public fun getVisible ()Z
+}
+
+public final class com/iktwo/kodices/elements/Element$Companion : kotlinx/serialization/KSerializer {
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/iktwo/kodices/elements/Element;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/iktwo/kodices/elements/Element;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/elements/Element$DefaultImpls {
+	public static fun getEnabled (Lcom/iktwo/kodices/elements/Element;)Z
+	public static fun getVisible (Lcom/iktwo/kodices/elements/Element;)Z
+}
+
+public abstract interface class com/iktwo/kodices/elements/ElementDescriptor {
+	public abstract fun getBuilder ()Lkotlin/jvm/functions/Function6;
+	public abstract fun getType ()Ljava/lang/String;
+}
+
+public final class com/iktwo/kodices/elements/ElementRegistry {
+	public static final field INSTANCE Lcom/iktwo/kodices/elements/ElementRegistry;
+	public final fun addElement (Lcom/iktwo/kodices/elements/ElementDescriptor;)V
+	public final fun addElements (Ljava/util/List;)V
+	public final fun getElement (Ljava/lang/String;)Lkotlin/jvm/functions/Function6;
+}
+
+public final class com/iktwo/kodices/elements/InputElement : com/iktwo/kodices/elements/ProcessedElement, com/iktwo/kodices/elements/InputProvider {
+	public static final field Companion Lcom/iktwo/kodices/elements/InputElement$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lcom/iktwo/kodices/inputvalidation/Validation;Ljava/util/List;ZZ)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Lcom/iktwo/kodices/inputvalidation/Validation;Ljava/util/List;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun copy (Ljava/lang/String;ILjava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lcom/iktwo/kodices/inputvalidation/Validation;Ljava/util/List;ZZ)Lcom/iktwo/kodices/elements/InputElement;
+	public synthetic fun copy (Ljava/lang/String;ILjava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lcom/iktwo/kodices/inputvalidation/Validation;Ljava/util/List;ZZ)Lcom/iktwo/kodices/elements/ProcessedElement;
+	public fun getEnabled ()Z
+	public fun getRequiresValidElements ()Ljava/util/List;
+	public fun getStyle ()Ljava/lang/String;
+	public fun getType ()Ljava/lang/String;
+	public fun getValidation ()Lcom/iktwo/kodices/inputvalidation/Validation;
+	public fun getVisible ()Z
+	public fun isValid ()Z
+	public final fun isValid (Ljava/lang/String;)Z
+}
+
+public final class com/iktwo/kodices/elements/InputElement$Companion {
+	public final fun getBuilder ()Lkotlin/jvm/functions/Function6;
+}
+
+public abstract interface class com/iktwo/kodices/elements/InputHandler {
+	public abstract fun onBooleanInput (Lcom/iktwo/kodices/elements/ProcessedElement;Z)V
+	public abstract fun onTextInput (Lcom/iktwo/kodices/elements/ProcessedElement;Ljava/lang/String;)V
+}
+
+public abstract interface class com/iktwo/kodices/elements/InputProvider {
+	public abstract fun isValid ()Z
+}
+
+public final class com/iktwo/kodices/elements/InputProviderKt {
+	public static final field INPUT_ELEMENT_CHECKBOX Ljava/lang/String;
+	public static final field INPUT_ELEMENT_TEXT_AREA Ljava/lang/String;
+	public static final field INPUT_ELEMENT_TEXT_INPUT Ljava/lang/String;
+	public static final fun getDefaultInputElements ()Ljava/util/List;
+}
+
+public final class com/iktwo/kodices/elements/InterimElement : com/iktwo/kodices/elements/Element {
+	public fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Lkotlinx/serialization/json/JsonObject;Ljava/util/Map;Ljava/util/List;Ljava/util/List;Lcom/iktwo/kodices/actions/InterimAction;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Lkotlinx/serialization/json/JsonObject;Ljava/util/Map;Ljava/util/List;Ljava/util/List;Lcom/iktwo/kodices/actions/InterimAction;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Lkotlinx/serialization/json/JsonObject;
+	public final fun component5 ()Ljava/util/Map;
+	public final fun component6 ()Ljava/util/List;
+	public final fun component7 ()Ljava/util/List;
+	public final fun component8 ()Lcom/iktwo/kodices/actions/InterimAction;
+	public final fun copy (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Lkotlinx/serialization/json/JsonObject;Ljava/util/Map;Ljava/util/List;Ljava/util/List;Lcom/iktwo/kodices/actions/InterimAction;)Lcom/iktwo/kodices/elements/InterimElement;
+	public static synthetic fun copy$default (Lcom/iktwo/kodices/elements/InterimElement;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Lkotlinx/serialization/json/JsonObject;Ljava/util/Map;Ljava/util/List;Ljava/util/List;Lcom/iktwo/kodices/actions/InterimAction;ILjava/lang/Object;)Lcom/iktwo/kodices/elements/InterimElement;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAction ()Lcom/iktwo/kodices/actions/InterimAction;
+	public fun getActions ()Ljava/util/List;
+	public final fun getConstants ()Lkotlinx/serialization/json/JsonObject;
+	public fun getEnabled ()Z
+	public final fun getId ()Ljava/lang/String;
+	public fun getNestedElements ()Ljava/util/List;
+	public final fun getProcessors ()Ljava/util/Map;
+	public final fun getProcessorsForExpansion ()Ljava/util/List;
+	public fun getType ()Ljava/lang/String;
+	public fun getVisible ()Z
+	public fun hashCode ()I
+	public final fun process (ILkotlinx/serialization/json/JsonElement;Ljava/lang/String;Lkotlinx/serialization/json/Json;)Ljava/util/List;
+	public static synthetic fun process$default (Lcom/iktwo/kodices/elements/InterimElement;ILkotlinx/serialization/json/JsonElement;Ljava/lang/String;Lkotlinx/serialization/json/Json;ILjava/lang/Object;)Ljava/util/List;
+	public fun toString ()Ljava/lang/String;
+}
+
+public class com/iktwo/kodices/elements/ProcessedElement : com/iktwo/kodices/elements/Element {
+	public static final field Companion Lcom/iktwo/kodices/elements/ProcessedElement$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/util/List;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lcom/iktwo/kodices/inputvalidation/Validation;Ljava/util/List;ZZLkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lcom/iktwo/kodices/inputvalidation/Validation;Ljava/util/List;ZZ)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lcom/iktwo/kodices/inputvalidation/Validation;Ljava/util/List;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun copy (Ljava/lang/String;ILjava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lcom/iktwo/kodices/inputvalidation/Validation;Ljava/util/List;ZZ)Lcom/iktwo/kodices/elements/ProcessedElement;
+	public static synthetic fun copy$default (Lcom/iktwo/kodices/elements/ProcessedElement;Ljava/lang/String;ILjava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/lang/String;Lcom/iktwo/kodices/inputvalidation/Validation;Ljava/util/List;ZZILjava/lang/Object;)Lcom/iktwo/kodices/elements/ProcessedElement;
+	public fun getActions ()Ljava/util/List;
+	public fun getEnabled ()Z
+	public final fun getId ()Ljava/lang/String;
+	public final fun getIndex ()I
+	public final fun getJsonValues ()Ljava/util/Map;
+	public fun getNestedElements ()Ljava/util/List;
+	public fun getRequiresValidElements ()Ljava/util/List;
+	public fun getStyle ()Ljava/lang/String;
+	public final fun getText ()Ljava/lang/String;
+	public final fun getTextSecondary ()Ljava/lang/String;
+	public fun getType ()Ljava/lang/String;
+	public fun getValidation ()Lcom/iktwo/kodices/inputvalidation/Validation;
+	public fun getVisible ()Z
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/iktwo/kodices/elements/ProcessedElement;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final synthetic class com/iktwo/kodices/elements/ProcessedElement$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/iktwo/kodices/elements/ProcessedElement$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/iktwo/kodices/elements/ProcessedElement;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/iktwo/kodices/elements/ProcessedElement;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/elements/ProcessedElement$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/inputvalidation/RangeValidation {
+	public static final field Companion Lcom/iktwo/kodices/inputvalidation/RangeValidation$Companion;
+	public synthetic fun <init> (IIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-pVg5ArA ()I
+	public final fun component2-pVg5ArA ()I
+	public final fun copy-feOb9K0 (II)Lcom/iktwo/kodices/inputvalidation/RangeValidation;
+	public static synthetic fun copy-feOb9K0$default (Lcom/iktwo/kodices/inputvalidation/RangeValidation;IIILjava/lang/Object;)Lcom/iktwo/kodices/inputvalidation/RangeValidation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMax-pVg5ArA ()I
+	public final fun getMin-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class com/iktwo/kodices/inputvalidation/RangeValidation$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/iktwo/kodices/inputvalidation/RangeValidation$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/iktwo/kodices/inputvalidation/RangeValidation;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/iktwo/kodices/inputvalidation/RangeValidation;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/inputvalidation/RangeValidation$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/inputvalidation/Validation {
+	public static final field Companion Lcom/iktwo/kodices/inputvalidation/Validation$Companion;
+	public fun <init> ()V
+	public fun <init> (Lcom/iktwo/kodices/inputvalidation/RangeValidation;Ljava/lang/String;Ljava/lang/Boolean;)V
+	public synthetic fun <init> (Lcom/iktwo/kodices/inputvalidation/RangeValidation;Ljava/lang/String;Ljava/lang/Boolean;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lcom/iktwo/kodices/inputvalidation/RangeValidation;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/Boolean;
+	public final fun copy (Lcom/iktwo/kodices/inputvalidation/RangeValidation;Ljava/lang/String;Ljava/lang/Boolean;)Lcom/iktwo/kodices/inputvalidation/Validation;
+	public static synthetic fun copy$default (Lcom/iktwo/kodices/inputvalidation/Validation;Lcom/iktwo/kodices/inputvalidation/RangeValidation;Ljava/lang/String;Ljava/lang/Boolean;ILjava/lang/Object;)Lcom/iktwo/kodices/inputvalidation/Validation;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLength ()Lcom/iktwo/kodices/inputvalidation/RangeValidation;
+	public final fun getNonBlank ()Ljava/lang/Boolean;
+	public final fun getRegex ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public final fun validate (Ljava/lang/String;)Z
+}
+
+public final synthetic class com/iktwo/kodices/inputvalidation/Validation$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/iktwo/kodices/inputvalidation/Validation$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/iktwo/kodices/inputvalidation/Validation;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/iktwo/kodices/inputvalidation/Validation;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/inputvalidation/Validation$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/kodices/utils/Constants {
+	public static final field ACTION Ljava/lang/String;
+	public static final field ACTIONS Ljava/lang/String;
+	public static final field CONSTANTS Ljava/lang/String;
+	public static final field CONTENT Ljava/lang/String;
+	public static final field DATA Ljava/lang/String;
+	public static final field ELEMENT Ljava/lang/String;
+	public static final field ELEMENTS Ljava/lang/String;
+	public static final field ENABLED_KEY Ljava/lang/String;
+	public static final field EXPAND_WITH_PROCESSOR Ljava/lang/String;
+	public static final field EXPAND_WITH_PROCESSORS Ljava/lang/String;
+	public static final field ID Ljava/lang/String;
+	public static final field INSTANCE Lcom/iktwo/kodices/utils/Constants;
+	public static final field NESTED_ELEMENTS Ljava/lang/String;
+	public static final field PROCESSORS Ljava/lang/String;
+	public static final field REQUIRES_VALID_ELEMENTS_KEY Ljava/lang/String;
+	public static final field STYLE Ljava/lang/String;
+	public static final field TEXT_KEY Ljava/lang/String;
+	public static final field TEXT_SECONDARY_KEY Ljava/lang/String;
+	public static final field TYPE Ljava/lang/String;
+	public static final field VALIDATION_KEY Ljava/lang/String;
+	public static final field VISIBLE_KEY Ljava/lang/String;
+	public final fun getGENERIC_ELEMENT_KEYS ()Ljava/util/List;
+	public final fun getJson ()Lkotlinx/serialization/json/Json;
+}
+
+public final class com/iktwo/kodices/utils/ExtensionsKt {
+	public static final fun asBooleanOrNull (Lkotlinx/serialization/json/JsonElement;)Ljava/lang/Boolean;
+	public static final fun asIntOrNull (Lkotlinx/serialization/json/JsonElement;)Ljava/lang/Integer;
+	public static final fun asJSONArrayOrNull (Lkotlinx/serialization/json/JsonElement;)Lkotlinx/serialization/json/JsonArray;
+	public static final fun asJSONObjectOrNull (Lkotlinx/serialization/json/JsonElement;)Lkotlinx/serialization/json/JsonObject;
+	public static final fun asMap (Lkotlinx/serialization/json/JsonObject;)Ljava/util/Map;
+	public static final fun asString (Lkotlinx/serialization/json/JsonElement;)Ljava/lang/String;
+	public static final fun asStringOrNull (Lkotlinx/serialization/json/JsonElement;)Ljava/lang/String;
+}
+
+public abstract interface class com/iktwo/kodices/utils/Logger {
+	public abstract fun debug (Ljava/lang/String;)V
+	public abstract fun error (Ljava/lang/String;)V
+	public abstract fun info (Ljava/lang/String;)V
+	public abstract fun warn (Ljava/lang/String;)V
+}
+

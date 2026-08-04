@@ -1,5 +1,5 @@
 package com.iktwo.kodices.actions
 
-interface ActionPerformer {
-    fun onAction(action: Action)
+public interface ActionPerformer {
+    public fun onAction(action: Action)
 }

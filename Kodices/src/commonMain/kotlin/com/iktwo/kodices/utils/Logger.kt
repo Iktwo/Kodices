@@ -1,11 +1,11 @@
 package com.iktwo.kodices.utils
 
-interface Logger {
-    fun debug(message: String)
+public interface Logger {
+    public fun debug(message: String)
 
-    fun info(message: String)
+    public fun info(message: String)
 
-    fun warn(message: String)
+    public fun warn(message: String)
 
-    fun error(message: String)
+    public fun error(message: String)
 }

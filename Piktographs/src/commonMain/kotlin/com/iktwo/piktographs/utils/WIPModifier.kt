@@ -34,161 +34,61 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlin.math.sqrt
 
-fun Modifier.wipOverlay(
+public fun Modifier.wipOverlay(
     text: String = "WIP",
     visible: Boolean = true,
     stripColor: Color = Color(0xFFFFD700),
     textColor: Color = Color.Black,
     overlayColor: Color = Color.Yellow.copy(alpha = 0.1f),
     blockInput: Boolean = true,
-): Modifier = composed {
-    if (!visible) return@composed this
+): Modifier =
+    composed {
+        if (!visible) return@composed this
 
-    val textMeasurer = rememberTextMeasurer()
+        val textMeasurer = rememberTextMeasurer()
 
-    val textStyle = remember {
-        TextStyle(
-            color = textColor,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold
-        )
-    }
-
-    if (blockInput) {
-        this.pointerInput(Unit) {
-            awaitPointerEventScope {
-                while (true) {
-                    val event = awaitPointerEvent(pass = PointerEventPass.Initial)
-                    event.changes.forEach { it.consume() }
-                }
-            }
+        val textStyle = remember(textColor) {
+            TextStyle(
+                color = textColor,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+            )
         }
-    } else {
-        this
-    }
-        .clipToBounds()
-        .drawWithContent {
-            drawContent()
 
-            drawRect(color = overlayColor)
-
-            val diagonal = sqrt(size.width * size.width + size.height * size.height)
-            val stripHeight = 24.dp.toPx()
-            val gap = 24.dp.toPx()
-
-            val textLayoutResult = textMeasurer.measure(text, textStyle)
-            val textWidth = textLayoutResult.size.width
-            val textPadding = 20.dp.toPx()
-
-            rotate(degrees = -45f) {
-                var currentY = -diagonal
-
-                while (currentY < diagonal) {
-                    drawRect(
-                        color = stripColor,
-                        topLeft = Offset(x = -diagonal, y = currentY),
-                        size = Size(width = diagonal * 2, height = stripHeight)
-                    )
-
-                    var currentX = -diagonal
-                    while (currentX < diagonal * 2) {
-                        drawText(
-                            textLayoutResult = textLayoutResult,
-                            topLeft = Offset(
-                                x = currentX,
-                                y = currentY + (stripHeight - textLayoutResult.size.height) / 2
-                            )
-                        )
-                        currentX += textWidth + textPadding
+        if (blockInput) {
+            this.pointerInput(Unit) {
+                awaitPointerEventScope {
+                    while (true) {
+                        val event = awaitPointerEvent(pass = PointerEventPass.Initial)
+                        event.changes.forEach { it.consume() }
                     }
-
-                    currentY += stripHeight + gap
                 }
             }
+        } else {
+            this
         }
-}
+            .clipToBounds()
+            .drawWithContent {
+                drawContent()
 
-fun Modifier.wipOverlayAnimatedVisibility(
-    text: String = "WIP",
-    visible: Boolean = true,
-    stripColor: Color = Color(0xFFFFD700),
-    textColor: Color = Color.Black,
-    overlayColor: Color = Color.Yellow.copy(alpha = 0.1f),
-    animationDuration: Int = 2000,
-    blockInput: Boolean = true,
-): Modifier = composed {
-    val transition = updateTransition(targetState = visible, label = "WIP Overlay")
+                drawRect(color = overlayColor)
 
-    if (!visible && transition.currentState == transition.targetState) {
-        return@composed this
-    }
+                val diagonal = sqrt(size.width * size.width + size.height * size.height)
+                val stripHeight = 24.dp.toPx()
+                val gap = 24.dp.toPx()
 
-    val removalProgress by transition.animateFloat(
-        transitionSpec = {
-            tween(durationMillis = animationDuration, easing = FastOutSlowInEasing)
-        },
-        label = "Slide"
-    ) { isVisible ->
-        if (isVisible) 0f else 1f
-    }
+                val textLayoutResult = textMeasurer.measure(text, textStyle)
+                val textWidth = textLayoutResult.size.width
+                val textPadding = 20.dp.toPx()
 
-    val alpha by transition.animateFloat(
-        transitionSpec = {
-            tween(durationMillis = animationDuration, easing = LinearEasing)
-        },
-        label = "Alpha"
-    ) { isVisible ->
-        if (isVisible) 1f else 0f
-    }
+                rotate(degrees = -45f) {
+                    var currentY = -diagonal
 
-    val textMeasurer = rememberTextMeasurer()
-
-    val textStyle = remember(alpha) {
-        TextStyle(
-            color = textColor.copy(alpha = textColor.alpha * alpha),
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold
-        )
-    }
-
-    if (blockInput && visible) {
-        this.pointerInput(Unit) {
-            awaitPointerEventScope {
-                while (true) {
-                    val event = awaitPointerEvent(pass = PointerEventPass.Initial)
-                    event.changes.forEach { it.consume() }
-                }
-            }
-        }
-    } else {
-        this
-    }
-        .clipToBounds()
-        .drawWithContent {
-            drawContent()
-
-            drawRect(color = overlayColor.copy(alpha = overlayColor.alpha * alpha))
-
-            val diagonal = sqrt(size.width * size.width + size.height * size.height)
-            val stripHeight = 24.dp.toPx()
-            val gap = 24.dp.toPx()
-
-            val textLayoutResult = textMeasurer.measure(text, textStyle)
-            val textWidth = textLayoutResult.size.width
-            val textPadding = 20.dp.toPx()
-
-            val slideOffset = diagonal * 2 * removalProgress
-
-            rotate(degrees = -45f) {
-                var currentY = -diagonal + slideOffset
-
-                while (currentY < diagonal + slideOffset) {
-                    if (currentY > -diagonal - stripHeight && currentY < diagonal + stripHeight) {
-
+                    while (currentY < diagonal) {
                         drawRect(
-                            color = stripColor.copy(alpha = stripColor.alpha * alpha),
+                            color = stripColor,
                             topLeft = Offset(x = -diagonal, y = currentY),
-                            size = Size(width = diagonal * 2, height = stripHeight)
+                            size = Size(width = diagonal * 2, height = stripHeight),
                         )
 
                         var currentX = -diagonal
@@ -197,24 +97,125 @@ fun Modifier.wipOverlayAnimatedVisibility(
                                 textLayoutResult = textLayoutResult,
                                 topLeft = Offset(
                                     x = currentX,
-                                    y = currentY + (stripHeight - textLayoutResult.size.height) / 2
-                                )
+                                    y = currentY + (stripHeight - textLayoutResult.size.height) / 2,
+                                ),
                             )
                             currentX += textWidth + textPadding
                         }
+
+                        currentY += stripHeight + gap
                     }
-                    currentY += stripHeight + gap
                 }
             }
+    }
+
+public fun Modifier.wipOverlayAnimatedVisibility(
+    text: String = "WIP",
+    visible: Boolean = true,
+    stripColor: Color = Color(0xFFFFD700),
+    textColor: Color = Color.Black,
+    overlayColor: Color = Color.Yellow.copy(alpha = 0.1f),
+    animationDuration: Int = 2000,
+    blockInput: Boolean = true,
+): Modifier =
+    composed {
+        val transition = updateTransition(targetState = visible, label = "WIP Overlay")
+
+        if (!visible && transition.currentState == transition.targetState) {
+            return@composed this
         }
-}
+
+        val removalProgress by transition.animateFloat(
+            transitionSpec = {
+                tween(durationMillis = animationDuration, easing = FastOutSlowInEasing)
+            },
+            label = "Slide",
+        ) { isVisible ->
+            if (isVisible) 0f else 1f
+        }
+
+        val alpha by transition.animateFloat(
+            transitionSpec = {
+                tween(durationMillis = animationDuration, easing = LinearEasing)
+            },
+            label = "Alpha",
+        ) { isVisible ->
+            if (isVisible) 1f else 0f
+        }
+
+        val textMeasurer = rememberTextMeasurer()
+
+        val textStyle = remember(alpha) {
+            TextStyle(
+                color = textColor.copy(alpha = textColor.alpha * alpha),
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+            )
+        }
+
+        if (blockInput && visible) {
+            this.pointerInput(Unit) {
+                awaitPointerEventScope {
+                    while (true) {
+                        val event = awaitPointerEvent(pass = PointerEventPass.Initial)
+                        event.changes.forEach { it.consume() }
+                    }
+                }
+            }
+        } else {
+            this
+        }
+            .clipToBounds()
+            .drawWithContent {
+                drawContent()
+
+                drawRect(color = overlayColor.copy(alpha = overlayColor.alpha * alpha))
+
+                val diagonal = sqrt(size.width * size.width + size.height * size.height)
+                val stripHeight = 24.dp.toPx()
+                val gap = 24.dp.toPx()
+
+                val textLayoutResult = textMeasurer.measure(text, textStyle)
+                val textWidth = textLayoutResult.size.width
+                val textPadding = 20.dp.toPx()
+
+                val slideOffset = diagonal * 2 * removalProgress
+
+                rotate(degrees = -45f) {
+                    var currentY = -diagonal + slideOffset
+
+                    while (currentY < diagonal + slideOffset) {
+                        if (currentY > -diagonal - stripHeight && currentY < diagonal + stripHeight) {
+                            drawRect(
+                                color = stripColor.copy(alpha = stripColor.alpha * alpha),
+                                topLeft = Offset(x = -diagonal, y = currentY),
+                                size = Size(width = diagonal * 2, height = stripHeight),
+                            )
+
+                            var currentX = -diagonal
+                            while (currentX < diagonal * 2) {
+                                drawText(
+                                    textLayoutResult = textLayoutResult,
+                                    topLeft = Offset(
+                                        x = currentX,
+                                        y = currentY + (stripHeight - textLayoutResult.size.height) / 2,
+                                    ),
+                                )
+                                currentX += textWidth + textPadding
+                            }
+                        }
+                        currentY += stripHeight + gap
+                    }
+                }
+            }
+    }
 
 @Preview
 @Composable
-fun PreviewWIPModifier() {
+internal fun PreviewWIPModifier() {
     Surface {
         Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(text = "Text with modifier", modifier = Modifier.wipOverlay())
 
@@ -225,18 +226,18 @@ fun PreviewWIPModifier() {
 
 @Preview
 @Composable
-fun PreviewWIPAnimationModifier() {
+internal fun PreviewWIPAnimationModifier() {
     var visible by remember { mutableStateOf(true) }
 
     Surface {
         Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(
                 text = "Text with modifier",
                 modifier = Modifier.wipOverlayAnimatedVisibility(
                     visible = visible,
-                )
+                ),
             )
 
             Button(onClick = {

@@ -1,12 +1,12 @@
 package com.iktwo.kodices.elements
 
-interface InputHandler {
-    fun onTextInput(
+public interface InputHandler {
+    public fun onTextInput(
         element: ProcessedElement,
         value: String,
     )
 
-    fun onBooleanInput(
+    public fun onBooleanInput(
         element: ProcessedElement,
         value: Boolean,
     )

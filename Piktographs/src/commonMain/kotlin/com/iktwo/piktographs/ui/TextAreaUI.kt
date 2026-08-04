@@ -14,7 +14,7 @@ import com.iktwo.piktographs.LocalElementEnabled
 import com.iktwo.piktographs.LocalElementTextInput
 
 @Composable
-fun TextAreaUI(
+public fun TextAreaUI(
     element: InputElement,
     inputHandler: InputHandler,
 ) {

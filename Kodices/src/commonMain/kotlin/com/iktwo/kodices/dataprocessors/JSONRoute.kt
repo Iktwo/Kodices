@@ -12,23 +12,23 @@ import kotlinx.serialization.json.double
 import kotlinx.serialization.json.doubleOrNull
 
 @Serializable(with = JSONRoute.Companion::class)
-sealed class JSONRoute {
+public sealed class JSONRoute {
     /**
      * Class that represents a key in a JSON object
      */
-    class StringRoute(
-        val value: String,
+    public class StringRoute(
+        public val value: String,
     ) : JSONRoute()
 
     /**
      * Class that represents an index in a JSON array
      */
-    class NumberRoute(
-        val value: Int,
+    public class NumberRoute(
+        public val value: Int,
     ) : JSONRoute()
 
-    companion object : KSerializer<JSONRoute> {
-        override val descriptor = JsonObject.serializer().descriptor
+    public companion object : KSerializer<JSONRoute> {
+        override val descriptor: kotlinx.serialization.descriptors.SerialDescriptor = JsonObject.serializer().descriptor
 
         override fun deserialize(decoder: Decoder): JSONRoute {
             check(decoder is JsonDecoder) {

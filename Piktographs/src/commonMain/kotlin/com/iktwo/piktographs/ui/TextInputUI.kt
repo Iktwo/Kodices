@@ -15,7 +15,7 @@ import com.iktwo.piktographs.LocalElementTextInput
 import com.iktwo.piktographs.LocalElementValidity
 
 @Composable
-fun TextInputUI(
+public fun TextInputUI(
     element: InputElement,
     inputHandler: InputHandler,
 ) {

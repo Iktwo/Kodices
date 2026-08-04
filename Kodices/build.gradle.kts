@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
@@ -16,6 +17,18 @@ repositories {
 version = "0.3.1"
 
 kotlin {
+    // Every public declaration must state its visibility and return type, so the published
+    // surface is deliberate rather than incidental.
+    explicitApi()
+
+    // Guards the published ABI: `apiDump`/`updateLegacyAbi` refreshes the checked-in dump,
+    // `check` fails on any unreviewed change to the public surface.
+    @OptIn(ExperimentalAbiValidation::class)
+    abiValidation {
+        enabled.set(true)
+        klib.enabled.set(true)
+    }
+
     //region JVM
     jvm {
         testRuns["test"].executionTask.configure {
@@ -62,6 +75,10 @@ kotlin {
             implementation(libs.kotlin.test)
         }
     }
+}
+
+tasks.named("check") {
+    dependsOn("checkLegacyAbi")
 }
 
 kover {

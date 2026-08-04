@@ -1,7 +1,7 @@
 package com.iktwo.piktographs.ui
 
-object Constants {
-    const val ACTIVE_KEY = "active"
+public object Constants {
+    public const val ACTIVE_KEY: String = "active"
 
-    const val TOP_BAR_ELEMENT_TYPE = "topbar"
+    public const val TOP_BAR_ELEMENT_TYPE: String = "topbar"
 }

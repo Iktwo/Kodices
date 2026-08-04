@@ -7,17 +7,17 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.jsonObject
 
 @Serializable
-data class MessageAction(
+public data class MessageAction(
     val text: String,
     val style: MessageStyle,
 ) : Action {
-    override val type = TYPE
+    override val type: String = TYPE
 
-    companion object {
-        const val TYPE = "message"
+    public companion object {
+        public const val TYPE: String = "message"
 
-        val descriptor = object : ActionDescriptor {
-            override val type = TYPE
+        public val descriptor: ActionDescriptor = object : ActionDescriptor {
+            override val type: String = TYPE
 
             // TODO: add support for actions (a button in the message)
             override val builder: ActionBuilder = { action, _ ->
@@ -38,14 +38,14 @@ data class MessageAction(
     }
 }
 
-enum class MessageStyle {
+public enum class MessageStyle {
     TOAST,
     SNACK_BAR,
     DIALOG,
     ;
 
-    companion object {
-        fun fromString(name: String?): MessageStyle {
+    public companion object {
+        public fun fromString(name: String?): MessageStyle {
             return entries.firstOrNull { style ->
                 name.equals(style.name, ignoreCase = true)
             } ?: DIALOG

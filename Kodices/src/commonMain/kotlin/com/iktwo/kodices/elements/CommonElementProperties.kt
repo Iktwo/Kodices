@@ -9,7 +9,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 
-data class CommonElementProperties(
+internal data class CommonElementProperties(
     val text: String?,
     val textSecondary: String?,
     val style: String?,
@@ -19,7 +19,7 @@ data class CommonElementProperties(
     val visible: Boolean,
 )
 
-fun Map<String, JsonElement?>.toCommonElementProperties(json: Json): CommonElementProperties {
+internal fun Map<String, JsonElement?>.toCommonElementProperties(json: Json): CommonElementProperties {
     val text = get(Constants.TEXT_KEY)?.asStringOrNull()
     val textSecondary = get(Constants.TEXT_SECONDARY_KEY)?.asStringOrNull()
     val style = get(Constants.STYLE)?.asStringOrNull()

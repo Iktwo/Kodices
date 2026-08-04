@@ -5,13 +5,13 @@ import coil3.compose.AsyncImage
 import com.iktwo.kodices.elements.ProcessedElement
 import com.iktwo.kodices.utils.asStringOrNull
 
-const val IMAGE_ELEMENT_TYPE = "image"
+public const val IMAGE_ELEMENT_TYPE: String = "image"
 
-const val KEY_URL = "url"
-const val KEY_CONTENT_DESCRIPTION = "contentDescription"
+public const val KEY_URL: String = "url"
+public const val KEY_CONTENT_DESCRIPTION: String = "contentDescription"
 
 @Composable
-fun ImageUI(element: ProcessedElement) {
+public fun ImageUI(element: ProcessedElement) {
     // TODO: How do we expose custom properties in ProcessedElement?
     //  without jsonValues? For example, if we wanted a "URL" in here.
     //  Does having an interface like URLProvider that looks for KEY_URL makes sense?

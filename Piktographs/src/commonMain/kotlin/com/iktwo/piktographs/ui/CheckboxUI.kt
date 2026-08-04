@@ -15,7 +15,7 @@ import com.iktwo.kodices.elements.InputHandler
 import com.iktwo.piktographs.LocalElementBooleanInput
 
 @Composable
-fun CheckboxUI(
+public fun CheckboxUI(
     element: InputElement,
     inputHandler: InputHandler,
 ) {

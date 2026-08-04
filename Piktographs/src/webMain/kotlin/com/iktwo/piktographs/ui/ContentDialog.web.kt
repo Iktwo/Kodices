@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Dialog
 
 @Composable
-actual fun ContentDialog(
+public actual fun ContentDialog(
     title: String?,
     onCloseRequest: () -> Unit,
     content: @Composable (() -> Unit),

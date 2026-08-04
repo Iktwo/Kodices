@@ -7,7 +7,7 @@ import com.iktwo.piktographs.ui.RowUI
 
 @Preview
 @Composable
-fun RowUIPreview() {
+internal fun RowUIPreview() {
     RowUI(
         ProcessedElement(
             type = "row",

@@ -3,6 +3,7 @@ package com.iktwo.piktographs
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.derivedStateOf
@@ -29,26 +30,31 @@ import com.iktwo.piktographs.ui.TextAreaUI
 import com.iktwo.piktographs.ui.TextInputUI
 import com.iktwo.piktographs.ui.UnknownElementUI
 
-val LocalElementOverrides = compositionLocalOf<@Composable (ProcessedElement) -> Boolean> { error("No element overrides provided") }
+public val LocalElementOverrides: ProvidableCompositionLocal<@Composable (ProcessedElement) -> Boolean> =
+    compositionLocalOf { error("No element overrides provided") }
 
-val LocalInputHandler = compositionLocalOf<InputHandler> { error("No input handler provided") }
+public val LocalInputHandler: ProvidableCompositionLocal<InputHandler> =
+    compositionLocalOf { error("No input handler provided") }
 
-val LocalTextInputData = compositionLocalOf<SnapshotStateMap<String, String?>> { error("No text input data provided") }
+public val LocalTextInputData: ProvidableCompositionLocal<SnapshotStateMap<String, String?>> =
+    compositionLocalOf { error("No text input data provided") }
 
-val LocalBooleanInputData = compositionLocalOf<SnapshotStateMap<String, Boolean>> { error("No boolean input data provided") }
+public val LocalBooleanInputData: ProvidableCompositionLocal<SnapshotStateMap<String, Boolean>> =
+    compositionLocalOf { error("No boolean input data provided") }
 
-val LocalValidityMap = compositionLocalOf<SnapshotStateMap<String, Boolean>> { error("No validity map provided") }
+public val LocalValidityMap: ProvidableCompositionLocal<SnapshotStateMap<String, Boolean>> =
+    compositionLocalOf { error("No validity map provided") }
 
-val LocalElementEnabled = compositionLocalOf { true }
+public val LocalElementEnabled: ProvidableCompositionLocal<Boolean> = compositionLocalOf { true }
 
-val LocalElementTextInput = compositionLocalOf { "" }
+public val LocalElementTextInput: ProvidableCompositionLocal<String> = compositionLocalOf { "" }
 
-val LocalElementBooleanInput = compositionLocalOf { false }
+public val LocalElementBooleanInput: ProvidableCompositionLocal<Boolean> = compositionLocalOf { false }
 
-val LocalElementValidity = compositionLocalOf { true }
+public val LocalElementValidity: ProvidableCompositionLocal<Boolean> = compositionLocalOf { true }
 
 @Composable
-fun ElementUI(
+public fun ElementUI(
     element: ProcessedElement,
 ) {
     val inputHandler = LocalInputHandler.current

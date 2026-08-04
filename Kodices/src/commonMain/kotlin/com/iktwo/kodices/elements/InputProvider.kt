@@ -5,29 +5,29 @@ package com.iktwo.kodices.elements
  *
  * @property isValid A Boolean indicating whether the input is valid.
  */
-interface InputProvider {
-    val isValid: Boolean
+public interface InputProvider {
+    public val isValid: Boolean
 }
 
 /**
  * Constant representing a checkbox input element.
  */
-const val INPUT_ELEMENT_CHECKBOX = "checkbox"
+public const val INPUT_ELEMENT_CHECKBOX: String = "checkbox"
 
 /**
  * Constant representing a text input element.
  */
-const val INPUT_ELEMENT_TEXT_INPUT = "textInput"
+public const val INPUT_ELEMENT_TEXT_INPUT: String = "textInput"
 
 /**
  * Constant representing a text area input element.
  */
-const val INPUT_ELEMENT_TEXT_AREA = "textArea"
+public const val INPUT_ELEMENT_TEXT_AREA: String = "textArea"
 
 /**
  * List of default input element types.
  */
-val DefaultInputElements = listOf(
+public val DefaultInputElements: List<String> = listOf(
     INPUT_ELEMENT_CHECKBOX,
     INPUT_ELEMENT_TEXT_INPUT,
     INPUT_ELEMENT_TEXT_AREA,

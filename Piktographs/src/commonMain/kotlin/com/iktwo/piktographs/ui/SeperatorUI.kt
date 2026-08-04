@@ -11,12 +11,12 @@ import androidx.compose.ui.unit.dp
 import com.iktwo.kodices.elements.ProcessedElement
 import com.iktwo.kodices.utils.asIntOrNull
 
-const val SEPARATOR_ELEMENT_TYPE = "separator"
+public const val SEPARATOR_ELEMENT_TYPE: String = "separator"
 
 private const val SIZE_KEY = "size"
 
 @Composable
-fun SeperatorUI(element: ProcessedElement) {
+public fun SeperatorUI(element: ProcessedElement) {
     val size = element.jsonValues[SIZE_KEY]?.asIntOrNull()?.dp
         ?: DefaultTheme.current.dimensions.separator
 
@@ -38,13 +38,13 @@ fun SeperatorUI(element: ProcessedElement) {
     }
 }
 
-enum class SeparatorStyle {
+public enum class SeparatorStyle {
     SPACE,
     LINE,
     ;
 
-    companion object {
-        fun fromString(style: String): SeparatorStyle {
+    public companion object {
+        public fun fromString(style: String): SeparatorStyle {
             return entries.firstOrNull { it.name.equals(style, ignoreCase = true) } ?: SPACE
         }
     }

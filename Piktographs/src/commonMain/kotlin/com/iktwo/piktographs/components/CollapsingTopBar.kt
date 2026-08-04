@@ -22,7 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 
-enum class TopBarStyle {
+public enum class TopBarStyle {
     Small,
     Medium,
     Large,
@@ -30,7 +30,7 @@ enum class TopBarStyle {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun scrollBehavior(state: TopAppBarState): TopAppBarScrollBehavior {
+    public fun scrollBehavior(state: TopAppBarState): TopAppBarScrollBehavior {
         return when (this) {
             Small -> {
                 TopAppBarDefaults.pinnedScrollBehavior(state)
@@ -46,8 +46,8 @@ enum class TopBarStyle {
         }
     }
 
-    companion object {
-        fun fromText(style: String?): TopBarStyle {
+    public companion object {
+        public fun fromText(style: String?): TopBarStyle {
             return entries.firstOrNull { it.name.equals(style, ignoreCase = true) } ?: Small
         }
     }
@@ -55,7 +55,7 @@ enum class TopBarStyle {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CollapsingTopBar(
+public fun CollapsingTopBar(
     title: String?,
     style: TopBarStyle = TopBarStyle.Small,
     scrollBehavior: TopAppBarScrollBehavior,
