@@ -3,20 +3,50 @@
     {
       "type": "row",
       "constants": {
-        "text": "Row",
-        "textSecondary": "Secondary text"
+        "text": "Component Catalog",
+        "textSecondary": "Demonstrating built-in Piktographs elements"
+      }
+    },
+    {
+      "type": "card",
+      "constants": {
+        "text": "KodicesNavHost Demo Card",
+        "textSecondary": "Click button below to trigger SDUI page navigation",
+        "variant": "elevated"
+      },
+      "nestedElements": [
+        {
+          "type": "button",
+          "constants": {
+            "text": "Navigate to Sub-Page (KodicesNavHost)",
+            "variant": "filled"
+          },
+          "action": {
+            "type": "navigate",
+            "constants": {
+              "targetRoute": "subpage_demo"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "constants": {
+        "text": "Filled Button (Message Action)"
+      },
+      "action": {
+        "type": "message",
+        "constants": {
+          "text": "This is a message from catalog!"
+        }
       }
     },
     {
       "type": "button",
       "constants": {
-        "text": "Button"
-      },
-      "action": {
-        "type": "message",
-        "constants": {
-          "text": "This is a message!"
-        }
+        "text": "Outlined Button",
+        "variant": "outlined"
       }
     },
     {
@@ -27,28 +57,33 @@
       }
     },
     {
+      "type": "progress",
+      "constants": {
+        "text": "Determinate Linear Progress",
+        "textSecondary": "75%",
+        "variant": "linear",
+        "progress": 0.75
+      }
+    },
+    {
+      "type": "progress",
+      "constants": {
+        "text": "Indeterminate Circular Progress",
+        "textSecondary": "Loading...",
+        "variant": "circular"
+      }
+    },
+    {
       "type": "textInput",
       "constants": {
         "textSecondary": "Text Input"
       }
     },
     {
-      "type": "textInput",
-      "constants": {
-        "enabled": false,
-        "textSecondary": "Disabled Text Input"
-      }
-    },
-    {
       "type": "checkbox",
       "constants": {
+        "text": "Active Checkbox",
         "active": true
-      }
-    },
-    {
-      "type": "checkbox",
-      "constants": {
-        "enabled": false
       }
     }
   ]

@@ -17,11 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.KodicesRegistry
+import com.iktwo.kodices.actions.MessageAction
 import com.iktwo.kodices.sampleapp.actions.WakeOnLANAction
 import com.iktwo.kodices.sampleapp.resources.Res
 import com.iktwo.kodices.utils.Logger
 import com.iktwo.piktographs.elements.CountdownElement
 import com.iktwo.piktographs.elements.WebElement
+import com.iktwo.piktographs.navigation.NavigateAction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
@@ -44,7 +46,7 @@ val sampleLogger = object : Logger {
 val kodicesParser = KodicesParser(
     registry = KodicesRegistry.of(
         elements = listOf(WebElement, CountdownElement),
-        actions = listOf(WakeOnLANAction),
+        actions = listOf(WakeOnLANAction, MessageAction.descriptor, NavigateAction.descriptor),
         // The sample registers everything it needs, so a miss is a bug rather than something to
         // paper over with the deprecated global registry.
         allowGlobalFallback = false,

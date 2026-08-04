@@ -10,6 +10,8 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateMap
+import com.iktwo.kodices.actions.Action
+import com.iktwo.kodices.actions.ActionPerformer
 import com.iktwo.kodices.elements.INPUT_ELEMENT_CHECKBOX
 import com.iktwo.kodices.elements.INPUT_ELEMENT_TEXT_AREA
 import com.iktwo.kodices.elements.INPUT_ELEMENT_TEXT_INPUT
@@ -17,11 +19,17 @@ import com.iktwo.kodices.elements.InputElement
 import com.iktwo.kodices.elements.InputHandler
 import com.iktwo.kodices.elements.ProcessedElement
 import com.iktwo.kodices.utils.asBooleanOrNull
+import com.iktwo.piktographs.ui.BUTTON_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.ButtonUI
+import com.iktwo.piktographs.ui.CARD_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.CardUI
 import com.iktwo.piktographs.ui.CheckboxUI
 import com.iktwo.piktographs.ui.Constants
 import com.iktwo.piktographs.ui.Constants.TOP_BAR_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.IMAGE_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.ImageUI
+import com.iktwo.piktographs.ui.PROGRESS_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.ProgressUI
 import com.iktwo.piktographs.ui.ROW_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.RowUI
 import com.iktwo.piktographs.ui.SEPARATOR_ELEMENT_TYPE
@@ -30,8 +38,18 @@ import com.iktwo.piktographs.ui.TextAreaUI
 import com.iktwo.piktographs.ui.TextInputUI
 import com.iktwo.piktographs.ui.UnknownElementUI
 
+public inline fun ActionPerformer(crossinline block: (Action) -> Unit): ActionPerformer =
+    object : ActionPerformer {
+        override fun onAction(action: Action) {
+            block(action)
+        }
+    }
+
 public val LocalElementOverrides: ProvidableCompositionLocal<@Composable (ProcessedElement) -> Boolean> =
     compositionLocalOf { error("No element overrides provided") }
+
+public val LocalActionPerformer: ProvidableCompositionLocal<ActionPerformer> =
+    compositionLocalOf { ActionPerformer { } }
 
 public val LocalInputHandler: ProvidableCompositionLocal<InputHandler> =
     compositionLocalOf { error("No input handler provided") }
@@ -101,6 +119,18 @@ public fun ElementUI(
 
                     INPUT_ELEMENT_CHECKBOX if element is InputElement -> {
                         CheckboxUI(element, inputHandler)
+                    }
+
+                    BUTTON_ELEMENT_TYPE -> {
+                        ButtonUI(element)
+                    }
+
+                    CARD_ELEMENT_TYPE -> {
+                        CardUI(element)
+                    }
+
+                    PROGRESS_ELEMENT_TYPE -> {
+                        ProgressUI(element)
                     }
 
                     SEPARATOR_ELEMENT_TYPE -> {

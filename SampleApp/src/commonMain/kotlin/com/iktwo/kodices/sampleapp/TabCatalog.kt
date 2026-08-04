@@ -13,8 +13,10 @@ import androidx.compose.ui.Modifier
 import com.iktwo.kodices.actions.Action
 import com.iktwo.kodices.actions.ActionPerformer
 import com.iktwo.kodices.actions.MessageAction
+import com.iktwo.kodices.content.Content
 import com.iktwo.kodices.sampleapp.ui.elementOverride
-import com.iktwo.piktographs.PageUI
+import com.iktwo.piktographs.navigation.KodicesNavHost
+import com.iktwo.piktographs.navigation.rememberKodicesNavController
 import com.iktwo.piktographs.ui.ContentDialog
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.buildJsonObject
@@ -26,38 +28,76 @@ fun TabCatalog(contentString: String) {
     var dialogMessage by remember { mutableStateOf("") }
     var isDialogOpen by remember { mutableStateOf(false) }
 
-    kodicesParser.parseJSONToContent(contentString, dataString)?.let { content ->
-        val actionPerformer = object : ActionPerformer {
-            override fun onAction(action: Action) {
-                when (action) {
-                    is MessageAction -> {
-                        dialogMessage = action.text
-                        isDialogOpen = true
-                    }
+    val actionPerformer = object : ActionPerformer {
+        override fun onAction(action: Action) {
+            when (action) {
+                is MessageAction -> {
+                    dialogMessage = action.text
+                    isDialogOpen = true
+                }
 
-                    else -> {
-                        sampleLogger.warn("Unhandled action $action")
-                    }
+                else -> {
+                    sampleLogger.warn("Unhandled action $action")
                 }
             }
         }
+    }
 
-        CompositionLocalProvider(DefaultActionPerformer provides actionPerformer) {
-            Surface(modifier = Modifier.fillMaxSize()) {
-                PageUI(
-                    content = content,
-                    modifier = Modifier.fillMaxSize(),
-                    elementOverrides = {
-                        elementOverride(it)
+    val navController = rememberKodicesNavController(initialRoute = "catalog")
+
+    val fetcher: suspend (String) -> Content? = { route ->
+        when (route) {
+            "catalog" -> kodicesParser.parseJSONToContent(contentString, dataString)
+            "subpage_demo" -> kodicesParser.parseJSONToContent(
+                """
+                {
+                  "elements": [
+                    {
+                      "type": "row",
+                      "constants": {
+                        "text": "Server-Driven Sub-Page",
+                        "textSecondary": "Navigated seamlessly using KodicesNavHost!"
+                      }
                     },
-                )
-
-                if (isDialogOpen) {
-                    ContentDialog(onCloseRequest = {
-                        isDialogOpen = false
-                    }) {
-                        Text(dialogMessage)
+                    {
+                      "type": "card",
+                      "constants": {
+                        "text": "Sub-Page Card Container",
+                        "textSecondary": "This page was dynamically fetched and pushed onto the navigation stack.",
+                        "variant": "outlined"
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "constants": {
+                        "text": "Go Back to Main Catalog",
+                        "variant": "filled"
+                      },
+                      "action": {
+                        "type": "back"
+                      }
                     }
+                  ]
+                }
+                """.trimIndent(),
+            )
+            else -> null
+        }
+    }
+
+    CompositionLocalProvider(DefaultActionPerformer provides actionPerformer) {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            KodicesNavHost(
+                navController = navController,
+                fetchContent = fetcher,
+                modifier = Modifier.fillMaxSize(),
+                elementOverrides = { elementOverride(it) },
+                actionPerformer = actionPerformer,
+            )
+
+            if (isDialogOpen) {
+                ContentDialog(onCloseRequest = { isDialogOpen = false }) {
+                    Text(dialogMessage)
                 }
             }
         }

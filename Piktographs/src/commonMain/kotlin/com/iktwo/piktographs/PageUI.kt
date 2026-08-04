@@ -17,6 +17,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.iktwo.kodices.actions.ActionPerformer
 import com.iktwo.kodices.content.Content
 import com.iktwo.kodices.elements.InputElement
 import com.iktwo.kodices.elements.InputHandler
@@ -46,6 +47,7 @@ public fun PageUI(
     },
     onInputIdsPopulated: () -> Unit = { },
     onInputUpdated: () -> Unit = { },
+    actionPerformer: ActionPerformer = ActionPerformer { },
 ) {
     val topAppBarState = rememberTopAppBarState()
 
@@ -101,6 +103,7 @@ public fun PageUI(
             LocalTextInputData provides textInputData,
             LocalBooleanInputData provides booleanInputData,
             LocalValidityMap provides validityMap,
+            LocalActionPerformer provides actionPerformer,
         ) {
             Scaffold(
                 modifier = modifier,
