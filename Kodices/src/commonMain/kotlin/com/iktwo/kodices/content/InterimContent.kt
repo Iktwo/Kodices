@@ -8,7 +8,6 @@ import com.iktwo.kodices.utils.asJSONObjectOrNull
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
@@ -21,18 +20,18 @@ import kotlinx.serialization.json.JsonObject
  * Class that represents content that has to be processed.
  */
 @Serializable(with = InterimContent.Companion::class)
-data class InterimContent(
+public data class InterimContent(
     val elements: List<Element>,
 ) {
-    constructor(element: Element) : this(listOf(element))
-    constructor() : this(emptyList())
+    public constructor(element: Element) : this(listOf(element))
+    public constructor() : this(emptyList())
 
     /**
      * Function that process the interim content into.
      *
      * @param data optional [JsonElement] that represents data to process elements.
      */
-    fun process(
+    public fun process(
         data: JsonElement?,
         json: Json,
     ): Content {
@@ -52,8 +51,8 @@ data class InterimContent(
         )
     }
 
-    companion object : KSerializer<InterimContent> {
-        override val descriptor = JsonObject.serializer().descriptor
+    public companion object : KSerializer<InterimContent> {
+        override val descriptor: kotlinx.serialization.descriptors.SerialDescriptor = JsonObject.serializer().descriptor
 
         override fun deserialize(decoder: Decoder): InterimContent {
             check(decoder is JsonDecoder) {
@@ -63,11 +62,21 @@ data class InterimContent(
             decoder.decodeJsonElement().asJSONObjectOrNull()?.let { jsonObject ->
                 val elements: List<Element> = when (val elementsValue = jsonObject[Constants.ELEMENTS] ?: jsonObject[Constants.ELEMENT]) {
                     is JsonArray -> {
-                        decoder.json.decodeFromJsonElement(ListSerializer(Element.Companion), elementsValue)
+                        // Decoded with an explicit index rather than through ListSerializer, so that
+                        // elements which do not declare an id still end up with unique generated ones.
+                        elementsValue.mapIndexed { index, element ->
+                            Element.deserialize(
+                                decoder.json,
+                                element.asJSONObjectOrNull() ?: throw SerializationException(
+                                    "Failed to deserialize ${Element::class.simpleName}, ${JsonObject::class.simpleName} expected",
+                                ),
+                                index,
+                            )
+                        }
                     }
 
                     is JsonObject -> {
-                        listOf(decoder.json.decodeFromJsonElement(Element.Companion, elementsValue))
+                        listOf(Element.deserialize(decoder.json, elementsValue))
                     }
 
                     else -> {

@@ -17,18 +17,23 @@ import kotlinx.serialization.json.JsonPrimitive
  * You can provide number replacements, like %0, %1, etc.
  */
 @Serializable
-data class StringProcessor(
+public data class StringProcessor(
     val element: String,
 ) : DataProcessor {
-    override val type = TYPE
+    override val type: String = TYPE
 
     override fun process(data: JsonElement?): JsonElement {
         return when (data) {
             is JsonArray -> {
-                var string = element
+                // Substituting in ascending index order would rewrite %1 inside %10, so match
+                // every token in a single pass instead. Tokens with no matching entry are left as-is.
+                val string = INDEXED_TOKEN.replace(element) { match ->
+                    val index = match.groupValues[1].toIntOrNull()
 
-                data.forEachIndexed { index, jsonElement ->
-                    string = string.replace("%$index", jsonElement.asString())
+                    data
+                        .getOrNull(index ?: -1)
+                        ?.asString()
+                        ?: match.value
                 }
 
                 JsonPrimitive(string)
@@ -40,7 +45,9 @@ data class StringProcessor(
         }
     }
 
-    companion object {
-        const val TYPE = "string"
+    public companion object {
+        public const val TYPE: String = "string"
+
+        private val INDEXED_TOKEN = Regex("%(\\d+)")
     }
 }

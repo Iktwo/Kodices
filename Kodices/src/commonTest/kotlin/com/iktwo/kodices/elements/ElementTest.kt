@@ -1,10 +1,12 @@
 package com.iktwo.kodices.elements
 
 import com.iktwo.kodices.KodicesParser
+import com.iktwo.kodices.dataprocessors.DataProcessorException
 import com.iktwo.kodices.sampleInterimElement
 import com.iktwo.kodices.sampleInvalidDataProcessorInElement
 import com.iktwo.kodices.sampleProcessedElementWithNestedElements
 import com.iktwo.kodices.sampleRowElement
+import com.iktwo.kodices.sampleScalarDataProcessorInElement
 import com.iktwo.kodices.sampleUnknownDataProcessorInElement
 import com.iktwo.kodices.utils.Constants
 import com.iktwo.kodices.utils.Constants.json
@@ -68,15 +70,22 @@ class ElementTest {
 
     @Test
     fun `Test invalid data processor`() {
-        assertFailsWith<Exception> {
+        assertFailsWith<DataProcessorException> {
             json.decodeFromJsonElement<Element>(sampleInvalidDataProcessorInElement)
         }
     }
 
     @Test
     fun `Test unknown data processor`() {
-        assertFailsWith<Exception> {
+        assertFailsWith<DataProcessorException> {
             json.decodeFromJsonElement<Element>(sampleUnknownDataProcessorInElement)
+        }
+    }
+
+    @Test
+    fun `Test data processor that is neither an object nor an array`() {
+        assertFailsWith<DataProcessorException> {
+            json.decodeFromJsonElement<Element>(sampleScalarDataProcessorInElement)
         }
     }
 }

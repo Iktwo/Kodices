@@ -19,6 +19,7 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonDecoder
+import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonArray
@@ -30,16 +31,16 @@ import kotlinx.serialization.json.jsonObject
  * An Element is meant to be mapped to an individual UI element. Elements may have nested elements in them.
  */
 @Serializable(with = Element.Companion::class)
-sealed interface Element {
+public sealed interface Element {
     /**
      * Represents the [type] of this element.
      */
-    val type: String
+    public val type: String
 
     /**
      * [List] of [Element] that are contained in this [Element].
      */
-    val nestedElements: List<Element>
+    public val nestedElements: List<Element>
 
     /**
      * [Boolean] that defines if this [Element] is enabled.
@@ -47,7 +48,7 @@ sealed interface Element {
      *
      * Defaults to true.
      */
-    val enabled: Boolean
+    public val enabled: Boolean
         get() = true
 
     /**
@@ -56,16 +57,16 @@ sealed interface Element {
      *
      * Defaults to true.
      */
-    val visible: Boolean
+    public val visible: Boolean
         get() = true
 
     /**
      * [List] of [Action] for this [Element].
      */
-    val actions: List<Action>
+    public val actions: List<Action>
 
-    companion object : KSerializer<Element> {
-        override val descriptor = JsonObject.serializer().descriptor
+    public companion object : KSerializer<Element> {
+        override val descriptor: kotlinx.serialization.descriptors.SerialDescriptor = JsonObject.serializer().descriptor
 
         override fun deserialize(decoder: Decoder): Element {
             check(decoder is JsonDecoder) {
@@ -78,13 +79,29 @@ sealed interface Element {
                 "Failed to deserialize ${Element::class.simpleName}, ${JsonObject::class.simpleName} expected"
             }
 
+            return deserialize(decoder.json, jsonObject)
+        }
+
+        /**
+         * Deserializes a single [Element] with knowledge of its position among its siblings.
+         *
+         * The [KSerializer] entry point above cannot supply a position, so callers that decode a
+         * list of elements go through here instead: [index] and [parentId] are what make a
+         * generated id unique when the JSON does not provide one.
+         */
+        internal fun deserialize(
+            json: Json,
+            jsonObject: JsonObject,
+            index: Int = 0,
+            parentId: String? = null,
+        ): Element {
             val type = jsonObject[Constants.TYPE]?.asStringOrNull()
 
             checkNotNull(type) {
                 "Unable to create ${Element::class.simpleName} without type"
             }
 
-            val actions = getActions(decoder.json, jsonObject)
+            val actions = getActions(json, jsonObject)
 
             val processors = jsonObject[Constants.PROCESSORS]?.asJSONObjectOrNull()
             val constants = jsonObject[Constants.CONSTANTS]?.asJSONObjectOrNull()
@@ -101,13 +118,13 @@ sealed interface Element {
                     when (it) {
                         is JsonObject -> {
                             processorsForExpansion.add(
-                                decoder.json.decodeFromJsonElement<DataProcessor>(it),
+                                json.decodeFromJsonElement<DataProcessor>(it),
                             )
                         }
 
                         is JsonArray -> {
                             processorsForExpansion.addAll(
-                                decoder.json.decodeFromJsonElement<List<DataProcessor>>(it),
+                                json.decodeFromJsonElement<List<DataProcessor>>(it),
                             )
                         }
 
@@ -123,13 +140,18 @@ sealed interface Element {
                     ?.map { (property, jsonElement) ->
                         when (jsonElement) {
                             is JsonArray -> {
-                                return@map property to jsonElement.jsonArray.map {
+                                return@map property to jsonElement.jsonArray.map { entry ->
+                                    val entryObject = entry.asJSONObjectOrNull()
+                                        ?: throw DataProcessorException(
+                                            "invalid $entry in $property, every ${DataProcessor::class.simpleName} has to be an object",
+                                        )
+
                                     DataProcessorRegistry
-                                        .fromJsonObject(it.jsonObject)
+                                        .fromJsonObject(entryObject)
                                         ?.let { dataProcessorBuilder ->
-                                            dataProcessorBuilder(decoder.json, it.jsonObject)
+                                            dataProcessorBuilder(json, entryObject)
                                         } ?: run {
-                                        throw DataProcessorException("invalid ${jsonElement.jsonObject} in ${DataProcessor::class.simpleName} not supported")
+                                        throw DataProcessorException("invalid $entry in $property, ${DataProcessor::class.simpleName} not registered")
                                     }
                                 }
                             }
@@ -141,7 +163,7 @@ sealed interface Element {
                                         return@map property to
                                             listOf(
                                                 dataProcessorBuilder(
-                                                    decoder.json,
+                                                    json,
                                                     jsonElement.jsonObject,
                                                 ),
                                             )
@@ -151,16 +173,22 @@ sealed interface Element {
                             }
 
                             else -> {
-                                throw DataProcessorException("invalid ${jsonElement.jsonObject} in ${DataProcessor::class.simpleName} not supported")
+                                throw DataProcessorException(
+                                    "invalid $jsonElement in $property, a ${DataProcessor::class.simpleName} has to be an object or an array of objects",
+                                )
                             }
                         }
                     }?.toMap() ?: emptyMap()
 
                 return InterimElement(
                     type = type,
-                    nestedElements = nestedElements?.map {
-                        decoder.json.decodeFromJsonElement<Element>(
-                            it,
+                    nestedElements = nestedElements?.mapIndexed { nestedIndex, nested ->
+                        deserialize(
+                            json,
+                            nested.asJSONObjectOrNull() ?: throw SerializationException(
+                                "Failed to deserialize a nested ${Element::class.simpleName}, ${JsonObject::class.simpleName} expected",
+                            ),
+                            nestedIndex,
                         )
                     } ?: emptyList(),
                     id = id,
@@ -170,7 +198,7 @@ sealed interface Element {
                     actions = actions,
                 )
             } else {
-                return resolveProcessedElement(jsonObject, decoder.json)
+                return resolveProcessedElement(jsonObject, json, index, parentId)
             }
         }
 
@@ -180,11 +208,18 @@ sealed interface Element {
          * This checks the [ElementRegistry], if there is a builder for the type, it calls it.
          * If the type is not in the registry then this creates a [ProcessedElement].
          *
-         * Note: Creating a [ProcessedElement] this way does not support [Action]
+         * When the JSON does not provide an [Constants.ID], one is generated from the [index] and
+         * the parent's id, matching the scheme used by [InterimElement]. Ids have to be unique
+         * within a [com.iktwo.kodices.content.Content] because renderers use them as list keys.
+         *
+         * Actions are resolved with no data, since an element on this path has no processors to
+         * feed one.
          */
         private fun resolveProcessedElement(
             jsonObject: JsonObject,
             json: Json,
+            index: Int = 0,
+            parentId: String? = null,
         ): ProcessedElement {
             val type = jsonObject[Constants.TYPE]?.asStringOrNull()
 
@@ -192,13 +227,20 @@ sealed interface Element {
                 "Unable to create ${Element::class.simpleName} without type"
             }
 
-            val id = jsonObject[Constants.ID]?.asStringOrNull() ?: "id"
+            val id = jsonObject[Constants.ID]?.asStringOrNull() ?: "${parentId ?: ""}${type}_$index"
 
-            val nestedElements = jsonObject[Constants.NESTED_ELEMENTS]?.asJSONArrayOrNull()?.mapNotNull {
-                if (it is JsonObject) resolveProcessedElement(it, json) else null
-            } ?: emptyList()
+            val nestedElements = jsonObject[Constants.NESTED_ELEMENTS]
+                ?.asJSONArrayOrNull()
+                ?.mapIndexedNotNull { nestedIndex, nested ->
+                    if (nested is JsonObject) resolveProcessedElement(nested, json, nestedIndex, id) else null
+                } ?: emptyList()
 
             val commonElementProperties = jsonObject.toCommonElementProperties(json)
+
+            // Actions used to be dropped on this path, so an element that declared an action but no
+            // processors or constants silently lost it. There is no data to resolve against here,
+            // so actions are built from their own JSON.
+            val actions = getActions(json, jsonObject).map { it.process(JsonNull) }
 
             return ElementRegistry
                 .getElement(type)
@@ -208,20 +250,22 @@ sealed interface Element {
                         id,
                         jsonObject.asMap().toMutableMap(),
                         nestedElements,
-                        emptyList(),
+                        actions,
                         json,
                     )
                 } ?: ProcessedElement(
                 type = type,
                 id = id,
+                index = index,
                 nestedElements = nestedElements,
                 text = commonElementProperties.text,
                 textSecondary = commonElementProperties.textSecondary,
-                actions = emptyList(),
+                actions = actions,
                 jsonValues = jsonObject.asMap().toMutableMap(),
                 style = commonElementProperties.style,
                 validation = commonElementProperties.validation,
                 enabled = commonElementProperties.enabled,
+                visible = commonElementProperties.visible,
                 requiresValidElements = commonElementProperties.requiresValidElements,
             )
         }

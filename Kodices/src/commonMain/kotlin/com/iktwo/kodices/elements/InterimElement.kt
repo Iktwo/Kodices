@@ -13,9 +13,9 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
 import kotlin.let
 
-typealias ProcessedValues = MutableMap<String, JsonElement?>
+public typealias ProcessedValues = MutableMap<String, JsonElement?>
 
-data class InterimElement(
+public data class InterimElement(
     override val type: String,
     override val nestedElements: List<Element> = emptyList(),
     val id: String? = null,
@@ -25,7 +25,7 @@ data class InterimElement(
     override val actions: List<InterimAction> = emptyList(),
     val action: InterimAction? = null,
 ) : Element {
-    fun process(
+    public fun process(
         index: Int = 0,
         data: JsonElement? = null,
         parentId: String? = null,
@@ -47,8 +47,11 @@ data class InterimElement(
                 processedData
                     .jsonArray
                     .mapIndexed { repeatingIndex, jsonElement ->
-                        // Create an interim element for every array element, but do not set processors for expansion
-                        val repeatingElement = InterimElement(type, nestedElements, id, constants, processors, emptyList())
+                        // Create an interim element for every array element, but do not set processors for expansion.
+                        // A declared id has to be suffixed, otherwise every expanded copy would share it and
+                        // renderers keyed on the id (list keys, input state) would collide.
+                        val repeatingId = id?.let { "${it}_$repeatingIndex" }
+                        val repeatingElement = InterimElement(type, nestedElements, repeatingId, constants, processors, emptyList())
 
                         // Process element with element from the array
                         repeatingElement.process(
@@ -114,13 +117,9 @@ data class InterimElement(
                         }
                     }
 
-                    Constants.ENABLED_KEY -> {
-                        processedValues[Constants.ENABLED_KEY] = processedValue
-                    }
-
-                    Constants.VISIBLE_KEY -> {
-                        processedValues[Constants.VISIBLE_KEY] = processedValue
-                    }
+                    // ENABLED_KEY, VISIBLE_KEY, VALIDATION_KEY and REQUIRES_VALID_ELEMENTS_KEY need no
+                    // special handling here: they stay in processedValues and are read below by
+                    // toCommonElementProperties.
                 }
             }
         }

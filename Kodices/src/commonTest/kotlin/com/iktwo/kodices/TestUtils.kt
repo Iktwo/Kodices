@@ -193,6 +193,14 @@ val sampleInvalidDataProcessorInElement = buildJsonObject {
     }
 }
 
+val sampleScalarDataProcessorInElement = buildJsonObject {
+    put(Constants.TYPE, "row")
+
+    putJsonObject(Constants.PROCESSORS) {
+        put(Constants.TEXT_KEY, 2)
+    }
+}
+
 val sampleUnknownDataProcessorInElement = buildJsonObject {
     put(Constants.TYPE, "row")
 

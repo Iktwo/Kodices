@@ -55,6 +55,51 @@ class StringProcessorTest {
     }
 
     @Test
+    fun testStringProcessorDoesNotSubstituteInsideLargerIndex() {
+        // %1 must not be replaced inside %10.
+        val processor = Json.decodeFromString(
+            StringProcessor.Companion.serializer(),
+            "{\"type\":\"${StringProcessor.TYPE}\",\"element\": \"%1 and %10\"}",
+        )
+        assertEquals(
+            "one and ten",
+            processor
+                .process(
+                    buildJsonArray {
+                        repeat(11) { index ->
+                            add(
+                                JsonPrimitive(
+                                    when (index) {
+                                        1 -> "one"
+                                        10 -> "ten"
+                                        else -> "other"
+                                    },
+                                ),
+                            )
+                        }
+                    },
+                ).asString(),
+        )
+    }
+
+    @Test
+    fun testStringProcessorLeavesUnmatchedIndexTokensAlone() {
+        val processor = Json.decodeFromString(
+            StringProcessor.Companion.serializer(),
+            "{\"type\":\"${StringProcessor.TYPE}\",\"element\": \"%0 %7\"}",
+        )
+        assertEquals(
+            "five %7",
+            processor
+                .process(
+                    buildJsonArray {
+                        add(JsonPrimitive("five"))
+                    },
+                ).asString(),
+        )
+    }
+
+    @Test
     fun testStringProcessorMultiValueProcessString() {
         val processor = Json.decodeFromString(
             StringProcessor.Companion.serializer(),
