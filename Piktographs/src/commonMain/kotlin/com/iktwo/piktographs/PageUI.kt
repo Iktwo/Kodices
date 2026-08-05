@@ -79,7 +79,8 @@ public fun PageUI(
                 textInputData[element.id] = value
 
                 if (element is InputElement) {
-                    validityMap[element.id] = element.isValid
+                    // Validate the typed value, not element.isValid (which checks the initial text).
+                    validityMap[element.id] = element.isValid(value)
                 }
 
                 onInputUpdated()
