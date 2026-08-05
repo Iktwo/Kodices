@@ -29,15 +29,5 @@
         "type": "add"
       }
     }
-  ],
-  "processors": {
-    "target": {
-      "type": "path",
-      "element": "target"
-    },
-    "text": {
-      "type": "path",
-      "element": "name"
-    }
-  }
+  ]
 }
