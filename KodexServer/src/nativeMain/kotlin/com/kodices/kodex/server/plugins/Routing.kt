@@ -12,7 +12,7 @@ import io.ktor.server.routing.routing
 private val SAMPLE_CONTENT = """
     {
       "elements": [
-        { "type": "topBar", "text": "KodexServer" },
+        { "type": "topbar", "text": "KodexServer" },
         { "type": "row", "id": "greeting", "text": "Served by KodexServer", "textSecondary": "GET /content" },
         { "type": "separator" }
       ]
