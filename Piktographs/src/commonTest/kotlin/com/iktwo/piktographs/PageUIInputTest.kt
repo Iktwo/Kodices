@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -174,5 +176,85 @@ class PageUIInputTest {
 
             onNodeWithText("first").assertExists()
             onNodeWithText("second").assertExists()
+        }
+
+    @Test
+    fun aStaticallyDisabledInputRendersDisabled() =
+        runComposeUiTest {
+            // element.enabled must reach the renderer; previously LocalElementEnabled only carried
+            // the requiresValidElements gate, so an "enabled": false field rendered as editable.
+            val content = parse(
+                """
+                {
+                  "elements": [
+                    { "type": "textInput", "id": "locked", "constants": { "enabled": false, "textSecondary": "Locked" } }
+                  ]
+                }
+                """.trimIndent(),
+            )
+
+            setContent {
+                PageUI(content = content, elementOverrides = { false })
+            }
+
+            onNodeWithText("Locked").assertIsNotEnabled()
+        }
+
+    @Test
+    fun anElementGatedOnAnInvalidTextInputStartsDisabledAndEnablesWhenItBecomesValid() =
+        runComposeUiTest {
+            // The gated element is a textInput (not a checkbox): a TextField merges its placeholder
+            // into its own semantics node, so it can be targeted and carries the enabled state. A
+            // checkbox's label is a sibling Text node with no enabled state of its own.
+            val content = parse(
+                """
+                {
+                  "elements": [
+                    { "type": "textInput", "id": "name", "constants": { "textSecondary": "Name", "validation": { "nonBlank": true } } },
+                    { "type": "textInput", "id": "dependent", "constants": { "textSecondary": "Dependent", "requiresValidElements": ["name"] } }
+                  ]
+                }
+                """.trimIndent(),
+            )
+
+            setContent {
+                PageUI(content = content, elementOverrides = { false })
+            }
+
+            onNodeWithText("Dependent").assertIsNotEnabled()
+
+            onNodeWithText("Name").performTextInput("Ada")
+            waitForIdle()
+
+            onNodeWithText("Dependent").assertIsEnabled()
+        }
+
+    @Test
+    fun anElementGatedOnAnInvalidTextAreaEnablesOnceTheTextAreaBecomesValid() =
+        runComposeUiTest {
+            // textArea revalidates as the user type. Before the SideEffect was added to the
+            // textArea branch, validityMap kept the seeded (invalid) value and the gated element
+            // stayed disabled no matter what was typed.
+            val content = parse(
+                """
+                {
+                  "elements": [
+                    { "type": "textArea", "id": "bio", "constants": { "textSecondary": "Bio", "validation": { "nonBlank": true } } },
+                    { "type": "textInput", "id": "dependent", "constants": { "textSecondary": "Dependent", "requiresValidElements": ["bio"] } }
+                  ]
+                }
+                """.trimIndent(),
+            )
+
+            setContent {
+                PageUI(content = content, elementOverrides = { false })
+            }
+
+            onNodeWithText("Dependent").assertIsNotEnabled()
+
+            onNodeWithText("Bio").performTextInput("Ada")
+            waitForIdle()
+
+            onNodeWithText("Dependent").assertIsEnabled()
         }
 }

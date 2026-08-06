@@ -81,13 +81,17 @@ public fun ElementUI(
     val booleanInputData = LocalBooleanInputData.current
     val elementOverrides = LocalElementOverrides.current
 
-    val isEnabled by remember(element.requiresValidElements, validityMap) {
+    val isEnabled by remember(element.enabled, element.requiresValidElements, validityMap) {
         derivedStateOf {
-            if (element.requiresValidElements.isEmpty()) {
-                true
-            } else {
-                element.requiresValidElements.all { validityMap[it] == true }
-            }
+            // element.enabled is the static flag from the JSON; requiresValidElements gates it on
+            // the live validity of other inputs. Both feed LocalElementEnabled so every renderer
+            // reads a single, complete answer instead of combining the two itself.
+            element.enabled &&
+                if (element.requiresValidElements.isEmpty()) {
+                    true
+                } else {
+                    element.requiresValidElements.all { validityMap[it] == true }
+                }
         }
     }
 
@@ -114,6 +118,13 @@ public fun ElementUI(
                     }
 
                     INPUT_ELEMENT_TEXT_AREA if element is InputElement -> {
+                        SideEffect {
+                            val isElementValid = element.isValid(textInputData[element.id] ?: element.text ?: "")
+                            if (validityMap[element.id] != isElementValid) {
+                                validityMap[element.id] = isElementValid
+                            }
+                        }
+
                         TextAreaUI(element, inputHandler)
                     }
 

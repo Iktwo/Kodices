@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import com.iktwo.kodices.elements.InputElement
 import com.iktwo.kodices.elements.InputHandler
 import com.iktwo.piktographs.LocalElementBooleanInput
+import com.iktwo.piktographs.LocalElementEnabled
 
 @Composable
 public fun CheckboxUI(
@@ -29,7 +30,7 @@ public fun CheckboxUI(
         ) {
             Checkbox(
                 checked = LocalElementBooleanInput.current,
-                enabled = element.enabled,
+                enabled = LocalElementEnabled.current,
                 onCheckedChange = { newCheckedValue ->
                     inputHandler.onBooleanInput(element, newCheckedValue)
                 },

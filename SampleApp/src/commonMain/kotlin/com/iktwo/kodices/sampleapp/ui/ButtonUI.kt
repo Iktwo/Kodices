@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import com.iktwo.kodices.elements.ProcessedElement
 import com.iktwo.kodices.sampleapp.DefaultActionPerformer
 import com.iktwo.kodices.sampleapp.theme.SPACING
+import com.iktwo.piktographs.LocalElementEnabled
 
 const val BUTTON_ELEMENT_TYPE = "button"
 
@@ -22,7 +23,10 @@ fun ButtonUI(element: ProcessedElement) {
             onClick = {
                 actionPerformer.onAction(element.actions.first())
             },
-            enabled = element.enabled && element.actions.isNotEmpty(),
+            // LocalElementEnabled already folds in element.enabled plus requiresValidElements
+            // gating, so a button with requiresValidElements only becomes clickable once those
+            // inputs are valid.
+            enabled = LocalElementEnabled.current && element.actions.isNotEmpty(),
         ) {
             Text(element.text ?: "")
         }
