@@ -42,6 +42,9 @@ jobs:
       - name: Build
         run: ./gradlew build --max-workers=2
 
+      # `check` runs the test suites, the Kover 75% coverage gate on :Kodices,
+      # and `checkLegacyAbi` on both published modules. An unreviewed public API
+      # change fails here; refresh the dump with `./gradlew updateLegacyAbi`.
       - name: Check
         run: ./gradlew check
 
