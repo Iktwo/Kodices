@@ -4,7 +4,7 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.runComposeUiTest
+import androidx.compose.ui.test.v2.runComposeUiTest
 import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.actions.MessageAction
 import com.iktwo.kodices.content.Content
@@ -134,5 +134,196 @@ public class KodicesNavHostTest {
             // Assert recovered content is displayed
             onNodeWithText("Recovered").assertIsDisplayed()
             assertEquals(2, fetchCount)
+        }
+
+    @Test
+    public fun navigatesUsingUnregisteredGenericAction() =
+        runComposeUiTest {
+            // Bare parser without registering NavigateAction.descriptor
+            val parser = KodicesParser()
+
+            val page1 = parser.parseJSONToContent(
+                """
+                {
+                  "elements": [
+                    { "type": "row", "id": "p1_title", "text": "Page One" },
+                    {
+                      "type": "button",
+                      "id": "nav_btn",
+                      "text": "Go to Page 2",
+                      "action": {
+                        "type": "navigate",
+                        "constants": {
+                          "targetRoute": "page_two"
+                        }
+                      }
+                    }
+                  ]
+                }
+                """.trimIndent(),
+            )
+
+            val page2 = parser.parseJSONToContent(
+                """
+                {
+                  "elements": [
+                    { "type": "row", "id": "p2_title", "text": "Page Two" }
+                  ]
+                }
+                """.trimIndent(),
+            )
+
+            val fetcher: suspend (String) -> Content? = { route ->
+                when (route) {
+                    "page_one" -> page1
+                    "page_two" -> page2
+                    else -> null
+                }
+            }
+
+            setContent {
+                val navController = rememberKodicesNavController(initialRoute = "page_one")
+                KodicesNavHost(
+                    navController = navController,
+                    fetchContent = fetcher,
+                )
+            }
+
+            onNodeWithText("Page One").assertIsDisplayed()
+            onNodeWithText("Go to Page 2").performClick()
+            onNodeWithText("Page Two").assertIsDisplayed()
+        }
+
+    @Test
+    public fun navigatesToModalDialogAndDismisses() =
+        runComposeUiTest {
+            val parser = KodicesParser(actions = listOf(NavigateAction.descriptor, MessageAction.descriptor))
+
+            val mainPage = parser.parseJSONToContent(
+                """
+                {
+                  "elements": [
+                    { "type": "row", "id": "main_title", "text": "Main Page Content" },
+                    {
+                      "type": "button",
+                      "id": "open_dialog_btn",
+                      "text": "Open Dialog",
+                      "action": {
+                        "type": "navigate",
+                        "targetRoute": "my_dialog",
+                        "presentation": "dialog",
+                        "title": "Info Dialog"
+                      }
+                    }
+                  ]
+                }
+                """.trimIndent(),
+            )
+
+            val dialogPage = parser.parseJSONToContent(
+                """
+                {
+                  "elements": [
+                    { "type": "row", "id": "dialog_text", "text": "Inside Modal Dialog" },
+                    {
+                      "type": "button",
+                      "id": "close_dialog_btn",
+                      "text": "Close Dialog",
+                      "action": { "type": "dismiss_modal" }
+                    }
+                  ]
+                }
+                """.trimIndent(),
+            )
+
+            val fetcher: suspend (String) -> Content? = { route ->
+                when (route) {
+                    "main" -> mainPage
+                    "my_dialog" -> dialogPage
+                    else -> null
+                }
+            }
+
+            setContent {
+                val navController = rememberKodicesNavController(initialRoute = "main")
+                KodicesNavHost(
+                    navController = navController,
+                    fetchContent = fetcher,
+                )
+            }
+
+            onNodeWithText("Main Page Content").assertIsDisplayed()
+            onNodeWithText("Open Dialog").performClick()
+
+            onNodeWithText("Inside Modal Dialog").assertIsDisplayed()
+            onNodeWithText("Close Dialog").performClick()
+
+            onNodeWithText("Main Page Content").assertIsDisplayed()
+        }
+
+    @Test
+    public fun navigatesToBottomSheetAndDismisses() =
+        runComposeUiTest {
+            val parser = KodicesParser(actions = listOf(NavigateAction.descriptor, MessageAction.descriptor))
+
+            val mainPage = parser.parseJSONToContent(
+                """
+                {
+                  "elements": [
+                    { "type": "row", "id": "main_title", "text": "Home for Sheet" },
+                    {
+                      "type": "button",
+                      "id": "open_sheet_btn",
+                      "text": "Open Sheet",
+                      "action": {
+                        "type": "navigate",
+                        "targetRoute": "my_sheet",
+                        "presentation": "bottom_sheet"
+                      }
+                    }
+                  ]
+                }
+                """.trimIndent(),
+            )
+
+            val sheetPage = parser.parseJSONToContent(
+                """
+                {
+                  "elements": [
+                    { "type": "row", "id": "sheet_text", "text": "Inside Bottom Sheet" },
+                    {
+                      "type": "button",
+                      "id": "dismiss_sheet_btn",
+                      "text": "Dismiss Sheet",
+                      "action": { "type": "back" }
+                    }
+                  ]
+                }
+                """.trimIndent(),
+            )
+
+            val fetcher: suspend (String) -> Content? = { route ->
+                when (route) {
+                    "home_sheet" -> mainPage
+                    "my_sheet" -> sheetPage
+                    else -> null
+                }
+            }
+
+            setContent {
+                val navController = rememberKodicesNavController(initialRoute = "home_sheet")
+                KodicesNavHost(
+                    navController = navController,
+                    fetchContent = fetcher,
+                )
+            }
+
+            onNodeWithText("Home for Sheet").assertIsDisplayed()
+            onNodeWithText("Open Sheet").performClick()
+
+            onNodeWithText("Inside Bottom Sheet").assertIsDisplayed()
+            onNodeWithText("Dismiss Sheet").performClick()
+
+            onNodeWithText("Home for Sheet").assertIsDisplayed()
         }
 }

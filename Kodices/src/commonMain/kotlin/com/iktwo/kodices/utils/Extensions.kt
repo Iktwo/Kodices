@@ -6,6 +6,8 @@ import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
+import kotlinx.serialization.json.doubleOrNull
+import kotlinx.serialization.json.floatOrNull
 import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
@@ -46,6 +48,22 @@ public fun JsonElement.asBooleanOrNull(): Boolean? {
 public fun JsonElement.asIntOrNull(): Int? {
     return if (this is JsonPrimitive) {
         intOrNull
+    } else {
+        null
+    }
+}
+
+public fun JsonElement.asFloatOrNull(): Float? {
+    return if (this is JsonPrimitive) {
+        floatOrNull
+    } else {
+        null
+    }
+}
+
+public fun JsonElement.asDoubleOrNull(): Double? {
+    return if (this is JsonPrimitive) {
+        doubleOrNull
     } else {
         null
     }

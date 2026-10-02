@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -81,24 +80,72 @@ fun TabCatalog(contentString: String) {
                 }
                 """.trimIndent(),
             )
+            "dialog_demo" -> kodicesParser.parseJSONToContent(
+                """
+                {
+                  "elements": [
+                    {
+                      "type": "row",
+                      "constants": {
+                        "text": "Server-Driven Modal Dialog",
+                        "textSecondary": "Presented via ContentDialog across JVM, Android, iOS, and Web."
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "constants": {
+                        "text": "Close Dialog",
+                        "variant": "filled"
+                      },
+                      "action": {
+                        "type": "dismiss_modal"
+                      }
+                    }
+                  ]
+                }
+                """.trimIndent(),
+            )
+            "sheet_demo" -> kodicesParser.parseJSONToContent(
+                """
+                {
+                  "elements": [
+                    {
+                      "type": "row",
+                      "constants": {
+                        "text": "Server-Driven Bottom Sheet",
+                        "textSecondary": "Presented via ModalBottomSheet across Compose Multiplatform."
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "constants": {
+                        "text": "Dismiss Sheet",
+                        "variant": "outlined"
+                      },
+                      "action": {
+                        "type": "back"
+                      }
+                    }
+                  ]
+                }
+                """.trimIndent(),
+            )
             else -> null
         }
     }
 
-    CompositionLocalProvider(DefaultActionPerformer provides actionPerformer) {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            KodicesNavHost(
-                navController = navController,
-                fetchContent = fetcher,
-                modifier = Modifier.fillMaxSize(),
-                elementOverrides = { elementOverride(it) },
-                actionPerformer = actionPerformer,
-            )
+    Surface(modifier = Modifier.fillMaxSize()) {
+        KodicesNavHost(
+            navController = navController,
+            fetchContent = fetcher,
+            modifier = Modifier.fillMaxSize(),
+            elementOverrides = { elementOverride(it) },
+            actionPerformer = actionPerformer,
+        )
 
-            if (isDialogOpen) {
-                ContentDialog(onCloseRequest = { isDialogOpen = false }) {
-                    Text(dialogMessage)
-                }
+        if (isDialogOpen) {
+            ContentDialog(onCloseRequest = { isDialogOpen = false }) {
+                Text(dialogMessage)
             }
         }
     }

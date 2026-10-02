@@ -10,11 +10,14 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateMap
+import androidx.compose.ui.Modifier
 import com.iktwo.kodices.actions.Action
 import com.iktwo.kodices.actions.ActionPerformer
 import com.iktwo.kodices.elements.INPUT_ELEMENT_CHECKBOX
+import com.iktwo.kodices.elements.INPUT_ELEMENT_SWITCH
 import com.iktwo.kodices.elements.INPUT_ELEMENT_TEXT_AREA
 import com.iktwo.kodices.elements.INPUT_ELEMENT_TEXT_INPUT
+import com.iktwo.kodices.elements.INPUT_ELEMENT_TOGGLE
 import com.iktwo.kodices.elements.InputElement
 import com.iktwo.kodices.elements.InputHandler
 import com.iktwo.kodices.elements.ProcessedElement
@@ -22,21 +25,30 @@ import com.iktwo.kodices.utils.asBooleanOrNull
 import com.iktwo.piktographs.ui.BUTTON_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.ButtonUI
 import com.iktwo.piktographs.ui.CARD_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.CONTAINER_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.CardUI
 import com.iktwo.piktographs.ui.CheckboxUI
 import com.iktwo.piktographs.ui.Constants
 import com.iktwo.piktographs.ui.Constants.TOP_BAR_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.ContainerUI
+import com.iktwo.piktographs.ui.HORIZONTAL_LAYOUT_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.HROW_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.ICON_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.IMAGE_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.IconUI
 import com.iktwo.piktographs.ui.ImageUI
 import com.iktwo.piktographs.ui.PROGRESS_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.ProgressUI
 import com.iktwo.piktographs.ui.ROW_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.RowUI
 import com.iktwo.piktographs.ui.SEPARATOR_ELEMENT_TYPE
-import com.iktwo.piktographs.ui.SeperatorUI
+import com.iktwo.piktographs.ui.SeparatorUI
+import com.iktwo.piktographs.ui.SwitchUI
 import com.iktwo.piktographs.ui.TextAreaUI
 import com.iktwo.piktographs.ui.TextInputUI
 import com.iktwo.piktographs.ui.UnknownElementUI
+import com.iktwo.piktographs.ui.VERTICAL_LAYOUT_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.VROW_ELEMENT_TYPE
 
 public inline fun ActionPerformer(crossinline block: (Action) -> Unit): ActionPerformer =
     object : ActionPerformer {
@@ -74,6 +86,7 @@ public val LocalElementValidity: ProvidableCompositionLocal<Boolean> = compositi
 @Composable
 public fun ElementUI(
     element: ProcessedElement,
+    modifier: Modifier = Modifier,
 ) {
     val inputHandler = LocalInputHandler.current
     val textInputData = LocalTextInputData.current
@@ -97,10 +110,19 @@ public fun ElementUI(
 
     val componentContent = @Composable {
         CompositionLocalProvider(LocalElementEnabled provides isEnabled) {
-            Box {
+            Box(modifier = modifier) {
                 when (element.type) {
                     ROW_ELEMENT_TYPE -> {
                         RowUI(element)
+                    }
+
+                    CONTAINER_ELEMENT_TYPE,
+                    HROW_ELEMENT_TYPE,
+                    HORIZONTAL_LAYOUT_ELEMENT_TYPE,
+                    VROW_ELEMENT_TYPE,
+                    VERTICAL_LAYOUT_ELEMENT_TYPE,
+                    -> {
+                        ContainerUI(element)
                     }
 
                     INPUT_ELEMENT_TEXT_INPUT if element is InputElement -> {
@@ -132,6 +154,18 @@ public fun ElementUI(
                         CheckboxUI(element, inputHandler)
                     }
 
+                    INPUT_ELEMENT_SWITCH if element is InputElement -> {
+                        SwitchUI(element, inputHandler)
+                    }
+
+                    INPUT_ELEMENT_TOGGLE if element is InputElement -> {
+                        SwitchUI(element, inputHandler)
+                    }
+
+                    ICON_ELEMENT_TYPE -> {
+                        IconUI(element)
+                    }
+
                     BUTTON_ELEMENT_TYPE -> {
                         ButtonUI(element)
                     }
@@ -145,7 +179,7 @@ public fun ElementUI(
                     }
 
                     SEPARATOR_ELEMENT_TYPE -> {
-                        SeperatorUI(element)
+                        SeparatorUI(element)
                     }
 
                     IMAGE_ELEMENT_TYPE -> {

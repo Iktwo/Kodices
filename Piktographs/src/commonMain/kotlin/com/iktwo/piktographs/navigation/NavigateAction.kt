@@ -12,11 +12,17 @@ import kotlinx.serialization.json.jsonObject
 @Serializable
 public data class NavigateAction(
     public val targetRoute: String,
+    public val presentation: String = PRESENTATION_PUSH,
+    public val title: String? = null,
 ) : Action {
     override val type: String = TYPE
 
     public companion object {
         public const val TYPE: String = "navigate"
+        public const val PRESENTATION_PUSH: String = "push"
+        public const val PRESENTATION_DIALOG: String = "dialog"
+        public const val PRESENTATION_BOTTOM_SHEET: String = "bottom_sheet"
+        public const val PRESENTATION_SHEET: String = "sheet"
 
         public val descriptor: ActionDescriptor = object : ActionDescriptor {
             override val type: String = TYPE
@@ -34,7 +40,24 @@ public data class NavigateAction(
                         ?.asStringOrNull()
                     ?: ""
 
-                NavigateAction(targetRoute)
+                val presentation = actionJson.jsonObject[Constants.CONSTANTS]
+                    ?.asJSONObjectOrNull()
+                    ?.get("presentation")
+                    ?.asStringOrNull()
+                    ?: actionJson.jsonObject["presentation"]?.asStringOrNull()
+                    ?: PRESENTATION_PUSH
+
+                val title = actionJson.jsonObject[Constants.CONSTANTS]
+                    ?.asJSONObjectOrNull()
+                    ?.get("title")
+                    ?.asStringOrNull()
+                    ?: actionJson.jsonObject["title"]?.asStringOrNull()
+
+                NavigateAction(
+                    targetRoute = targetRoute,
+                    presentation = presentation,
+                    title = title,
+                )
             }
         }
     }

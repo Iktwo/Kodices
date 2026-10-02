@@ -10,15 +10,15 @@
     {
       "type": "card",
       "constants": {
-        "text": "KodicesNavHost Demo Card",
-        "textSecondary": "Click button below to trigger SDUI page navigation",
+        "text": "KodicesNavHost & Modals Demo Card",
+        "textSecondary": "Trigger server-driven page navigation, dialogs, or bottom sheets",
         "variant": "elevated"
       },
       "nestedElements": [
         {
           "type": "button",
           "constants": {
-            "text": "Navigate to Sub-Page (KodicesNavHost)",
+            "text": "Push Sub-Page",
             "variant": "filled"
           },
           "action": {
@@ -27,6 +27,95 @@
               "targetRoute": "subpage_demo"
             }
           }
+        },
+        {
+          "type": "hrow",
+          "constants": {
+            "spacing": 8
+          },
+          "nestedElements": [
+            {
+              "type": "button",
+              "constants": {
+                "text": "Show Dialog",
+                "variant": "outlined",
+                "weight": 1.0
+              },
+              "action": {
+                "type": "navigate",
+                "constants": {
+                  "targetRoute": "dialog_demo",
+                  "presentation": "dialog",
+                  "title": "SDUI Modal"
+                }
+              }
+            },
+            {
+              "type": "button",
+              "constants": {
+                "text": "Show Sheet",
+                "variant": "outlined",
+                "weight": 1.0
+              },
+              "action": {
+                "type": "navigate",
+                "constants": {
+                  "targetRoute": "sheet_demo",
+                  "presentation": "bottom_sheet"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "card",
+      "constants": {
+        "text": "New Core UI Primitives",
+        "textSecondary": "Switch, Icon, and Horizontal Layout System"
+      },
+      "nestedElements": [
+        {
+          "type": "switch",
+          "id": "sample_switch",
+          "constants": {
+            "text": "Enable Push Notifications",
+            "textSecondary": "Receive real-time server updates",
+            "active": true
+          }
+        },
+        {
+          "type": "hrow",
+          "constants": {
+            "spacing": 16,
+            "alignment": "center"
+          },
+          "nestedElements": [
+            {
+              "type": "icon",
+              "constants": {
+                "name": "settings",
+                "size": 28
+              }
+            },
+            {
+              "type": "icon",
+              "constants": {
+                "name": "favorite",
+                "size": 28,
+                "tint": "#E91E63"
+              }
+            },
+            {
+              "type": "icon",
+              "constants": {
+                "name": "star",
+                "size": 28,
+                "tint": "#FFC107"
+              }
+            }
+          ]
         }
       ]
     },
@@ -40,20 +129,6 @@
         "constants": {
           "text": "This is a message from catalog!"
         }
-      }
-    },
-    {
-      "type": "button",
-      "constants": {
-        "text": "Outlined Button",
-        "variant": "outlined"
-      }
-    },
-    {
-      "type": "button",
-      "constants": {
-        "text": "Disabled Button",
-        "enabled": false
       }
     },
     {

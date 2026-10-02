@@ -39,9 +39,11 @@ public fun ButtonUI(element: ProcessedElement) {
         }
     }
 
+    val fillMaxWidth = element.jsonValues["fillMaxWidth"]?.asBooleanOrNull() ?: true
+    val baseModifier = if (fillMaxWidth) Modifier.fillMaxWidth() else Modifier
+
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = baseModifier
             .padding(DefaultTheme.current.dimensions.padding),
         contentAlignment = Alignment.Center,
     ) {

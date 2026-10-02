@@ -25,10 +25,22 @@ public const val INPUT_ELEMENT_TEXT_INPUT: String = "textInput"
 public const val INPUT_ELEMENT_TEXT_AREA: String = "textArea"
 
 /**
+ * Constant representing a switch input element.
+ */
+public const val INPUT_ELEMENT_SWITCH: String = "switch"
+
+/**
+ * Constant representing a toggle input element (alias for switch).
+ */
+public const val INPUT_ELEMENT_TOGGLE: String = "toggle"
+
+/**
  * List of default input element types.
  */
 public val DefaultInputElements: List<String> = listOf(
     INPUT_ELEMENT_CHECKBOX,
     INPUT_ELEMENT_TEXT_INPUT,
     INPUT_ELEMENT_TEXT_AREA,
+    INPUT_ELEMENT_SWITCH,
+    INPUT_ELEMENT_TOGGLE,
 )
