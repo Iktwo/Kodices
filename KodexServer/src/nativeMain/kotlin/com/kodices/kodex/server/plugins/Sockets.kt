@@ -8,11 +8,13 @@ import io.ktor.server.websocket.WebSockets
 import io.ktor.server.websocket.webSocket
 import io.ktor.websocket.Frame
 import io.ktor.websocket.readText
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 /**
- * Connected clients. Kotlin/Native has no ConcurrentHashMap; the server is single-threaded per
- * engine dispatcher, so a plain set guarded by the socket handler is enough for a sample.
+ * Connected clients, guarded by [sessionsMutex] for concurrent coroutine safety.
  */
+private val sessionsMutex = Mutex()
 private val sessions = mutableSetOf<DefaultWebSocketServerSession>()
 
 fun Application.configureSockets() {
@@ -26,20 +28,25 @@ fun Application.configureSockets() {
         webSocket("/kodices") {
             // Broadcast to every connected client, so a UI definition pushed by one
             // connection reaches the others.
-            sessions.add(this)
+            sessionsMutex.withLock {
+                sessions.add(this)
+            }
 
             try {
                 for (frame in incoming) {
                     if (frame is Frame.Text) {
                         val text = frame.readText()
 
-                        sessions.forEach { session ->
+                        val recipients = sessionsMutex.withLock { sessions.toList() }
+                        recipients.forEach { session ->
                             runCatching { session.send(Frame.Text(text)) }
                         }
                     }
                 }
             } finally {
-                sessions.remove(this)
+                sessionsMutex.withLock {
+                    sessions.remove(this)
+                }
             }
         }
     }

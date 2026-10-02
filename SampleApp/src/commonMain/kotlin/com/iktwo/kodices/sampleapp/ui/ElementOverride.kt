@@ -12,10 +12,6 @@ import kotlin.time.ExperimentalTime
 @Composable
 fun elementOverride(element: ProcessedElement): Boolean {
     when {
-        element.type == BUTTON_ELEMENT_TYPE -> {
-            ButtonUI(element)
-        }
-
         element is CountdownElement -> {
             CountdownUI(element, LastSecond.current)
         }

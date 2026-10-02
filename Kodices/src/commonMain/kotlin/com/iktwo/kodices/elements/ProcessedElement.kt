@@ -30,6 +30,44 @@ public open class ProcessedElement(
         return "ProcessedElement { type: $type, id: $id, text: $text, jsonValues: $jsonValues }"
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is ProcessedElement) return false
+
+        if (type != other.type) return false
+        if (id != other.id) return false
+        if (index != other.index) return false
+        if (text != other.text) return false
+        if (textSecondary != other.textSecondary) return false
+        if (style != other.style) return false
+        if (enabled != other.enabled) return false
+        if (visible != other.visible) return false
+        if (requiresValidElements != other.requiresValidElements) return false
+        if (validation != other.validation) return false
+        if (actions != other.actions) return false
+        if (jsonValues != other.jsonValues) return false
+        if (nestedElements != other.nestedElements) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = type.hashCode()
+        result = 31 * result + id.hashCode()
+        result = 31 * result + index
+        result = 31 * result + (text?.hashCode() ?: 0)
+        result = 31 * result + (textSecondary?.hashCode() ?: 0)
+        result = 31 * result + (style?.hashCode() ?: 0)
+        result = 31 * result + enabled.hashCode()
+        result = 31 * result + visible.hashCode()
+        result = 31 * result + requiresValidElements.hashCode()
+        result = 31 * result + (validation?.hashCode() ?: 0)
+        result = 31 * result + actions.hashCode()
+        result = 31 * result + jsonValues.hashCode()
+        result = 31 * result + nestedElements.hashCode()
+        return result
+    }
+
     public open fun copy(
         id: String = this.id,
         index: Int = this.index,

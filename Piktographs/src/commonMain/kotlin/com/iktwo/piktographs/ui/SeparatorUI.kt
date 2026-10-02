@@ -16,7 +16,7 @@ public const val SEPARATOR_ELEMENT_TYPE: String = "separator"
 private const val SIZE_KEY = "size"
 
 @Composable
-public fun SeperatorUI(element: ProcessedElement) {
+public fun SeparatorUI(element: ProcessedElement) {
     val size = element.jsonValues[SIZE_KEY]?.asIntOrNull()?.dp
         ?: DefaultTheme.current.dimensions.separator
 
@@ -36,6 +36,15 @@ public fun SeperatorUI(element: ProcessedElement) {
             )
         }
     }
+}
+
+@Deprecated(
+    message = "Use SeparatorUI instead",
+    replaceWith = ReplaceWith("SeparatorUI(element)"),
+)
+@Composable
+public fun SeperatorUI(element: ProcessedElement) {
+    SeparatorUI(element)
 }
 
 public enum class SeparatorStyle {

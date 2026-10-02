@@ -1,6 +1,7 @@
 package com.iktwo.kodices.inputvalidation
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable
 public data class Validation(
@@ -8,6 +9,11 @@ public data class Validation(
     val regex: String? = null,
     val nonBlank: Boolean? = null,
 ) {
+    @Transient
+    private val compiledRegex: Regex? = regex?.let { pattern ->
+        runCatching { Regex(pattern) }.getOrNull()
+    }
+
     public fun validate(text: String?): Boolean {
         if (length == null && regex == null && nonBlank == null) {
             return true
@@ -22,8 +28,11 @@ public data class Validation(
                 }
             }
 
-            regex?.let { regexString ->
-                if (!Regex(regexString).matches(text)) {
+            if (regex != null) {
+                val matches = compiledRegex?.let {
+                    runCatching { it.matches(text) }.getOrDefault(false)
+                } ?: false
+                if (!matches) {
                     return false
                 }
             }

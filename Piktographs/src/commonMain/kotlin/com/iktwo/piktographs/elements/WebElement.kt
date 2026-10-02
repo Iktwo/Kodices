@@ -14,7 +14,7 @@ public class WebElement(
     public val jsOnLoad: String?,
     nestedElements: List<ProcessedElement> = emptyList(),
     actions: List<Action> = emptyList(),
-) : ProcessedElement(type = type, nestedElements = nestedElements, id = id, actions = actions) {
+) : ProcessedElement(type = type, nestedElements = nestedElements, id = id, actions = actions, jsonValues = jsonValues) {
     public companion object : ElementDescriptor {
         override val type: String = "web"
 

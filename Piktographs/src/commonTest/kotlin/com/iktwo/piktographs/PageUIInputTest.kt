@@ -4,7 +4,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertTextEquals
@@ -12,7 +15,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.test.runComposeUiTest
+import androidx.compose.ui.test.v2.runComposeUiTest
 import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.content.Content
 import kotlin.test.Test
@@ -256,5 +259,68 @@ class PageUIInputTest {
             waitForIdle()
 
             onNodeWithText("Dependent").assertIsEnabled()
+        }
+
+    @Test
+    fun blankInputShowsErrorWhenInvalidTextIsTyped() =
+        runComposeUiTest {
+            val content = parse(
+                """
+                {
+                  "elements": [
+                    {
+                      "type": "textInput",
+                      "id": "email",
+                      "constants": {
+                        "textSecondary": "Email",
+                        "validation": { "regex": "^[a-z]+@[a-z]+\\.[a-z]+$" }
+                      }
+                    },
+                    {
+                      "type": "textInput",
+                      "id": "submit",
+                      "constants": {
+                        "textSecondary": "Submit",
+                        "requiresValidElements": ["email"]
+                      }
+                    }
+                  ]
+                }
+                """.trimIndent(),
+            )
+
+            setContent {
+                PageUI(content = content, elementOverrides = { false })
+            }
+
+            // Initially empty: no error shown yet, dependent field starts disabled
+            onNodeWithText("Email").assert(SemanticsMatcher.keyNotDefined(SemanticsProperties.Error))
+            onNodeWithText("Submit").assertIsNotEnabled()
+
+            // Type invalid email: the field shows its error state, dependent field remains disabled
+            onNodeWithText("Email").performTextInput("invalid")
+            waitForIdle()
+            onNodeWithText("invalid").assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Error))
+            onNodeWithText("Submit").assertIsNotEnabled()
+        }
+
+    @Test
+    fun textAreaWithMaxLinesBelowDefaultMinLinesDoesNotCrash() =
+        runComposeUiTest {
+            val content = parse(
+                """
+                {
+                  "elements": [
+                    { "type": "textArea", "id": "bio", "constants": { "textSecondary": "Bio", "maxLines": 1, "minLines": 0 } }
+                  ]
+                }
+                """.trimIndent(),
+            )
+
+            setContent {
+                PageUI(content = content, elementOverrides = { false })
+            }
+
+            onNodeWithText("Bio").assertExists()
         }
 }

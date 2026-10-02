@@ -2,6 +2,8 @@ package com.iktwo.kodices.actions
 
 import com.iktwo.kodices.kodicesContext
 import com.iktwo.kodices.utils.Constants
+import com.iktwo.kodices.utils.asJSONObjectOrNull
+import com.iktwo.kodices.utils.asMap
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -31,5 +33,5 @@ public open class InterimAction(
         json.kodicesContext.registry
             .actionBuilder(type)
             ?.invoke(jsonSource, data)
-            ?: SimpleAction(type)
+            ?: SimpleAction(type, jsonSource.asJSONObjectOrNull()?.asMap() ?: emptyMap())
 }

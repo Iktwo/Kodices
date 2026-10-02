@@ -120,4 +120,27 @@ class ValidationTest {
         assertEquals(false, validation.validate(null))
         assertEquals(false, validation.validate("1234"))
     }
+
+    @Test
+    fun testValidateRegex() {
+        val validation = Json.decodeFromString(
+            Validation.serializer(),
+            "{\"regex\": \"^[a-z]+$\"}",
+        )
+
+        assertEquals(true, validation.validate("abc"))
+        assertEquals(false, validation.validate("abc123"))
+        assertEquals(false, validation.validate(""))
+        assertEquals(false, validation.validate(null))
+    }
+
+    @Test
+    fun testValidateMalformedRegexDoesNotCrash() {
+        // Invalid regex pattern with unclosed bracket
+        val validation = Validation(regex = "[a-z")
+
+        // Should safely return false and not throw PatternSyntaxException
+        assertEquals(false, validation.validate("abc"))
+        assertEquals(false, validation.validate(null))
+    }
 }

@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateMap
@@ -97,6 +98,9 @@ public fun PageUI(
         val topBarElement = content.elements.find { it.type == TOP_BAR_ELEMENT_TYPE }
         val barStyle = TopBarStyle.fromText(topBarElement?.style)
         val scrollBehavior = barStyle.scrollBehavior(topAppBarState)
+        val listElements = remember(content.elements) {
+            content.elements.filter { it.type != TOP_BAR_ELEMENT_TYPE }
+        }
 
         CompositionLocalProvider(
             LocalElementOverrides provides elementOverrides,
@@ -127,7 +131,7 @@ public fun PageUI(
                                 .nestedScroll(scrollBehavior.nestedScrollConnection),
                         ) {
                             renderElements(
-                                content.elements,
+                                listElements,
                             )
                         }
                     }
@@ -142,7 +146,7 @@ public fun PageUI(
                                 .nestedScroll(scrollBehavior.nestedScrollConnection),
                         ) {
                             renderElements(
-                                content.elements,
+                                listElements,
                             )
                         }
                     }

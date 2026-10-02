@@ -1,7 +1,6 @@
 package com.iktwo.kodices.sampleapp
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateMap
@@ -31,17 +30,16 @@ fun JsonContent(
     onInputUpdated: () -> Unit = { },
 ) {
     kodicesParser.parseJSONToContent(contentString, dataString)?.let { content ->
-        CompositionLocalProvider(DefaultActionPerformer provides (actionPerformer ?: emptyActionPerformer)) {
-            PageUI(
-                content = content,
-                modifier = modifier,
-                elementOverrides = elementOverrides ?: { _ -> false },
-                textInputData = textInputData,
-                booleanInputData = booleanInputData,
-                validityMap = validityMap,
-                onInputIdsPopulated = onInputIdsPopulated,
-                onInputUpdated = onInputUpdated,
-            )
-        }
+        PageUI(
+            content = content,
+            modifier = modifier,
+            actionPerformer = actionPerformer ?: emptyActionPerformer,
+            elementOverrides = elementOverrides ?: { _ -> false },
+            textInputData = textInputData,
+            booleanInputData = booleanInputData,
+            validityMap = validityMap,
+            onInputIdsPopulated = onInputIdsPopulated,
+            onInputUpdated = onInputUpdated,
+        )
     }
 }

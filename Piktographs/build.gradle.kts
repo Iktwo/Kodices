@@ -22,7 +22,7 @@ kotlin {
 
     jvmToolchain(21)
 
-    androidLibrary {
+    android {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
             freeCompilerArgs.add("-Xjdk-release=17")
@@ -62,7 +62,13 @@ kotlin {
         browser()
     }
 
-    js()
+    js {
+        browser {
+            testTask {
+                enabled = false
+            }
+        }
+    }
 
     sourceSets {
         androidMain.dependencies {

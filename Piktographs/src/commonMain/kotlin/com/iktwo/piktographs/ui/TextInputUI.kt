@@ -24,6 +24,7 @@ public fun TextInputUI(
         verticalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.verticalSpacing),
     ) {
         TextField(
+            modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             enabled = LocalElementEnabled.current,
             value = LocalElementTextInput.current,
@@ -35,7 +36,7 @@ public fun TextInputUI(
                     Text(placeholder)
                 }
             },
-            isError = element.text != null && !LocalElementValidity.current,
+            isError = !LocalElementValidity.current && (LocalElementTextInput.current.isNotEmpty() || element.text != null),
         )
     }
 }
