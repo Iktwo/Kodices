@@ -4,7 +4,20 @@
 
 ## Kodices
 
-### 0.5.0 - unreleased
+### 0.6.0 - unreleased
+
+**Added**
+
+- Dynamic action payload preservation in `SimpleAction`: unmapped actions now retain their raw JSON properties in `jsonValues`, allowing generic action handlers to inspect action parameters without custom descriptors.
+- Added `asFloatOrNull()` and `asDoubleOrNull()` JSON parsing helper extensions.
+- Added structural `equals` and `hashCode` implementation to `ProcessedElement`, enabling Compose recomposition optimizations.
+- Added `switch` and `toggle` input element constants to `InputProvider`.
+
+**Fixed**
+
+- Cached regex pattern matching in `Validation.kt` with `runCatching` to prevent crashes on invalid server regexes.
+
+### 0.5.0
 
 **Breaking**
 
@@ -69,7 +82,31 @@ _First release._
 
 ## Piktographs
 
-### 0.7.0 - unreleased
+### 0.8.0 - unreleased
+
+**Added**
+
+- Core UI Primitives:
+  - `SwitchUI` (`"switch"`, `"toggle"`): Material 3 animated toggle integrated with `LocalBooleanInputData` and `InputHandler`.
+  - `IconUI` (`"icon"`): Material Icons resolution (`settings`, `favorite`, `star`, etc.) with custom sizes, tint colors, and click actions.
+  - `ImageUI` enhancements: added `width`, `height`, `aspectRatio`, `contentScale` (`crop`, `fit`, `inside`, `fillBounds`), `cornerRadius`, `alpha`, and clickable action dispatching.
+- True Horizontal Layout System:
+  - `ContainerUI` (`"hrow"`, `"container"`, `"horizontal_layout"`, `"vrow"`, `"vertical_layout"`): Compose `Row` / `Column` supporting horizontal and vertical arrangements, alignments, and per-child `weight`.
+  - `ElementUI` and `NestedElementUI` now support an optional `modifier: Modifier = Modifier` parameter for parent layout constraint propagation.
+- Server-Driven Modals & Bottom Sheets:
+  - Added `ContentBottomSheet` (platform-agnostic Material 3 `ModalBottomSheet` wrapper).
+  - Added `ModalAction` (`"modal"`) and `DismissModalAction` (`"dismiss_modal"`).
+  - Enhanced `NavigateAction` with `presentation: String = "push"` (`"dialog"`, `"bottom_sheet"`) and `title: String?`.
+  - Full modal overlay handling in `KodicesNavHost` and `KodicesNavController`, with automatic dismissal on `back`, `close`, or `dismiss_modal`.
+
+**Fixed**
+
+- Fixed empty input validation state bug in `TextInputUI` where initially blank inputs failed to enter the error state.
+- Aligned `TextAreaUI` error state and `fillMaxWidth` styling with `TextInputUI`.
+- Fixed `TOP_BAR_ELEMENT_TYPE` duplicate slot allocation in `PageUI.renderElements`.
+- Renamed typo `SeperatorUI` to `SeparatorUI` with `@Deprecated` backwards-compatible alias.
+
+### 0.7.0
 
 **Added**
 
