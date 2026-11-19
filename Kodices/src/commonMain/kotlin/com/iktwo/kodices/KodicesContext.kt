@@ -11,6 +11,7 @@ import com.iktwo.kodices.actions.MessageAction
 import com.iktwo.kodices.dataprocessors.DataProcessorBuilder
 import com.iktwo.kodices.dataprocessors.DataProcessorRegistry
 import com.iktwo.kodices.dataprocessors.JSONDrillerProcessor
+import com.iktwo.kodices.dataprocessors.MapProcessor
 import com.iktwo.kodices.dataprocessors.StringProcessor
 import com.iktwo.kodices.dataprocessors.StylerProcessor
 import com.iktwo.kodices.elements.DefaultInputElements
@@ -128,6 +129,9 @@ public class KodicesRegistry internal constructor(
             },
             StylerProcessor.TYPE to { json, jsonObject ->
                 json.decodeFromJsonElement(StylerProcessor.serializer(), jsonObject)
+            },
+            MapProcessor.TYPE to { json, jsonObject ->
+                json.decodeFromJsonElement(MapProcessor.serializer(), jsonObject)
             },
         )
     }

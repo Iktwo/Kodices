@@ -10,6 +10,7 @@ public object Constants {
     public const val DATA: String = "data"
     public const val ELEMENT: String = "element"
     public const val ELEMENTS: String = "elements"
+    public const val EMPTY_ELEMENT: String = "emptyElement"
     public const val EXPAND_WITH_PROCESSOR: String = "expandWithProcessor"
     public const val EXPAND_WITH_PROCESSORS: String = "expandWithProcessors"
     public const val ID: String = "id"

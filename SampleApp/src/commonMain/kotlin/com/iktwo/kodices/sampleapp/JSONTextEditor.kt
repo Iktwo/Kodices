@@ -27,7 +27,8 @@ fun JSONTextEditor(
     onJSONTextChanged: (String) -> Unit,
 ) {
     var layoutText by remember { mutableStateOf(initialValue) }
-    var validJSON by remember { mutableStateOf(true) }
+    // Checked up front, so text that arrives broken is marked before the first keystroke.
+    var validJSON by remember { mutableStateOf(isValidJson(initialValue)) }
 
     TextField(
         value = layoutText,
@@ -74,3 +75,11 @@ fun JSONTextEditor(
         Text("Format JSON")
     }
 }
+
+private fun isValidJson(text: String): Boolean =
+    try {
+        Json.parseToJsonElement(text)
+        true
+    } catch (e: SerializationException) {
+        false
+    }

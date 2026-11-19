@@ -10,23 +10,31 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.ThumbUp
@@ -36,7 +44,6 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.iktwo.kodices.elements.ProcessedElement
@@ -123,23 +130,14 @@ internal fun resolveImageVector(name: String): ImageVector? {
         "place", "location" -> Icons.Default.Place
         "play", "play_arrow" -> Icons.Default.PlayArrow
         "list" -> Icons.AutoMirrored.Filled.List
+        "calendar", "date_range", "event" -> Icons.Default.DateRange
+        "email", "mail" -> Icons.Default.Email
+        "phone", "call" -> Icons.Default.Phone
+        "check_circle", "ok" -> Icons.Default.CheckCircle
+        "arrow_up", "up", "keyboard_arrow_up" -> Icons.Default.KeyboardArrowUp
+        "arrow_down", "down", "keyboard_arrow_down" -> Icons.Default.KeyboardArrowDown
+        "build", "tools" -> Icons.Default.Build
+        "share" -> Icons.Default.Share
         else -> null
-    }
-}
-
-private fun parseColor(colorString: String?): Color? {
-    if (colorString == null) return null
-    val clean = colorString.trim()
-    return if (clean.startsWith("#")) {
-        runCatching {
-            val hex = clean.removePrefix("#")
-            when (hex.length) {
-                6 -> Color(hex.toLong(16) or 0x00000000FF000000)
-                8 -> Color(hex.toLong(16))
-                else -> null
-            }
-        }.getOrNull()
-    } else {
-        null
     }
 }

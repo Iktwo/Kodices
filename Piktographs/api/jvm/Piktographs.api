@@ -17,6 +17,7 @@ public final class com/iktwo/piktographs/ElementUIKt {
 	public static final fun getLocalElementTextInput ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalElementValidity ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalInputHandler ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalLogger ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalTextInputData ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalValidityMap ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
@@ -370,6 +371,11 @@ public final class com/iktwo/piktographs/navigation/NavigateAction$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/iktwo/piktographs/ui/BadgeUIKt {
+	public static final field BADGE_ELEMENT_TYPE Ljava/lang/String;
+	public static final fun BadgeUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
+}
+
 public final class com/iktwo/piktographs/ui/ButtonUIKt {
 	public static final field BUTTON_ELEMENT_TYPE Ljava/lang/String;
 	public static final fun ButtonUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
@@ -380,6 +386,11 @@ public final class com/iktwo/piktographs/ui/CardUIKt {
 	public static final fun CardUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
 }
 
+public final class com/iktwo/piktographs/ui/ChartUIKt {
+	public static final field CHART_ELEMENT_TYPE Ljava/lang/String;
+	public static final fun ChartUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
+}
+
 public final class com/iktwo/piktographs/ui/CheckboxUIKt {
 	public static final fun CheckboxUI (Lcom/iktwo/kodices/elements/InputElement;Lcom/iktwo/kodices/elements/InputHandler;Landroidx/compose/runtime/Composer;I)V
 }
@@ -387,17 +398,25 @@ public final class com/iktwo/piktographs/ui/CheckboxUIKt {
 public final class com/iktwo/piktographs/ui/Colors {
 	public static final field $stable I
 	public fun <init> ()V
-	public synthetic fun <init> (JJJILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (JJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJJJJJJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1-0d7_KjU ()J
 	public final fun component2-0d7_KjU ()J
 	public final fun component3-0d7_KjU ()J
-	public final fun copy-ysEtTa8 (JJJ)Lcom/iktwo/piktographs/ui/Colors;
-	public static synthetic fun copy-ysEtTa8$default (Lcom/iktwo/piktographs/ui/Colors;JJJILjava/lang/Object;)Lcom/iktwo/piktographs/ui/Colors;
+	public final fun component4-0d7_KjU ()J
+	public final fun component5-0d7_KjU ()J
+	public final fun component6-0d7_KjU ()J
+	public final fun component7-0d7_KjU ()J
+	public final fun copy-4JmcsL4 (JJJJJJJ)Lcom/iktwo/piktographs/ui/Colors;
+	public static synthetic fun copy-4JmcsL4$default (Lcom/iktwo/piktographs/ui/Colors;JJJJJJJILjava/lang/Object;)Lcom/iktwo/piktographs/ui/Colors;
 	public fun equals (Ljava/lang/Object;)Z
+	public final fun getErrorColor-0d7_KjU ()J
+	public final fun getInfoColor-0d7_KjU ()J
 	public final fun getMainTextColor-0d7_KjU ()J
 	public final fun getSecondaryTextColor-0d7_KjU ()J
 	public final fun getSeparatorColor-0d7_KjU ()J
+	public final fun getSuccessColor-0d7_KjU ()J
+	public final fun getWarningColor-0d7_KjU ()J
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -458,6 +477,7 @@ public final class com/iktwo/piktographs/ui/Dimensions {
 
 public final class com/iktwo/piktographs/ui/DimensionsKt {
 	public static final fun getDefaultTheme ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalTheme ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
 
 public final class com/iktwo/piktographs/ui/FontSizes {
@@ -474,6 +494,11 @@ public final class com/iktwo/piktographs/ui/FontSizes {
 	public final fun getSecondary-XSAIIZE ()J
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/iktwo/piktographs/ui/GridUIKt {
+	public static final field GRID_ELEMENT_TYPE Ljava/lang/String;
+	public static final fun GridUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class com/iktwo/piktographs/ui/IconUIKt {
@@ -495,6 +520,11 @@ public final class com/iktwo/piktographs/ui/ImageUIKt {
 	public static final field KEY_URL Ljava/lang/String;
 	public static final field KEY_WIDTH Ljava/lang/String;
 	public static final fun ImageUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/iktwo/piktographs/ui/ListItemUIKt {
+	public static final field LIST_ITEM_ELEMENT_TYPE Ljava/lang/String;
+	public static final fun ListItemUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class com/iktwo/piktographs/ui/NestedElementUIKt {
@@ -530,8 +560,25 @@ public final class com/iktwo/piktographs/ui/SeparatorUIKt {
 	public static final fun SeperatorUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
 }
 
+public final class com/iktwo/piktographs/ui/StatUIKt {
+	public static final field STAT_ELEMENT_TYPE Ljava/lang/String;
+	public static final fun StatUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
+}
+
 public final class com/iktwo/piktographs/ui/SwitchUIKt {
 	public static final fun SwitchUI (Lcom/iktwo/kodices/elements/InputElement;Lcom/iktwo/kodices/elements/InputHandler;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/iktwo/piktographs/ui/TableUIKt {
+	public static final field TABLE_HEADER_ELEMENT_TYPE Ljava/lang/String;
+	public static final field TABLE_ROW_ELEMENT_TYPE Ljava/lang/String;
+	public static final fun TableHeaderUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
+	public static final fun TableRowUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/iktwo/piktographs/ui/TabsUIKt {
+	public static final field TABS_ELEMENT_TYPE Ljava/lang/String;
+	public static final fun TabsUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class com/iktwo/piktographs/ui/TextAreaUIKt {
@@ -540,6 +587,11 @@ public final class com/iktwo/piktographs/ui/TextAreaUIKt {
 
 public final class com/iktwo/piktographs/ui/TextInputUIKt {
 	public static final fun TextInputUI (Lcom/iktwo/kodices/elements/InputElement;Lcom/iktwo/kodices/elements/InputHandler;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/iktwo/piktographs/ui/TextUIKt {
+	public static final field TEXT_ELEMENT_TYPE Ljava/lang/String;
+	public static final fun TextUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class com/iktwo/piktographs/ui/Theme {

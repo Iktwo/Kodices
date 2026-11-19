@@ -21,11 +21,11 @@ public fun CheckboxUI(
     inputHandler: InputHandler,
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(DefaultTheme.current.dimensions.padding),
-        verticalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.verticalSpacing),
+        modifier = Modifier.fillMaxWidth().padding(LocalTheme.current.dimensions.padding),
+        verticalArrangement = Arrangement.spacedBy(LocalTheme.current.dimensions.verticalSpacing),
     ) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.horizontalSpacing),
+            horizontalArrangement = Arrangement.spacedBy(LocalTheme.current.dimensions.horizontalSpacing),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Checkbox(

@@ -29,7 +29,7 @@
           }
         },
         {
-          "type": "hrow",
+          "type": "container",
           "constants": {
             "spacing": 8
           },
@@ -86,7 +86,7 @@
           }
         },
         {
-          "type": "hrow",
+          "type": "container",
           "constants": {
             "spacing": 16,
             "alignment": "center"
@@ -160,6 +160,238 @@
         "text": "Active Checkbox",
         "active": true
       }
+    },
+    {
+      "type": "separator",
+      "constants": {
+        "style": "line",
+        "size": 1
+      }
+    },
+    {
+      "type": "text",
+      "constants": {
+        "text": "Dashboard elements",
+        "style": "headlineSmall"
+      }
+    },
+    {
+      "type": "text",
+      "constants": {
+        "text": "text takes any Material type scale style, an alignment, a weight and a line limit.",
+        "style": "bodyMedium",
+        "maxLines": 2
+      }
+    },
+    {
+      "type": "grid",
+      "constants": {
+        "columns": 2
+      },
+      "nestedElements": [
+        {
+          "type": "stat",
+          "constants": {
+            "text": "Living room",
+            "value": 21.5,
+            "unit": "°C",
+            "textSecondary": "2° warmer than yesterday",
+            "trend": "up",
+            "icon": "home"
+          }
+        },
+        {
+          "type": "stat",
+          "constants": {
+            "text": "Outside",
+            "value": 7,
+            "unit": "°C",
+            "textSecondary": "Light rain",
+            "icon": "place"
+          }
+        }
+      ]
+    },
+    {
+      "type": "chart",
+      "constants": {
+        "text": "Line chart",
+        "values": [19.8, 19.4, 19.1, 18.9, 19.0, 19.6, 20.3, 20.9, 21.2, 21.5],
+        "labels": ["24 h ago", "now"]
+      }
+    },
+    {
+      "type": "chart",
+      "constants": {
+        "text": "Bar chart",
+        "variant": "bar",
+        "values": [8.2, 7.4, 9.1, 6.5, 10.2, 12.4, 4.0],
+        "labels": ["M", "T", "W", "T", "F", "S", "S"]
+      }
+    },
+    {
+      "type": "listItem",
+      "constants": {
+        "text": "List item",
+        "textSecondary": "Leading icon, subtitle and a value at the end",
+        "icon": "calendar",
+        "value": "09:30"
+      },
+      "action": {
+        "type": "message",
+        "constants": {
+          "text": "List items are clickable when they have an action."
+        }
+      }
+    },
+    {
+      "type": "container",
+      "constants": {
+        "fillMaxWidth": false
+      },
+      "nestedElements": [
+        {
+          "type": "badge",
+          "constants": {
+            "text": "Filled badge"
+          }
+        },
+        {
+          "type": "badge",
+          "constants": {
+            "text": "Outlined badge",
+            "variant": "outlined"
+          }
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "constants": {
+        "text": "Tones, tables and tabs",
+        "style": "headlineSmall"
+      }
+    },
+    {
+      "type": "text",
+      "constants": {
+        "text": "A tone (info, success, warning, error) colors a badge, a stat's figure, a list item's icon, a chart or text from the theme.",
+        "style": "bodyMedium"
+      }
+    },
+    {
+      "type": "container",
+      "constants": {
+        "fillMaxWidth": false
+      },
+      "nestedElements": [
+        { "type": "badge", "constants": { "text": "Online", "tone": "success", "variant": "tonal" } },
+        { "type": "badge", "constants": { "text": "Unproven", "tone": "warning", "variant": "tonal" } },
+        { "type": "badge", "constants": { "text": "Failed", "tone": "error" } }
+      ]
+    },
+    {
+      "type": "listItem",
+      "constants": {
+        "text": "A tonal list item is hard to miss",
+        "textSecondary": "variant: tonal, tone: warning",
+        "icon": "warning",
+        "value": "14:02",
+        "tone": "warning",
+        "variant": "tonal"
+      }
+    },
+    {
+      "type": "listItem",
+      "constants": {
+        "text": "A dense list item",
+        "textSecondary": "dense: true, with a badge",
+        "icon": "person",
+        "badge": "New",
+        "tone": "info",
+        "value": "12:57",
+        "dense": true
+      }
+    },
+    {
+      "type": "text",
+      "constants": {
+        "text": "A grid with minColumnWidth fits as many columns as the width allows: resize the window.",
+        "style": "bodyMedium"
+      }
+    },
+    {
+      "type": "grid",
+      "constants": {
+        "minColumnWidth": 120
+      },
+      "nestedElements": [
+        { "type": "stat", "constants": { "text": "Uploads", "value": 321, "size": "medium" } },
+        { "type": "stat", "constants": { "text": "Auth failures", "value": 5, "size": "medium", "tone": "warning" } },
+        { "type": "stat", "constants": { "text": "Push failures", "value": 2, "size": "medium", "tone": "error" } },
+        { "type": "stat", "constants": { "text": "Storage", "value": "48", "unit": "MB", "size": "medium" } }
+      ]
+    },
+    {
+      "type": "text",
+      "constants": {
+        "text": "tableHeader and tableRow share their columns. In a narrow window each row stacks and labels its own values.",
+        "style": "bodyMedium"
+      }
+    },
+    {
+      "type": "tableHeader",
+      "constants": {
+        "columns": [
+          { "key": "name", "label": "Device", "weight": 2, "secondaryKey": "id" },
+          { "key": "status", "label": "Status", "width": 90, "display": "badge", "toneKey": "statusTone" },
+          { "key": "group", "label": "Group", "width": 64, "display": "mono" },
+          { "key": "sent", "label": "Sent", "width": 56, "align": "end" }
+        ]
+      }
+    },
+    {
+      "type": "tableRow",
+      "constants": {
+        "columns": [
+          { "key": "name", "label": "Device", "weight": 2, "secondaryKey": "id" },
+          { "key": "status", "label": "Status", "width": 90, "display": "badge", "toneKey": "statusTone" },
+          { "key": "group", "label": "Group", "width": 64, "display": "mono" },
+          { "key": "sent", "label": "Sent", "width": 56, "align": "end" }
+        ],
+        "values": { "name": "Desk", "id": "77aa01bc", "status": "Online", "statusTone": "success", "group": "a81f", "sent": 40 }
+      }
+    },
+    {
+      "type": "tableRow",
+      "constants": {
+        "columns": [
+          { "key": "name", "label": "Device", "weight": 2, "secondaryKey": "id" },
+          { "key": "status", "label": "Status", "width": 90, "display": "badge", "toneKey": "statusTone" },
+          { "key": "group", "label": "Group", "width": 64, "display": "mono" },
+          { "key": "sent", "label": "Sent", "width": 56, "align": "end" }
+        ],
+        "tone": "warning",
+        "values": { "name": "Tablet", "id": "0b9e44d1", "status": "Offline", "group": "a81f", "sent": 0 }
+      }
+    },
+    {
+      "type": "card",
+      "constants": {
+        "text": "Tabs",
+        "textSecondary": "As a top-level element of a page they stay above its content; here they are nested to show them in place.",
+        "variant": "outlined"
+      },
+      "nestedElements": [
+        {
+          "type": "tabs",
+          "nestedElements": [
+            { "type": "tab", "constants": { "text": "Overview", "icon": "home", "selected": true } },
+            { "type": "tab", "constants": { "text": "Devices", "icon": "phone" } },
+            { "type": "tab", "constants": { "text": "Logs", "icon": "list" } }
+          ]
+        }
+      ]
     }
   ]
 }

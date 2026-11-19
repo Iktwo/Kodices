@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Density
 import coil3.ImageLoader
 import coil3.SingletonImageLoader
+import coil3.annotation.DelicateCoilApi
 import com.iktwo.kodex.renderer.ui.EinkPageTheme
 import com.iktwo.kodex.renderer.ui.EinkTheme
 import com.iktwo.kodex.renderer.ui.einkElementOverride
@@ -85,6 +86,21 @@ public class Renderer(
 
     internal fun parse(screenJson: String): Content = parser.parse(screenJson)
 
+    /**
+     * The screen as a client that renders it itself needs it: its content, and its data with `now`
+     * merged in, exactly as [render] would see them. The content is checked to be valid Kodices
+     * content first, so a broken screen fails here and not on every client.
+     *
+     * @throws ScreenParseException if the JSON is not valid Kodices content.
+     */
+    public fun resolve(screenJson: String): ResolvedScreen {
+        parser.parse(screenJson)
+        return parser.resolve(screenJson)
+    }
+
+    // setUnsafe on purpose: the renderer owns the process, and every render must load images
+    // through this instance's loader, whatever was set before.
+    @OptIn(DelicateCoilApi::class)
     private suspend fun renderPixels(
         content: Content,
         spec: RenderSpec,

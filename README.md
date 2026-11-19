@@ -15,17 +15,18 @@ This repository contains different modules to help you get started:
 ```
 +--------------+     +--------------------+     +-----------------+
 |              |     |                    |     |                 |
-|  KodexServer |---->|     Kodices        |---->|   Piktographs   |
+| KodexRenderer|---->|     Kodices        |---->|   Piktographs   |
 | (JSON source)|     | (Core functonality)|     | (Reference UI)  |
 |              |     |                    |     |                 |
 +--------------+     +--------------------+     +-----------------+
 ```
 
-*   **KodexServer**: A sample Ktor server that provides the JSON UI definitions. (*Note: This module is currently a work-in-progress.*)
 *   **Kodices**: The core module that parses the JSON and creates a platform-agnostic model of the UI.
 *   **Piktographs**: A reference implementation that renders the UI models using Jetpack Compose for Android, iOS, and Desktop.
 *   **SampleApp**: An example application that demonstrates how to use these components together.
-*   **KodexRenderer**: A JVM server that renders screens through Piktographs to PNG images, for e-ink dashboards.
+*   **KodexRenderer**: The sample server. It serves the screens in a folder as JSON UI definitions for apps, and renders the same screens through Piktographs to PNG images for e-ink dashboards.
+*   **KodexClient**: The client side of KodexRenderer's JSON endpoints: fetching, polling and showing a server's screens. Shared by the SampleApp and KodexViewer.
+*   **KodexViewer**: A standalone viewer (desktop window and static web bundle) for any server that serves Kodices screens.
 
 ## Getting Started
 
@@ -105,17 +106,32 @@ cannot run on Kotlin/Native.
 | `GET /display?device=<id>` | `{"image_url": "/render/dashboard.png?width=954&height=1696&mode=gray16", "refresh_seconds": 900, "etag": "..."}` |
 | `GET /render/{screen}.png?width=&height=&mode=` | PNG (`mode` = `gray16` default, `bw`, `color`) with a strong `ETag`; `304` on a matching `If-None-Match` |
 | `GET /render/{screen}.json` | The screen's source JSON |
+| `GET /screens`, `GET /content/{screen}.json`, `GET /assets/{path}` | The same screens as JSON, for an app that renders them itself with Piktographs (the SampleApp's Dashboard tab) |
 
 To add a screen, put `<name>.json` (any Kodices content, optionally wrapped as
 `{"content": ..., "data": ...}`) in `KodexRenderer/screens/`; it is served at `/render/<name>.png`
 with no restart. Screens can show the current date through the injected `now` data, and bundled
 images through `asset:<file>` URLs. Set `KODEX_TOKEN` to require a bearer token. Configuration,
 Docker and the rendering details are in the [module README](KodexRenderer/README.md).
+[Building a dashboard](KodexRenderer/screens/README.md) explains how to write a screen, with the
+JSON for every element and three sample dashboards.
+
+## Viewer
+
+[KodexViewer](KodexViewer/README.md) shows the screens of any server that speaks the same JSON
+protocol (`GET /screens`, `GET /content/{screen}.json`), natively and live: an operator dashboard
+for your own service, or KodexRenderer's screens in color.
+
+```shell
+./gradlew :KodexViewer:run --args="--url http://localhost:8090"   # desktop window
+./gradlew :KodexViewer:wasmJsBrowserDistribution                  # static web bundle
+```
 
 ## Subprojects
 
 *   [**Kodices**](Kodices/README.md): The core KMP library for parsing UI models.
 *   [**Piktographs**](Piktographs/README.md): A reference UI implementation using Compose Multiplatform.
 *   [**SampleApp**](SampleApp/README.md): A sample application demonstrating the usage of the library.
-*   [**KodexServer**](KodexServer/README.md): A sample Ktor-based server for serving UI models.
-*   [**KodexRenderer**](KodexRenderer/README.md): Headless renderer serving screens as e-ink ready PNGs.
+*   [**KodexRenderer**](KodexRenderer/README.md): Sample server: screens as JSON for apps and as e-ink ready PNGs.
+*   [**KodexClient**](KodexClient/README.md): Client for the screens-as-JSON protocol, with its Compose UI.
+*   [**KodexViewer**](KodexViewer/README.md): Standalone desktop and web viewer.

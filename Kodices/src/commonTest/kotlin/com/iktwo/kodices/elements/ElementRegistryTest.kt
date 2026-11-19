@@ -1,3 +1,6 @@
+// These are the tests of the deprecated global registries, so they use them on purpose.
+@file:Suppress("DEPRECATION")
+
 package com.iktwo.kodices.elements
 
 import kotlin.test.BeforeTest

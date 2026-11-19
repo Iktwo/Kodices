@@ -33,11 +33,19 @@ private val FONT_SIZE_SECONDARY = 12.sp
  * [mainTextColor] and [secondaryTextColor] default to [Color.Unspecified], which means "follow the
  * Material theme" (`onSurface` / `onSurfaceVariant`), so text stays readable in dark themes unless a
  * host sets them explicitly.
+ *
+ * [infoColor], [successColor], [warningColor] and [errorColor] are what an element's `tone` is drawn
+ * in. Left [Color.Unspecified], info and error follow the Material theme (`primary`, `error`) and
+ * success and warning are a green and an amber picked for the theme's light or dark surface.
  */
 public data class Colors(
     val mainTextColor: Color = MAIN_TEXT_COLOR,
     val secondaryTextColor: Color = SECONDARY_TEXT_COLOR,
     val separatorColor: Color = SEPARATOR_COLOR,
+    val infoColor: Color = Color.Unspecified,
+    val successColor: Color = Color.Unspecified,
+    val warningColor: Color = Color.Unspecified,
+    val errorColor: Color = Color.Unspecified,
 )
 
 private val MAIN_TEXT_COLOR = Color.Unspecified
@@ -50,4 +58,11 @@ public data class Theme(
     val dimensions: Dimensions = Dimensions(),
 )
 
-public val DefaultTheme: androidx.compose.runtime.ProvidableCompositionLocal<Theme> = compositionLocalOf { Theme() }
+/**
+ * The [Theme] elements draw with. `PageUI` provides the one it is given; read it with
+ * `LocalTheme.current`.
+ */
+public val LocalTheme: androidx.compose.runtime.ProvidableCompositionLocal<Theme> = compositionLocalOf { Theme() }
+
+@Deprecated("Renamed to LocalTheme, the Compose naming for a CompositionLocal.", ReplaceWith("LocalTheme"))
+public val DefaultTheme: androidx.compose.runtime.ProvidableCompositionLocal<Theme> get() = LocalTheme

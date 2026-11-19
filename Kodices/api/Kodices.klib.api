@@ -252,6 +252,43 @@ final class com.iktwo.kodices.dataprocessors/JSONDrillerProcessor : com.iktwo.ko
     }
 }
 
+final class com.iktwo.kodices.dataprocessors/MapProcessor : com.iktwo.kodices.dataprocessors/DataProcessor { // com.iktwo.kodices.dataprocessors/MapProcessor|null[0]
+    constructor <init>(kotlin.collections/Map<kotlin/String, kotlinx.serialization.json/JsonElement> = ..., kotlinx.serialization.json/JsonElement? = ...) // com.iktwo.kodices.dataprocessors/MapProcessor.<init>|<init>(kotlin.collections.Map<kotlin.String,kotlinx.serialization.json.JsonElement>;kotlinx.serialization.json.JsonElement?){}[0]
+
+    final val defaultValue // com.iktwo.kodices.dataprocessors/MapProcessor.defaultValue|{}defaultValue[0]
+        final fun <get-defaultValue>(): kotlinx.serialization.json/JsonElement? // com.iktwo.kodices.dataprocessors/MapProcessor.defaultValue.<get-defaultValue>|<get-defaultValue>(){}[0]
+    final val type // com.iktwo.kodices.dataprocessors/MapProcessor.type|{}type[0]
+        final fun <get-type>(): kotlin/String // com.iktwo.kodices.dataprocessors/MapProcessor.type.<get-type>|<get-type>(){}[0]
+    final val values // com.iktwo.kodices.dataprocessors/MapProcessor.values|{}values[0]
+        final fun <get-values>(): kotlin.collections/Map<kotlin/String, kotlinx.serialization.json/JsonElement> // com.iktwo.kodices.dataprocessors/MapProcessor.values.<get-values>|<get-values>(){}[0]
+
+    final fun component1(): kotlin.collections/Map<kotlin/String, kotlinx.serialization.json/JsonElement> // com.iktwo.kodices.dataprocessors/MapProcessor.component1|component1(){}[0]
+    final fun component2(): kotlinx.serialization.json/JsonElement? // com.iktwo.kodices.dataprocessors/MapProcessor.component2|component2(){}[0]
+    final fun copy(kotlin.collections/Map<kotlin/String, kotlinx.serialization.json/JsonElement> = ..., kotlinx.serialization.json/JsonElement? = ...): com.iktwo.kodices.dataprocessors/MapProcessor // com.iktwo.kodices.dataprocessors/MapProcessor.copy|copy(kotlin.collections.Map<kotlin.String,kotlinx.serialization.json.JsonElement>;kotlinx.serialization.json.JsonElement?){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.iktwo.kodices.dataprocessors/MapProcessor.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.iktwo.kodices.dataprocessors/MapProcessor.hashCode|hashCode(){}[0]
+    final fun process(kotlinx.serialization.json/JsonElement?): kotlinx.serialization.json/JsonElement? // com.iktwo.kodices.dataprocessors/MapProcessor.process|process(kotlinx.serialization.json.JsonElement?){}[0]
+    final fun toString(): kotlin/String // com.iktwo.kodices.dataprocessors/MapProcessor.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<com.iktwo.kodices.dataprocessors/MapProcessor> { // com.iktwo.kodices.dataprocessors/MapProcessor.$serializer|null[0]
+        final val descriptor // com.iktwo.kodices.dataprocessors/MapProcessor.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // com.iktwo.kodices.dataprocessors/MapProcessor.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // com.iktwo.kodices.dataprocessors/MapProcessor.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): com.iktwo.kodices.dataprocessors/MapProcessor // com.iktwo.kodices.dataprocessors/MapProcessor.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, com.iktwo.kodices.dataprocessors/MapProcessor) // com.iktwo.kodices.dataprocessors/MapProcessor.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;com.iktwo.kodices.dataprocessors.MapProcessor){}[0]
+    }
+
+    final object Companion { // com.iktwo.kodices.dataprocessors/MapProcessor.Companion|null[0]
+        final const val TYPE // com.iktwo.kodices.dataprocessors/MapProcessor.Companion.TYPE|{}TYPE[0]
+            final fun <get-TYPE>(): kotlin/String // com.iktwo.kodices.dataprocessors/MapProcessor.Companion.TYPE.<get-TYPE>|<get-TYPE>(){}[0]
+
+        final val $childSerializers // com.iktwo.kodices.dataprocessors/MapProcessor.Companion.$childSerializers|{}$childSerializers[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<com.iktwo.kodices.dataprocessors/MapProcessor> // com.iktwo.kodices.dataprocessors/MapProcessor.Companion.serializer|serializer(){}[0]
+    }
+}
+
 final class com.iktwo.kodices.dataprocessors/StringProcessor : com.iktwo.kodices.dataprocessors/DataProcessor { // com.iktwo.kodices.dataprocessors/StringProcessor|null[0]
     constructor <init>(kotlin/String) // com.iktwo.kodices.dataprocessors/StringProcessor.<init>|<init>(kotlin.String){}[0]
 
@@ -344,7 +381,7 @@ final class com.iktwo.kodices.elements/InputElement : com.iktwo.kodices.elements
 }
 
 final class com.iktwo.kodices.elements/InterimElement : com.iktwo.kodices.elements/Element { // com.iktwo.kodices.elements/InterimElement|null[0]
-    constructor <init>(kotlin/String, kotlin.collections/List<com.iktwo.kodices.elements/Element> = ..., kotlin/String? = ..., kotlinx.serialization.json/JsonObject? = ..., kotlin.collections/Map<kotlin/String, kotlin.collections/List<com.iktwo.kodices.dataprocessors/DataProcessor>>? = ..., kotlin.collections/List<com.iktwo.kodices.dataprocessors/DataProcessor> = ..., kotlin.collections/List<com.iktwo.kodices.actions/InterimAction> = ..., com.iktwo.kodices.actions/InterimAction? = ...) // com.iktwo.kodices.elements/InterimElement.<init>|<init>(kotlin.String;kotlin.collections.List<com.iktwo.kodices.elements.Element>;kotlin.String?;kotlinx.serialization.json.JsonObject?;kotlin.collections.Map<kotlin.String,kotlin.collections.List<com.iktwo.kodices.dataprocessors.DataProcessor>>?;kotlin.collections.List<com.iktwo.kodices.dataprocessors.DataProcessor>;kotlin.collections.List<com.iktwo.kodices.actions.InterimAction>;com.iktwo.kodices.actions.InterimAction?){}[0]
+    constructor <init>(kotlin/String, kotlin.collections/List<com.iktwo.kodices.elements/Element> = ..., kotlin/String? = ..., kotlinx.serialization.json/JsonObject? = ..., kotlin.collections/Map<kotlin/String, kotlin.collections/List<com.iktwo.kodices.dataprocessors/DataProcessor>>? = ..., kotlin.collections/List<com.iktwo.kodices.dataprocessors/DataProcessor> = ..., kotlin.collections/List<com.iktwo.kodices.actions/InterimAction> = ..., com.iktwo.kodices.actions/InterimAction? = ..., com.iktwo.kodices.elements/Element? = ...) // com.iktwo.kodices.elements/InterimElement.<init>|<init>(kotlin.String;kotlin.collections.List<com.iktwo.kodices.elements.Element>;kotlin.String?;kotlinx.serialization.json.JsonObject?;kotlin.collections.Map<kotlin.String,kotlin.collections.List<com.iktwo.kodices.dataprocessors.DataProcessor>>?;kotlin.collections.List<com.iktwo.kodices.dataprocessors.DataProcessor>;kotlin.collections.List<com.iktwo.kodices.actions.InterimAction>;com.iktwo.kodices.actions.InterimAction?;com.iktwo.kodices.elements.Element?){}[0]
 
     final val action // com.iktwo.kodices.elements/InterimElement.action|{}action[0]
         final fun <get-action>(): com.iktwo.kodices.actions/InterimAction? // com.iktwo.kodices.elements/InterimElement.action.<get-action>|<get-action>(){}[0]
@@ -352,6 +389,8 @@ final class com.iktwo.kodices.elements/InterimElement : com.iktwo.kodices.elemen
         final fun <get-actions>(): kotlin.collections/List<com.iktwo.kodices.actions/InterimAction> // com.iktwo.kodices.elements/InterimElement.actions.<get-actions>|<get-actions>(){}[0]
     final val constants // com.iktwo.kodices.elements/InterimElement.constants|{}constants[0]
         final fun <get-constants>(): kotlinx.serialization.json/JsonObject? // com.iktwo.kodices.elements/InterimElement.constants.<get-constants>|<get-constants>(){}[0]
+    final val emptyElement // com.iktwo.kodices.elements/InterimElement.emptyElement|{}emptyElement[0]
+        final fun <get-emptyElement>(): com.iktwo.kodices.elements/Element? // com.iktwo.kodices.elements/InterimElement.emptyElement.<get-emptyElement>|<get-emptyElement>(){}[0]
     final val id // com.iktwo.kodices.elements/InterimElement.id|{}id[0]
         final fun <get-id>(): kotlin/String? // com.iktwo.kodices.elements/InterimElement.id.<get-id>|<get-id>(){}[0]
     final val nestedElements // com.iktwo.kodices.elements/InterimElement.nestedElements|{}nestedElements[0]
@@ -371,7 +410,8 @@ final class com.iktwo.kodices.elements/InterimElement : com.iktwo.kodices.elemen
     final fun component6(): kotlin.collections/List<com.iktwo.kodices.dataprocessors/DataProcessor> // com.iktwo.kodices.elements/InterimElement.component6|component6(){}[0]
     final fun component7(): kotlin.collections/List<com.iktwo.kodices.actions/InterimAction> // com.iktwo.kodices.elements/InterimElement.component7|component7(){}[0]
     final fun component8(): com.iktwo.kodices.actions/InterimAction? // com.iktwo.kodices.elements/InterimElement.component8|component8(){}[0]
-    final fun copy(kotlin/String = ..., kotlin.collections/List<com.iktwo.kodices.elements/Element> = ..., kotlin/String? = ..., kotlinx.serialization.json/JsonObject? = ..., kotlin.collections/Map<kotlin/String, kotlin.collections/List<com.iktwo.kodices.dataprocessors/DataProcessor>>? = ..., kotlin.collections/List<com.iktwo.kodices.dataprocessors/DataProcessor> = ..., kotlin.collections/List<com.iktwo.kodices.actions/InterimAction> = ..., com.iktwo.kodices.actions/InterimAction? = ...): com.iktwo.kodices.elements/InterimElement // com.iktwo.kodices.elements/InterimElement.copy|copy(kotlin.String;kotlin.collections.List<com.iktwo.kodices.elements.Element>;kotlin.String?;kotlinx.serialization.json.JsonObject?;kotlin.collections.Map<kotlin.String,kotlin.collections.List<com.iktwo.kodices.dataprocessors.DataProcessor>>?;kotlin.collections.List<com.iktwo.kodices.dataprocessors.DataProcessor>;kotlin.collections.List<com.iktwo.kodices.actions.InterimAction>;com.iktwo.kodices.actions.InterimAction?){}[0]
+    final fun component9(): com.iktwo.kodices.elements/Element? // com.iktwo.kodices.elements/InterimElement.component9|component9(){}[0]
+    final fun copy(kotlin/String = ..., kotlin.collections/List<com.iktwo.kodices.elements/Element> = ..., kotlin/String? = ..., kotlinx.serialization.json/JsonObject? = ..., kotlin.collections/Map<kotlin/String, kotlin.collections/List<com.iktwo.kodices.dataprocessors/DataProcessor>>? = ..., kotlin.collections/List<com.iktwo.kodices.dataprocessors/DataProcessor> = ..., kotlin.collections/List<com.iktwo.kodices.actions/InterimAction> = ..., com.iktwo.kodices.actions/InterimAction? = ..., com.iktwo.kodices.elements/Element? = ...): com.iktwo.kodices.elements/InterimElement // com.iktwo.kodices.elements/InterimElement.copy|copy(kotlin.String;kotlin.collections.List<com.iktwo.kodices.elements.Element>;kotlin.String?;kotlinx.serialization.json.JsonObject?;kotlin.collections.Map<kotlin.String,kotlin.collections.List<com.iktwo.kodices.dataprocessors.DataProcessor>>?;kotlin.collections.List<com.iktwo.kodices.dataprocessors.DataProcessor>;kotlin.collections.List<com.iktwo.kodices.actions.InterimAction>;com.iktwo.kodices.actions.InterimAction?;com.iktwo.kodices.elements.Element?){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // com.iktwo.kodices.elements/InterimElement.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // com.iktwo.kodices.elements/InterimElement.hashCode|hashCode(){}[0]
     final fun process(kotlin/Int = ..., kotlinx.serialization.json/JsonElement? = ..., kotlin/String? = ..., kotlinx.serialization.json/Json): kotlin.collections/List<com.iktwo.kodices.elements/ProcessedElement> // com.iktwo.kodices.elements/InterimElement.process|process(kotlin.Int;kotlinx.serialization.json.JsonElement?;kotlin.String?;kotlinx.serialization.json.Json){}[0]
@@ -622,6 +662,8 @@ final object com.iktwo.kodices.utils/Constants { // com.iktwo.kodices.utils/Cons
         final fun <get-ELEMENT>(): kotlin/String // com.iktwo.kodices.utils/Constants.ELEMENT.<get-ELEMENT>|<get-ELEMENT>(){}[0]
     final const val ELEMENTS // com.iktwo.kodices.utils/Constants.ELEMENTS|{}ELEMENTS[0]
         final fun <get-ELEMENTS>(): kotlin/String // com.iktwo.kodices.utils/Constants.ELEMENTS.<get-ELEMENTS>|<get-ELEMENTS>(){}[0]
+    final const val EMPTY_ELEMENT // com.iktwo.kodices.utils/Constants.EMPTY_ELEMENT|{}EMPTY_ELEMENT[0]
+        final fun <get-EMPTY_ELEMENT>(): kotlin/String // com.iktwo.kodices.utils/Constants.EMPTY_ELEMENT.<get-EMPTY_ELEMENT>|<get-EMPTY_ELEMENT>(){}[0]
     final const val ENABLED_KEY // com.iktwo.kodices.utils/Constants.ENABLED_KEY|{}ENABLED_KEY[0]
         final fun <get-ENABLED_KEY>(): kotlin/String // com.iktwo.kodices.utils/Constants.ENABLED_KEY.<get-ENABLED_KEY>|<get-ENABLED_KEY>(){}[0]
     final const val EXPAND_WITH_PROCESSOR // com.iktwo.kodices.utils/Constants.EXPAND_WITH_PROCESSOR|{}EXPAND_WITH_PROCESSOR[0]

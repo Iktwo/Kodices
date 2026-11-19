@@ -44,7 +44,7 @@ public fun ButtonUI(element: ProcessedElement) {
 
     Box(
         modifier = baseModifier
-            .padding(DefaultTheme.current.dimensions.padding),
+            .padding(LocalTheme.current.dimensions.padding),
         contentAlignment = Alignment.Center,
     ) {
         val buttonContent: @Composable () -> Unit = {

@@ -5,8 +5,22 @@ images, served over HTTP. It is built for e-ink dashboards: a device polls the s
 picture of the screen and shows it, similar to TRMNL but self-hosted. The reference device is a
 reMarkable Paper Pro Move (954×1696 portrait).
 
-It is a JVM module, not part of [KodexServer](../KodexServer/README.md): Compose UI cannot run on
-Kotlin/Native. It is not published to Maven Central.
+The same screens are also served as JSON, so an app can render them natively with Kodices and
+Piktographs instead of showing a picture. One directory of screens, two kinds of client:
+
+```
+                           ┌─ GET /render/<screen>.png ──▶ e-ink device shows the picture
+screens/<screen>.json ──▶ KodexRenderer
+                           └─ GET /content/<screen>.json ─▶ app parses it and renders with PageUI
+```
+
+It is a JVM module, because Compose UI cannot run on Kotlin/Native. It is not published to Maven
+Central.
+
+**Writing a dashboard:** see [Building a dashboard](screens/README.md), a step-by-step guide with
+the JSON for every element, and the sample screens next to it
+([dashboard](docs/images/dashboard.png), [home](docs/images/home.png),
+[status](docs/images/status.png)).
 
 ## Running
 
@@ -43,6 +57,8 @@ links against even though rendering is CPU-only. System fonts are deleted from t
 
 ## API
 
+### For devices that show a picture
+
 This is the contract the device uses. Keep it stable.
 
 | Method | Path | Description |
@@ -78,9 +94,64 @@ default screen.
 - Errors: `400` bad parameters, `401` missing or wrong token, `404` unknown screen, `422` the screen
   JSON is not valid Kodices content, `503` (with `Retry-After`) images did not load in time.
 
+### For apps that render the screen themselves
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/screens` | Which screens exist and which is the default. |
+| `GET` | `/content/{screen}.json` | The screen and its data, ready for `KodicesParser`. |
+| `GET` | `/assets/{path}` | The files screens refer to as `asset:<path>`. |
+
+`/screens` response:
+
+```json
+{"default": "dashboard", "screens": ["dashboard", "dashboard-landscape", "home", "status"]}
+```
+
+`/content/{screen}.json` response:
+
+```json
+{
+  "content": { "elements": [ ... ] },
+  "data": { "now": { "date": "Thursday, November 19, 2026", "time": "10:58", ... }, "agenda": [ ... ] },
+  "refresh_seconds": 900
+}
+```
+
+- `content` and `data` are what the renderer itself draws from: the screen's own data with `now`
+  merged in. It is the shape `KodicesParser.parseJSONWithDataToContent` reads:
+
+  ```kotlin
+  val body = httpClient.get("$server/content/dashboard.json").bodyAsText()
+  val content = KodicesParser().parseJSONWithDataToContent(body)   // then PageUI(content)
+  ```
+
+- `refresh_seconds` is how long to wait before asking again (`KODEX_REFRESH_SECONDS`).
+- `asset:<path>` URLs are rewritten to `<server>/assets/<path>`, since they only resolve on the
+  server. `<server>` is the scheme and `Host` the request came in with; set `KODEX_PUBLIC_URL` if a
+  reverse proxy changes either (for example, it terminates TLS).
+- Strong `ETag`, `Cache-Control: no-cache` and `304` on a matching `If-None-Match`, as for
+  pictures. The body changes at least once a minute, because `now` does.
+- Errors: `401`, `404` unknown screen, `422` the screen is not valid Kodices content.
+- `/render/{screen}.json` is something else: the file as written, for debugging.
+
+The SampleApp's **Dashboard** tab is a complete client: it lists the screens, polls on
+`refresh_seconds` with `If-None-Match`, sends the token (to this server only, including for
+images) and follows `navigate` actions between screens. See
+[`DashboardClient.kt`](../SampleApp/src/commonMain/kotlin/com/iktwo/kodices/sampleapp/dashboard/DashboardClient.kt).
+
+```shell
+./gradlew :KodexRenderer:run    # the server, on :8090
+./gradlew :SampleApp:run        # Dashboard tab → http://localhost:8090 → Connect
+```
+
+[KodexViewer](../KodexViewer/README.md) is a ready-made client for these endpoints (a desktop window
+and a static web bundle); [KodexClient](../KodexClient/README.md) is the code to build your own from.
+
 ### Auth
 
-If `KODEX_TOKEN` is set, `/display` and `/render` require `Authorization: Bearer <token>`.
+If `KODEX_TOKEN` is set, every route except `/health` requires `Authorization: Bearer <token>`,
+`/assets` included.
 
 ## Configuration
 
@@ -98,11 +169,14 @@ an environment variable.
 | `KODEX_TIMEZONE` | system default | For the `now` data, e.g. `America/Chicago`. |
 | `KODEX_LOCALE` | `en-US` | For date formatting. Fixed rather than taken from the system, so output does not depend on the host. |
 | `KODEX_DISPLAY_WIDTH` / `_HEIGHT` / `_MODE` / `_DENSITY` | `954` / `1696` / `gray16` / `2.0` | What `/display` asks for. |
+| `KODEX_PUBLIC_URL` | *(from the request)* | Address clients reach the server at, for the asset URLs in `/content`. |
 
 ## Adding a screen
 
-Drop `<name>.json` into the screens directory; it is served as `/render/<name>.png`. Files are read
-on every request, so no restart is needed. Names may contain only letters, digits, `-` and `_`.
+Drop `<name>.json` into the screens directory; it is served as `/render/<name>.png` and
+`/content/<name>.json`. Files are read on every request, so no restart is needed. Names may contain
+only letters, digits, `-` and `_`. [Building a dashboard](screens/README.md) walks through writing
+one.
 
 A screen is either plain Kodices content (`{"elements": [...]}`) or an envelope with data for the
 processors:
@@ -115,7 +189,8 @@ processors:
 ```
 
 The renderer adds `now` to the data (truncated to the minute): `now.date` ("Wednesday, November 18,
-2026"), `now.dateShort`, `now.weekday`, `now.time` ("14:05"), `now.time12`, `now.year` and `now.iso`.
+2026"), `now.dateShort`, `now.weekday`, `now.time` ("14:05"), `now.time12`, `now.year` and `now.iso`. Data the screen declares under `now`
+replaces it, which pins the time for a demo.
 
 ```json
 { "type": "row", "id": "today", "processors": { "text": [{ "type": "path", "elements": ["now", "date"] }] } }
@@ -129,7 +204,9 @@ for a complete example.
 
 1. The JSON is parsed with `KodicesParser` and composed as `PageUI` inside `EinkTheme`: pure black on
    white, every Material color role collapsed to black or white, no style lighter than Normal,
-   separators at 2 dp. Cards and progress indicators are drawn by the renderer itself
+   separators at 2 dp. Text, stats, list items, badges, grids and charts are Piktographs' own
+   renderings, which use only theme colors and strokes of 1 dp (2 px) or more. Cards and progress
+   indicators are drawn by the renderer itself
    (`EinkElements.kt`): outlined with 2 dp black strokes, since a card's shadow and a progress
    track's tonal color do not survive the panel.
 2. An `ImageComposeScene` renders frames at a **frozen frame time** until every Coil image request

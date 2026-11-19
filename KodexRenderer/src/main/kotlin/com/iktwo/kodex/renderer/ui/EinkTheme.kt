@@ -114,6 +114,12 @@ internal val EinkPageTheme: Theme = Theme(
         mainTextColor = Color.Black,
         secondaryTextColor = Color.Black,
         separatorColor = Color.Black,
+        // A tone is a color and the panel has none: every tone is black, and what it meant has
+        // to be read from the icon and the words next to it.
+        infoColor = Color.Black,
+        successColor = Color.Black,
+        warningColor = Color.Black,
+        errorColor = Color.Black,
     ),
     dimensions = Dimensions(
         padding = 16.dp,

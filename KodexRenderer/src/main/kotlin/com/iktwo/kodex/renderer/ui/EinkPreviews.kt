@@ -15,7 +15,7 @@ import com.iktwo.kodex.renderer.render.Page
 import com.iktwo.kodex.renderer.render.ScreenData
 import com.iktwo.kodex.renderer.render.ScreenParser
 import com.iktwo.kodices.elements.ProcessedElement
-import com.iktwo.piktographs.ui.DefaultTheme
+import com.iktwo.piktographs.ui.LocalTheme
 import kotlinx.serialization.json.JsonPrimitive
 import java.time.Clock
 import java.time.Instant
@@ -116,7 +116,7 @@ public fun EinkElementsPreview() {
     ) = ProcessedElement(type = type, id = title, text = title, textSecondary = subtitle, jsonValues = values.toMap())
 
     EinkTheme {
-        CompositionLocalProvider(DefaultTheme provides EinkPageTheme) {
+        CompositionLocalProvider(LocalTheme provides EinkPageTheme) {
             Column {
                 EinkCard(element("card", "Elevated card", "No shadow on e-ink", "variant" to JsonPrimitive("elevated")))
                 EinkCard(element("card", "Filled card", "No tonal fill either", "variant" to JsonPrimitive("filled")))

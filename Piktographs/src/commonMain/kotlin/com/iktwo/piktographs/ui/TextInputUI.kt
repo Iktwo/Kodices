@@ -20,8 +20,8 @@ public fun TextInputUI(
     inputHandler: InputHandler,
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(DefaultTheme.current.dimensions.padding),
-        verticalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.verticalSpacing),
+        modifier = Modifier.fillMaxWidth().padding(LocalTheme.current.dimensions.padding),
+        verticalArrangement = Arrangement.spacedBy(LocalTheme.current.dimensions.verticalSpacing),
     ) {
         TextField(
             modifier = Modifier.fillMaxWidth(),

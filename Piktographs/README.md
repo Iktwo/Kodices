@@ -35,6 +35,34 @@ fun MyScreen(jsonString: String) {
 }
 ```
 
+## Elements
+
+`PageUI` renders these `type`s. Values are read from the element's `constants` (or `processors`).
+
+| Type | What it is | Keys beyond `text` / `textSecondary` |
+|---|---|---|
+| `row` | Title and subtitle | |
+| `text` | Text in a Material type scale style | `style`, `align`, `fontWeight`, `fontFamily`, `maxLines`, `tone`, `color` |
+| `stat` | A figure with a label, unit and caption | `value`, `unit`, `trend`, `icon`, `align`, `size`, `tone` |
+| `listItem` | Icon, title, subtitle, value at the end | `icon`, `value`, `badge`, `trailingIcon`, `tone`, `variant`, `dense` |
+| `badge` | A status pill | `variant`, `tone` |
+| `chart` | One series as a line or bars | `values`, `variant`, `height`, `min`, `max`, `labels`, `tone` |
+| `tableHeader` / `tableRow` | A table, one element per row | `columns`, `values`, `tone`, `dense`, `collapseBelow` |
+| `tabs` | Links between screens, the current one marked | nested tabs: `icon`, `selected` |
+| `progress` | Linear or circular progress | `progress`, `variant` |
+| `card` | A container with a title | `variant` |
+| `grid` | Equal-width columns | `columns`, `minColumnWidth`, `spacing`, `padding` |
+| `container` | A row, or a column with `"orientation": "vertical"` | `orientation`, `spacing`, `padding`, `paddingHorizontal`, `paddingVertical`, `arrangement`, `alignment`; `weight` on children |
+| `separator` | A gap or a rule | `style`, `size` |
+| `image` | An image from a URL | `url`, `width`, `height`, `aspectRatio`, `contentScale`, `cornerRadius`, `alpha` |
+| `icon` | A Material icon by name | `name`, `size`, `tint` |
+| `button` | A button | `variant`, `loading`, `fillMaxWidth` |
+| `textInput`, `textArea`, `checkbox`, `switch` | Inputs | `validation`, `active` |
+| `topbar` | The page's top bar | `style` |
+
+[Building a dashboard](../KodexRenderer/screens/README.md) has the JSON for each of the dashboard
+elements, and the SampleApp's Catalog tab shows them all.
+
 ## Customization
 
 Piktographs is designed to be customizable, allowing you to match your app's branding and provide your own Composables for specific element types.
@@ -81,6 +109,22 @@ PageUI(
     theme = myTheme,
 )
 ```
+
+### Tones
+
+`text`, `badge`, `stat`, `listItem`, `chart` and `tableRow` take a `tone`: `info`, `success`,
+`warning` or `error` (log-level names such as `WARN` work too). A tone only says what the element
+means; `Colors` decides what that looks like:
+
+```kotlin
+PageUI(
+    content = content,
+    theme = Theme(colors = Colors(warningColor = Color(0xFFB26A00), successColor = Color(0xFF2E7D32))),
+)
+```
+
+Left unset, `infoColor` and `errorColor` follow the Material theme (`primary`, `error`), and success
+and warning are a green and an amber chosen for the theme's light or dark surface.
 
 ### Unsupported element types
 

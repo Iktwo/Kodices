@@ -25,7 +25,7 @@ public fun CardUI(element: ProcessedElement) {
 
     val modifier = Modifier
         .fillMaxWidth()
-        .padding(DefaultTheme.current.dimensions.padding)
+        .padding(LocalTheme.current.dimensions.padding)
         .let { baseModifier ->
             if (element.actions.isNotEmpty()) {
                 baseModifier.clickable {
@@ -42,7 +42,7 @@ public fun CardUI(element: ProcessedElement) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(DefaultTheme.current.dimensions.padding),
+                .padding(LocalTheme.current.dimensions.padding),
         ) {
             element.text?.let { title ->
                 Text(
@@ -57,7 +57,7 @@ public fun CardUI(element: ProcessedElement) {
                     text = subtitle,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = DefaultTheme.current.dimensions.verticalSpacing),
+                    modifier = Modifier.padding(top = LocalTheme.current.dimensions.verticalSpacing),
                 )
             }
 

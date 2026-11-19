@@ -22,21 +22,21 @@ public fun RowUI(element: ProcessedElement) {
     // Only the font family is inherited: the size and line height stay Piktographs' own, but a host
     // that sets a typography (or has to avoid system fonts, like the headless renderer) is respected.
     val fontFamily = LocalTextStyle.current.fontFamily
-    val colors = DefaultTheme.current.colors
+    val colors = LocalTheme.current.colors
 
     Column(
-        modifier = Modifier.fillMaxWidth().padding(vertical = DefaultTheme.current.dimensions.padding),
-        verticalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.verticalSpacing),
+        modifier = Modifier.fillMaxWidth().padding(vertical = LocalTheme.current.dimensions.padding),
+        verticalArrangement = Arrangement.spacedBy(LocalTheme.current.dimensions.verticalSpacing),
     ) {
         element.text?.let {
-            Box(modifier = Modifier.padding(horizontal = DefaultTheme.current.dimensions.padding)) {
+            Box(modifier = Modifier.padding(horizontal = LocalTheme.current.dimensions.padding)) {
                 Text(
                     text = it,
                     modifier = Modifier.fillMaxWidth(),
                     color = colors.mainTextColor.takeOrElse { MaterialTheme.colorScheme.onSurface },
                     style = TextStyle(
                         fontFamily = fontFamily,
-                        fontSize = DefaultTheme.current.fonts.primary,
+                        fontSize = LocalTheme.current.fonts.primary,
                         lineHeightStyle = LineHeightStyle(
                             alignment = LineHeightStyle.Alignment.Proportional,
                             trim = LineHeightStyle.Trim.Both,
@@ -49,11 +49,11 @@ public fun RowUI(element: ProcessedElement) {
         element.textSecondary?.let {
             Text(
                 text = it,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = DefaultTheme.current.dimensions.padding),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = LocalTheme.current.dimensions.padding),
                 color = colors.secondaryTextColor.takeOrElse { MaterialTheme.colorScheme.onSurfaceVariant },
                 style = TextStyle(
                     fontFamily = fontFamily,
-                    fontSize = DefaultTheme.current.fonts.secondary,
+                    fontSize = LocalTheme.current.fonts.secondary,
                     lineHeightStyle = LineHeightStyle(
                         alignment = LineHeightStyle.Alignment.Proportional,
                         trim = LineHeightStyle.Trim.Both,

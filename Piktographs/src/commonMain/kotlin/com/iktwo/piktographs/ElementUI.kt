@@ -10,6 +10,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateMap
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import com.iktwo.kodices.actions.Action
 import com.iktwo.kodices.actions.ActionPerformer
@@ -21,34 +22,50 @@ import com.iktwo.kodices.elements.INPUT_ELEMENT_TOGGLE
 import com.iktwo.kodices.elements.InputElement
 import com.iktwo.kodices.elements.InputHandler
 import com.iktwo.kodices.elements.ProcessedElement
+import com.iktwo.kodices.utils.Logger
 import com.iktwo.kodices.utils.asBooleanOrNull
+import com.iktwo.piktographs.ui.BADGE_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.BUTTON_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.BadgeUI
 import com.iktwo.piktographs.ui.ButtonUI
 import com.iktwo.piktographs.ui.CARD_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.CHART_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.CONTAINER_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.CONTAINER_TYPE_ALIASES
 import com.iktwo.piktographs.ui.CardUI
+import com.iktwo.piktographs.ui.ChartUI
 import com.iktwo.piktographs.ui.CheckboxUI
 import com.iktwo.piktographs.ui.Constants
 import com.iktwo.piktographs.ui.Constants.TOP_BAR_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.ContainerUI
-import com.iktwo.piktographs.ui.HORIZONTAL_LAYOUT_ELEMENT_TYPE
-import com.iktwo.piktographs.ui.HROW_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.GRID_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.GridUI
 import com.iktwo.piktographs.ui.ICON_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.IMAGE_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.IconUI
 import com.iktwo.piktographs.ui.ImageUI
+import com.iktwo.piktographs.ui.LIST_ITEM_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.ListItemUI
 import com.iktwo.piktographs.ui.PROGRESS_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.ProgressUI
 import com.iktwo.piktographs.ui.ROW_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.RowUI
 import com.iktwo.piktographs.ui.SEPARATOR_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.STAT_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.SeparatorUI
+import com.iktwo.piktographs.ui.StatUI
 import com.iktwo.piktographs.ui.SwitchUI
+import com.iktwo.piktographs.ui.TABLE_HEADER_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.TABLE_ROW_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.TABS_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.TEXT_ELEMENT_TYPE
+import com.iktwo.piktographs.ui.TableHeaderUI
+import com.iktwo.piktographs.ui.TableRowUI
+import com.iktwo.piktographs.ui.TabsUI
 import com.iktwo.piktographs.ui.TextAreaUI
 import com.iktwo.piktographs.ui.TextInputUI
+import com.iktwo.piktographs.ui.TextUI
 import com.iktwo.piktographs.ui.UnknownElementUI
-import com.iktwo.piktographs.ui.VERTICAL_LAYOUT_ELEMENT_TYPE
-import com.iktwo.piktographs.ui.VROW_ELEMENT_TYPE
 
 public inline fun ActionPerformer(crossinline block: (Action) -> Unit): ActionPerformer =
     object : ActionPerformer {
@@ -74,6 +91,22 @@ public val LocalBooleanInputData: ProvidableCompositionLocal<SnapshotStateMap<St
 
 public val LocalValidityMap: ProvidableCompositionLocal<SnapshotStateMap<String, Boolean>> =
     compositionLocalOf { error("No validity map provided") }
+
+/**
+ * Where the renderer reports what it can only find out while drawing, such as an element written
+ * with a deprecated name. Prints warnings and errors unless a host provides its own.
+ */
+public val LocalLogger: ProvidableCompositionLocal<Logger> = staticCompositionLocalOf { PrintLogger }
+
+private object PrintLogger : Logger {
+    override fun debug(message: String) = Unit
+
+    override fun info(message: String) = Unit
+
+    override fun warn(message: String) = println("W: $message")
+
+    override fun error(message: String) = println("E: $message")
+}
 
 public val LocalElementEnabled: ProvidableCompositionLocal<Boolean> = compositionLocalOf { true }
 
@@ -119,12 +152,7 @@ public fun ElementUI(
                             RowUI(element)
                         }
 
-                        CONTAINER_ELEMENT_TYPE,
-                        HROW_ELEMENT_TYPE,
-                        HORIZONTAL_LAYOUT_ELEMENT_TYPE,
-                        VROW_ELEMENT_TYPE,
-                        VERTICAL_LAYOUT_ELEMENT_TYPE,
-                        -> {
+                        CONTAINER_ELEMENT_TYPE, in CONTAINER_TYPE_ALIASES -> {
                             ContainerUI(element)
                         }
 
@@ -187,6 +215,42 @@ public fun ElementUI(
 
                         IMAGE_ELEMENT_TYPE -> {
                             ImageUI(element)
+                        }
+
+                        TEXT_ELEMENT_TYPE -> {
+                            TextUI(element)
+                        }
+
+                        STAT_ELEMENT_TYPE -> {
+                            StatUI(element)
+                        }
+
+                        BADGE_ELEMENT_TYPE -> {
+                            BadgeUI(element)
+                        }
+
+                        LIST_ITEM_ELEMENT_TYPE -> {
+                            ListItemUI(element)
+                        }
+
+                        GRID_ELEMENT_TYPE -> {
+                            GridUI(element)
+                        }
+
+                        CHART_ELEMENT_TYPE -> {
+                            ChartUI(element)
+                        }
+
+                        TABLE_HEADER_ELEMENT_TYPE -> {
+                            TableHeaderUI(element)
+                        }
+
+                        TABLE_ROW_ELEMENT_TYPE -> {
+                            TableRowUI(element)
+                        }
+
+                        TABS_ELEMENT_TYPE -> {
+                            TabsUI(element)
                         }
 
                         TOP_BAR_ELEMENT_TYPE -> {

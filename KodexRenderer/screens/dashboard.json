@@ -6,7 +6,7 @@
         "constants": { "text": "Kodex Dashboard" }
       },
       {
-        "type": "hrow",
+        "type": "container",
         "constants": { "spacing": 16, "alignment": "center", "padding": 16 },
         "nestedElements": [
           {
@@ -38,17 +38,39 @@
         "constants": { "style": "line", "size": 2 }
       },
       {
-        "type": "row",
-        "id": "agenda-title",
-        "constants": { "text": "Agenda" }
+        "type": "grid",
+        "constants": { "columns": 2 },
+        "nestedElements": [
+          {
+            "type": "stat",
+            "id": "inside",
+            "constants": { "text": "Living room", "unit": "°C", "icon": "home", "trend": "up" },
+            "processors": {
+              "value": [{ "type": "path", "elements": ["home", "inside"] }],
+              "textSecondary": [{ "type": "path", "elements": ["home", "insideNote"] }]
+            }
+          },
+          {
+            "type": "stat",
+            "id": "outside",
+            "constants": { "text": "Outside", "unit": "°C", "icon": "place" },
+            "processors": {
+              "value": [{ "type": "path", "elements": ["home", "outside"] }],
+              "textSecondary": [{ "type": "path", "elements": ["home", "outsideNote"] }]
+            }
+          }
+        ]
       },
       {
-        "type": "row",
-        "id": "agenda",
-        "expandWithProcessors": [{ "type": "path", "elements": ["agenda"] }],
+        "type": "chart",
+        "id": "temperature",
+        "constants": {
+          "text": "Living room, last 24 hours",
+          "height": 72,
+          "labels": ["24 h ago", "12 h ago", "now"]
+        },
         "processors": {
-          "text": [{ "type": "path", "elements": ["title"] }],
-          "textSecondary": [{ "type": "path", "elements": ["when"] }]
+          "values": [{ "type": "path", "elements": ["home", "history"] }]
         }
       },
       {
@@ -56,30 +78,36 @@
         "constants": { "style": "line", "size": 2 }
       },
       {
-        "type": "card",
-        "constants": {
-          "text": "Home",
-          "textSecondary": "Living room 21 °C · Outside 7 °C · Windows closed",
-          "variant": "outlined"
-        }
+        "type": "text",
+        "id": "agenda-title",
+        "constants": { "text": "Agenda", "style": "titleLarge" }
       },
       {
-        "type": "progress",
-        "constants": {
-          "text": "Week",
-          "textSecondary": "Wednesday — 3 of 7 days",
-          "variant": "linear",
-          "progress": 0.43
+        "type": "listItem",
+        "id": "agenda",
+        "expandWithProcessors": [{ "type": "path", "elements": ["agenda"] }],
+        "constants": { "icon": "calendar" },
+        "processors": {
+          "text": [{ "type": "path", "elements": ["title"] }],
+          "textSecondary": [{ "type": "path", "elements": ["where"] }],
+          "value": [{ "type": "path", "elements": ["time"] }]
         }
       }
     ]
   },
   "data": {
+    "home": {
+      "inside": 21.5,
+      "insideNote": "2° warmer than yesterday",
+      "outside": 7,
+      "outsideNote": "Light rain until 15:00",
+      "history": [19.8, 19.4, 19.1, 18.9, 18.8, 19.0, 19.6, 20.3, 20.9, 21.2, 21.4, 21.5]
+    },
     "agenda": [
-      { "title": "Stand-up", "when": "09:30 · Kitchen table" },
-      { "title": "Dentist", "when": "12:15 · Dr. Rivera" },
-      { "title": "Pick up groceries", "when": "17:00 · Market on 4th" },
-      { "title": "Call Mom", "when": "19:30" }
+      { "title": "Stand-up", "where": "Kitchen table", "time": "09:30" },
+      { "title": "Dentist", "where": "Dr. Rivera", "time": "12:15" },
+      { "title": "Pick up groceries", "where": "Market on 4th", "time": "17:00" },
+      { "title": "Call Mom", "where": "Phone", "time": "19:30" }
     ]
   }
 }

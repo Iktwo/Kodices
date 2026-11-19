@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.edit
@@ -99,51 +100,76 @@ fun ResourceContentPage(
             }
         }
 
-        Column(modifier = Modifier.fillMaxSize()) {
-            errorMessage?.let { message ->
-                Text(
-                    text = message,
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.fillMaxWidth().padding(8.dp),
-                )
-            }
-
-            JsonContent(
-                contentString = contentString,
-                dataString = dataString,
-                actionPerformer = actionPerformer,
-                textInputData = textInputData,
-                booleanInputData = booleanInputData,
-                validityMap = validityMap,
-                elementOverrides = {
-                    elementOverride(it)
-                },
-                onInputIdsPopulated = {
-                    scope.launch {
-                        // Snapshot the keys first: restoreForm suspends, and writing back into
-                        // textInputData while iterating its live key set would be a concurrent modification.
-                        val restored = restoreForm(textInputData.keys.toSet())
-                        restored
-                            .filter { (_, value) -> value != null }
-                            .forEach { (key, value) ->
-                                textInputData[key] = value
-                            }
-                    }
-                },
-                onInputUpdated = {
-                    scope.launch {
-                        val validValues = textInputData
-                            .mapNotNull { (key, value) ->
-                                if (validityMap.containsKey(key) && value != null) key to value else null
-                            }.toMap()
-
-                        if (validValues.isNotEmpty()) {
-                            saveForm(validValues)
+        ResourceContent(
+            contentString = contentString,
+            dataString = dataString,
+            errorMessage = errorMessage,
+            actionPerformer = actionPerformer,
+            textInputData = textInputData,
+            booleanInputData = booleanInputData,
+            validityMap = validityMap,
+            onInputIdsPopulated = {
+                scope.launch {
+                    // Snapshot the keys first: restoreForm suspends, and writing back into
+                    // textInputData while iterating its live key set would be a concurrent modification.
+                    val restored = restoreForm(textInputData.keys.toSet())
+                    restored
+                        .filter { (_, value) -> value != null }
+                        .forEach { (key, value) ->
+                            textInputData[key] = value
                         }
+                }
+            },
+            onInputUpdated = {
+                scope.launch {
+                    val validValues = textInputData
+                        .mapNotNull { (key, value) ->
+                            if (validityMap.containsKey(key) && value != null) key to value else null
+                        }.toMap()
+
+                    if (validValues.isNotEmpty()) {
+                        saveForm(validValues)
                     }
-                },
+                }
+            },
+        )
+    }
+}
+
+/** [ResourceContentPage] without the loading and saving: the page, and above it what went wrong. */
+@Composable
+internal fun ResourceContent(
+    contentString: String,
+    dataString: String,
+    errorMessage: String?,
+    modifier: Modifier = Modifier,
+    actionPerformer: ActionPerformer? = null,
+    textInputData: SnapshotStateMap<String, String?> = remember { mutableStateMapOf() },
+    booleanInputData: SnapshotStateMap<String, Boolean> = remember { mutableStateMapOf() },
+    validityMap: SnapshotStateMap<String, Boolean> = remember { mutableStateMapOf() },
+    onInputIdsPopulated: () -> Unit = {},
+    onInputUpdated: () -> Unit = {},
+) {
+    Column(modifier = modifier.fillMaxSize()) {
+        errorMessage?.let { message ->
+            Text(
+                text = message,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
             )
         }
+
+        JsonContent(
+            contentString = contentString,
+            dataString = dataString,
+            actionPerformer = actionPerformer,
+            textInputData = textInputData,
+            booleanInputData = booleanInputData,
+            validityMap = validityMap,
+            elementOverrides = { elementOverride(it) },
+            onInputIdsPopulated = onInputIdsPopulated,
+            onInputUpdated = onInputUpdated,
+        )
     }
 }
 

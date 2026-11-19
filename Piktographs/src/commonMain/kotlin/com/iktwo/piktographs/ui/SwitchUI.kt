@@ -22,8 +22,8 @@ public fun SwitchUI(
     inputHandler: InputHandler,
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(DefaultTheme.current.dimensions.padding),
-        verticalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.verticalSpacing),
+        modifier = Modifier.fillMaxWidth().padding(LocalTheme.current.dimensions.padding),
+        verticalArrangement = Arrangement.spacedBy(LocalTheme.current.dimensions.verticalSpacing),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -32,7 +32,7 @@ public fun SwitchUI(
         ) {
             Column(
                 modifier = Modifier.weight(1f, fill = false),
-                verticalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.verticalSpacing / 2),
+                verticalArrangement = Arrangement.spacedBy(LocalTheme.current.dimensions.verticalSpacing / 2),
             ) {
                 element.text?.let { text ->
                     Text(

@@ -108,9 +108,19 @@ public sealed interface Element {
                 ?: jsonObject[Constants.EXPAND_WITH_PROCESSORS]
             val id = jsonObject[Constants.ID]?.asStringOrNull()
             val nestedElements = jsonObject[Constants.NESTED_ELEMENTS]?.asJSONArrayOrNull()
+            val emptyElement = jsonObject[Constants.EMPTY_ELEMENT]?.asJSONObjectOrNull()
+
+            // An element that needs no processing itself still has to go through the interim path
+            // when something nested in it does: the processed path below builds nested elements
+            // from their own top-level keys only, so a nested element's constants and processors
+            // would be silently dropped. Its own values then stand in for constants.
+            val onlyNestedNeedProcessing = processors == null &&
+                constants == null &&
+                expandWithProcessors == null &&
+                nestedElements?.any { it.asJSONObjectOrNull()?.needsProcessing() == true } == true
 
             // If there are processors, constants or processors for expansion, treat this as an InterimElement
-            if (processors != null || constants != null || expandWithProcessors != null) {
+            if (processors != null || constants != null || expandWithProcessors != null || onlyNestedNeedProcessing) {
                 val processorsForExpansion = mutableListOf<DataProcessor>()
 
                 expandWithProcessors?.let {
@@ -191,10 +201,15 @@ public sealed interface Element {
                         )
                     } ?: emptyList(),
                     id = id,
-                    constants = constants,
+                    constants = if (onlyNestedNeedProcessing) jsonObject.ownValues() else constants,
                     processors = dataProcessors,
                     processorsForExpansion = processorsForExpansion,
                     actions = actions,
+                    // What stands in for the element when its expansion has no entries. The prefix
+                    // keeps its generated id apart from a sibling of the same type and index.
+                    emptyElement = emptyElement
+                        ?.takeIf { expandWithProcessors != null }
+                        ?.let { deserialize(json, it, index, EMPTY_ELEMENT_ID_PREFIX) },
                 )
             } else {
                 return resolveProcessedElement(jsonObject, json, index, parentId)
@@ -268,6 +283,35 @@ public sealed interface Element {
                 requiresValidElements = commonElementProperties.requiresValidElements,
             )
         }
+
+        /** Whether this element, or anything nested in it, declares constants or processors. */
+        private fun JsonObject.needsProcessing(): Boolean {
+            return this[Constants.PROCESSORS]?.asJSONObjectOrNull() != null ||
+                this[Constants.CONSTANTS]?.asJSONObjectOrNull() != null ||
+                containsKey(Constants.EXPAND_WITH_PROCESSOR) ||
+                containsKey(Constants.EXPAND_WITH_PROCESSORS) ||
+                this[Constants.NESTED_ELEMENTS]?.asJSONArrayOrNull()?.any {
+                    it.asJSONObjectOrNull()?.needsProcessing() == true
+                } == true
+        }
+
+        /** The values an element declares directly on itself, without its structural keys. */
+        private fun JsonObject.ownValues(): JsonObject = JsonObject(filter { (key, value) -> key !in STRUCTURAL_KEYS && value !is JsonNull })
+
+        private val STRUCTURAL_KEYS = setOf(
+            Constants.TYPE,
+            Constants.ID,
+            Constants.NESTED_ELEMENTS,
+            Constants.ACTION,
+            Constants.ACTIONS,
+            Constants.PROCESSORS,
+            Constants.CONSTANTS,
+            Constants.EXPAND_WITH_PROCESSOR,
+            Constants.EXPAND_WITH_PROCESSORS,
+            Constants.EMPTY_ELEMENT,
+        )
+
+        internal const val EMPTY_ELEMENT_ID_PREFIX = "empty_"
 
         override fun serialize(
             encoder: Encoder,

@@ -18,7 +18,7 @@ private const val SIZE_KEY = "size"
 @Composable
 public fun SeparatorUI(element: ProcessedElement) {
     val size = element.jsonValues[SIZE_KEY]?.asIntOrNull()?.dp
-        ?: DefaultTheme.current.dimensions.separator
+        ?: LocalTheme.current.dimensions.separator
 
     val style = SeparatorStyle.fromString(element.style ?: "")
 
@@ -32,7 +32,7 @@ public fun SeparatorUI(element: ProcessedElement) {
                 modifier = Modifier
                     .height(size)
                     .fillMaxWidth()
-                    .background(DefaultTheme.current.colors.separatorColor),
+                    .background(LocalTheme.current.colors.separatorColor),
             )
         }
     }

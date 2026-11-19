@@ -1,6 +1,5 @@
 package com.iktwo.piktographs.elements
 
-import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.actions.Action
 import com.iktwo.kodices.elements.ElementBuilder
 import com.iktwo.kodices.elements.ElementDescriptor
@@ -51,13 +50,12 @@ public class CountdownElement(
             val targetValue = processedValues[TARGET]?.asStringOrNull() ?: ""
             val styleValue = processedValues[STYLE]?.asStringOrNull() ?: ""
             val title = processedValues[Constants.TEXT_KEY]?.asStringOrNull()
-            var target: LocalDateTime? = null
 
-            try {
-                target = LocalDateTime.parse(targetValue)
+            // Thrown, not logged here: the parser reports a failed element through its own logger.
+            val target = try {
+                LocalDateTime.parse(targetValue)
             } catch (e: IllegalArgumentException) {
-                KodicesParser.logger.error("Unable to parse date: $targetValue")
-                throw Exception("Unable to create CountdownElement")
+                throw IllegalArgumentException("Unable to create CountdownElement: \"$targetValue\" is not a date and time", e)
             }
 
             CountdownElement(

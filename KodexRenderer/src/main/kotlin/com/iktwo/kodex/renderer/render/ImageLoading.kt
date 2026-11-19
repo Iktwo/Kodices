@@ -13,6 +13,7 @@ import coil3.request.Options
 import coil3.request.SuccessResult
 import coil3.request.crossfade
 import coil3.toUri
+import com.iktwo.kodex.renderer.ASSET_SCHEME
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.HttpTimeout
@@ -83,10 +84,6 @@ internal class AssetMapper(
         val file = root.resolve(data.removePrefix(ASSET_SCHEME)).normalize()
         if (!file.startsWith(root) || !file.isRegularFile()) return null
         return file.toUri().toString().toUri()
-    }
-
-    companion object {
-        const val ASSET_SCHEME = "asset:"
     }
 }
 

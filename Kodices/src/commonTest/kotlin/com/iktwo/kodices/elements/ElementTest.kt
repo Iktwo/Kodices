@@ -88,4 +88,44 @@ class ElementTest {
             json.decodeFromJsonElement<Element>(sampleScalarDataProcessorInElement)
         }
     }
+
+    @Test
+    fun `Test that nested constants and processors survive a parent that declares neither`() {
+        val content = kodicesParser.parseJSONToContent(
+            """
+            {
+              "elements": [
+                {
+                  "type": "grid",
+                  "text": "Parent text",
+                  "columns": 2,
+                  "nestedElements": [
+                    { "type": "text", "constants": { "text": "From constants" } },
+                    {
+                      "type": "wrapper",
+                      "nestedElements": [
+                        { "type": "text", "processors": { "text": { "type": "path", "element": "greeting" } } }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+            """.trimIndent(),
+            """{ "greeting": "From data" }""",
+        )
+
+        val grid = assertNotNull(content).elements.single()
+        assertEquals("grid", grid.type)
+        assertEquals("grid_0", grid.id)
+        assertEquals("Parent text", grid.text, "the parent keeps the values it declares directly")
+        assertEquals(2, grid.jsonValues["columns"]?.let { json.decodeFromJsonElement<Int>(it) })
+        assertEquals("From constants", grid.nestedElements[0].text)
+        assertEquals("From data", grid.nestedElements[1].nestedElements.single().text)
+        assertEquals(
+            grid.nestedElements.map { it.id }.distinct().size,
+            grid.nestedElements.size,
+            "generated ids stay unique",
+        )
+    }
 }

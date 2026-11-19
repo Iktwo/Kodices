@@ -1,0 +1,93 @@
+{
+  "content": {
+    "elements": [
+      {
+        "type": "topbar",
+        "constants": { "text": "Homelab" }
+      },
+      {
+        "type": "text",
+        "id": "updated",
+        "constants": { "style": "bodyMedium" },
+        "processors": {
+          "text": [
+            { "type": "path", "elements": ["now", "time"] },
+            { "type": "string", "element": "As of %" }
+          ]
+        }
+      },
+      {
+        "type": "grid",
+        "constants": { "columns": 3 },
+        "nestedElements": [
+          {
+            "type": "stat",
+            "id": "uptime",
+            "constants": { "text": "Uptime", "unit": "days", "align": "center" },
+            "processors": { "value": [{ "type": "path", "elements": ["summary", "uptimeDays"] }] }
+          },
+          {
+            "type": "stat",
+            "id": "services",
+            "constants": { "text": "Services", "align": "center" },
+            "processors": { "value": [{ "type": "path", "elements": ["summary", "services"] }] }
+          },
+          {
+            "type": "stat",
+            "id": "alerts",
+            "constants": { "text": "Alerts", "align": "center" },
+            "processors": { "value": [{ "type": "path", "elements": ["summary", "alerts"] }] }
+          }
+        ]
+      },
+      {
+        "type": "separator",
+        "constants": { "style": "line", "size": 2 }
+      },
+      {
+        "type": "card",
+        "id": "host",
+        "expandWithProcessors": [{ "type": "path", "elements": ["hosts"] }],
+        "constants": { "variant": "outlined" },
+        "processors": {
+          "text": [{ "type": "path", "elements": ["name"] }],
+          "textSecondary": [{ "type": "path", "elements": ["role"] }]
+        },
+        "nestedElements": [
+          {
+            "type": "progress",
+            "constants": { "text": "Disk" },
+            "processors": {
+              "progress": [{ "type": "path", "elements": ["disk"] }],
+              "textSecondary": [{ "type": "path", "elements": ["diskNote"] }]
+            }
+          },
+          {
+            "type": "chart",
+            "constants": { "text": "CPU load, last hour", "height": 40, "min": 0, "max": 100 },
+            "processors": { "values": [{ "type": "path", "elements": ["cpu"] }] }
+          }
+        ]
+      }
+    ]
+  },
+  "data": {
+    "summary": { "uptimeDays": 212, "services": "18/18", "alerts": 0 },
+    "hosts": [
+      {
+        "name": "atlas",
+        "role": "NAS · 4 disks",
+        "disk": 0.71,
+        "diskNote": "5.7 of 8 TB used",
+        "cpu": [12, 14, 11, 35, 62, 40, 22, 15, 13, 12, 18, 16]
+      },
+      {
+        "name": "hermes",
+        "role": "Reverse proxy · DNS",
+        "disk": 0.23,
+        "diskNote": "28 of 120 GB used",
+        "cpu": [4, 5, 4, 6, 5, 4, 9, 5, 4, 4, 5, 4]
+      }
+    ]
+  }
+}

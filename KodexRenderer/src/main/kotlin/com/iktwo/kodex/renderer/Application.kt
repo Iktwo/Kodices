@@ -65,7 +65,10 @@ private fun constantTimeEquals(
     b: String,
 ): Boolean = MessageDigest.isEqual(a.toByteArray(), b.toByteArray())
 
-/** Screens reference bundled images as `asset:<file>`, resolved under `<screensDir>/assets`. */
+/**
+ * Screens reference bundled images as `asset:<file>`, resolved under `<screensDir>/assets`. The
+ * renderer reads them from disk; `/content` rewrites them to `/assets/<file>` URLs for clients.
+ */
 public const val ASSETS_DIR: String = "assets"
 
 private const val DEVICE_PRINCIPAL = "device"

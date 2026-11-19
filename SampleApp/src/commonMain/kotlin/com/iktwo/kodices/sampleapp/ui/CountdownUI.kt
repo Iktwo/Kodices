@@ -18,6 +18,7 @@ import com.iktwo.piktographs.elements.CountdownStyle
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.periodUntil
 import kotlinx.datetime.toInstant
+import kotlin.math.abs
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
@@ -27,14 +28,11 @@ fun CountdownUI(
     countdownElement: CountdownElement,
     instant: Instant = Clock.System.now(),
 ) {
-    val timeFrames = mutableListOf<String>()
+    val target = countdownElement.target.toInstant(TimeZone.currentSystemDefault())
+    val timeDifference = instant.periodUntil(target, TimeZone.currentSystemDefault())
 
-    val timeDifference = instant.periodUntil(
-        countdownElement.target.toInstant(TimeZone.currentSystemDefault()),
-        TimeZone.currentSystemDefault(),
-    )
-
-    val isTargetInThePast = countdownElement.target.toInstant(TimeZone.currentSystemDefault()) < Clock.System.now()
+    // Against [instant], like the time left, so the two cannot disagree.
+    val isTargetInThePast = target < instant
 
     Column(modifier = Modifier.fillMaxWidth().padding(SPACING)) {
         countdownElement.text?.let {
@@ -46,54 +44,37 @@ fun CountdownUI(
             )
         }
 
-        when (countdownElement.elementStyle) {
-            CountdownStyle.SHORT -> {
-                if (timeDifference.years != 0) {
-                    timeFrames.add("${timeDifference.years} years")
-                } else if (timeDifference.months != 0) {
-                    timeFrames.add("${timeDifference.months} months")
-                } else if (timeDifference.days != 0) {
-                    timeFrames.add("${timeDifference.days} days")
-                } else if (timeDifference.hours != 0) {
-                    timeFrames.add("${timeDifference.hours} hours")
-                } else if (timeDifference.minutes != 0) {
-                    timeFrames.add("${timeDifference.minutes} minutes")
-                } else if (timeDifference.seconds != 0) {
-                    timeFrames.add("${timeDifference.seconds} seconds")
-                }
-            }
+        // Largest unit first. A target in the past counts up from it, so the amounts are negative.
+        val amounts = listOf(
+            timeDifference.years to "year",
+            timeDifference.months to "month",
+            timeDifference.days to "day",
+            timeDifference.hours to "hour",
+            timeDifference.minutes to "minute",
+            timeDifference.seconds to "second",
+        ).filter { (amount, _) -> amount != 0 }
 
-            CountdownStyle.DAYS_HOURS_MINUTES_SECONDS -> {
-                if (timeDifference.years != 0) {
-                    timeFrames.add("${timeDifference.years} years")
-                }
-
-                if (timeDifference.months != 0) {
-                    timeFrames.add("${timeDifference.months} months")
-                }
-
-                if (timeDifference.days != 0) {
-                    timeFrames.add("${timeDifference.days} days")
-                }
-
-                if (timeDifference.hours != 0) {
-                    timeFrames.add("${timeDifference.hours} hours")
-                }
-
-                if (timeDifference.minutes != 0) {
-                    timeFrames.add("${timeDifference.minutes} minutes")
-                }
-
-                if (timeDifference.seconds != 0) {
-                    timeFrames.add("${timeDifference.seconds} seconds")
-                }
-            }
+        val shown = when (countdownElement.elementStyle) {
+            CountdownStyle.SHORT -> amounts.take(1)
+            CountdownStyle.DAYS_HOURS_MINUTES_SECONDS -> amounts
         }
 
+        val label = shown.joinToString(separator = ", ") { (amount, unit) -> quantity(abs(amount), unit) }
+
         Text(
-            text = timeFrames.joinToString(separator = ", "),
+            text = when {
+                label.isEmpty() -> "Now"
+                isTargetInThePast -> "$label ago"
+                else -> label
+            },
             fontSize = 18.sp,
             style = TextStyle(textDecoration = if (isTargetInThePast) TextDecoration.LineThrough else null),
         )
     }
 }
+
+/** "1 month", "2 months". */
+internal fun quantity(
+    amount: Int,
+    unit: String,
+): String = if (amount == 1) "1 $unit" else "$amount ${unit}s"

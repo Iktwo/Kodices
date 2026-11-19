@@ -40,9 +40,13 @@ internal fun Application.configureRouting(
         }
 
         if (config.token != null) {
-            authenticate(AUTH_PROVIDER) { deviceRoutes(config, service) }
+            authenticate(AUTH_PROVIDER) {
+                deviceRoutes(config, service)
+                contentRoutes(config, service)
+            }
         } else {
             deviceRoutes(config, service)
+            contentRoutes(config, service)
         }
     }
 }

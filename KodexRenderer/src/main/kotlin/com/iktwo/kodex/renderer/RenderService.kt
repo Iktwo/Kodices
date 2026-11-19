@@ -3,8 +3,10 @@ package com.iktwo.kodex.renderer
 import com.iktwo.kodex.renderer.render.RenderResult
 import com.iktwo.kodex.renderer.render.RenderSpec
 import com.iktwo.kodex.renderer.render.Renderer
+import com.iktwo.kodex.renderer.render.ResolvedScreen
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import java.nio.file.Path
 import java.security.MessageDigest
 
 /**
@@ -41,6 +43,19 @@ public class RenderService(
 
     /** The screen's source JSON, or null if it does not exist. */
     public fun source(screen: String): String? = repository.read(screen)
+
+    /** Names of the screens that can be rendered. */
+    public fun screens(): List<String> = repository.list()
+
+    /** The file an `asset:<path>` URL refers to, or null. */
+    public fun asset(path: String): Path? = repository.asset(path)
+
+    /**
+     * [screen] for a client that renders it itself, or null if the screen does not exist.
+     *
+     * @throws com.iktwo.kodex.renderer.render.ScreenParseException if it is not valid Kodices content.
+     */
+    public fun resolve(screen: String): ResolvedScreen? = repository.read(screen)?.let(renderer::resolve)
 
     /** Renders [screen] at [spec], or returns null if the screen does not exist. */
     public suspend fun render(

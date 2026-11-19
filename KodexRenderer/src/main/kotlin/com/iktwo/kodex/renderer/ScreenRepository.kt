@@ -1,7 +1,12 @@
 package com.iktwo.kodex.renderer
 
+import java.nio.file.InvalidPathException
 import java.nio.file.Path
+import kotlin.io.path.absolute
+import kotlin.io.path.isDirectory
 import kotlin.io.path.isRegularFile
+import kotlin.io.path.listDirectoryEntries
+import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.readText
 
 /**
@@ -16,6 +21,32 @@ public class ScreenRepository(
         if (!isValidName(name)) return null
         val file = screensDir.resolve("$name.json")
         return if (file.isRegularFile()) file.readText() else null
+    }
+
+    /** Names of every screen in [screensDir], sorted. */
+    public fun list(): List<String> {
+        if (!screensDir.isDirectory()) return emptyList()
+        return screensDir
+            .listDirectoryEntries("*.json")
+            .filter { it.isRegularFile() }
+            .map { it.nameWithoutExtension }
+            .filter(::isValidName)
+            .sorted()
+    }
+
+    /**
+     * The file behind `asset:<path>`, or null if there is none. [path] is resolved under
+     * `<screensDir>/assets` and can never leave it.
+     */
+    public fun asset(path: String): Path? {
+        if (path.isBlank()) return null
+        val root = screensDir.resolve(ASSETS_DIR).absolute().normalize()
+        val file = try {
+            root.resolve(path).normalize()
+        } catch (e: InvalidPathException) {
+            return null
+        }
+        return file.takeIf { it.startsWith(root) && it != root && it.isRegularFile() }
     }
 
     public companion object {

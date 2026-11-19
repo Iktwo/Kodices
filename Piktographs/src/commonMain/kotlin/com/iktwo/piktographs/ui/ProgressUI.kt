@@ -31,14 +31,14 @@ public fun ProgressUI(element: ProcessedElement) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(DefaultTheme.current.dimensions.padding),
+            .padding(LocalTheme.current.dimensions.padding),
     ) {
         element.text?.let { title ->
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(bottom = DefaultTheme.current.dimensions.verticalSpacing),
+                modifier = Modifier.padding(bottom = LocalTheme.current.dimensions.verticalSpacing),
             )
         }
 
@@ -52,7 +52,7 @@ public fun ProgressUI(element: ProcessedElement) {
                     }
 
                     element.textSecondary?.let { subtitle ->
-                        Spacer(modifier = Modifier.width(DefaultTheme.current.dimensions.horizontalSpacing))
+                        Spacer(modifier = Modifier.width(LocalTheme.current.dimensions.horizontalSpacing))
                         Text(
                             text = subtitle,
                             style = MaterialTheme.typography.bodySmall,
@@ -77,7 +77,7 @@ public fun ProgressUI(element: ProcessedElement) {
                         text = subtitle,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(top = DefaultTheme.current.dimensions.verticalSpacing),
+                        modifier = Modifier.padding(top = LocalTheme.current.dimensions.verticalSpacing),
                     )
                 }
             }

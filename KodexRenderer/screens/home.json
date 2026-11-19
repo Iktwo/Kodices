@@ -1,0 +1,111 @@
+{
+  "content": {
+    "elements": [
+      {
+        "type": "topbar",
+        "constants": { "text": "Home" }
+      },
+      {
+        "type": "container",
+        "constants": { "alignment": "center", "arrangement": "space_between" },
+        "nestedElements": [
+          {
+            "type": "text",
+            "id": "clock",
+            "constants": { "style": "displayMedium", "fontWeight": "bold" },
+            "processors": { "text": [{ "type": "path", "elements": ["now", "time"] }] }
+          },
+          {
+            "type": "badge",
+            "id": "alarm",
+            "processors": { "text": [{ "type": "path", "elements": ["alarm", "state"] }] }
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "date",
+        "constants": { "style": "titleMedium" },
+        "processors": { "text": [{ "type": "path", "elements": ["now", "date"] }] }
+      },
+      {
+        "type": "separator",
+        "constants": { "style": "line", "size": 2 }
+      },
+      {
+        "type": "grid",
+        "constants": { "columns": 2 },
+        "nestedElements": [
+          {
+            "type": "stat",
+            "id": "room",
+            "expandWithProcessors": [{ "type": "path", "elements": ["rooms"] }],
+            "constants": { "unit": "°C" },
+            "processors": {
+              "text": [{ "type": "path", "elements": ["name"] }],
+              "value": [{ "type": "path", "elements": ["temperature"] }],
+              "textSecondary": [
+                { "type": "path", "elements": ["humidity"] },
+                { "type": "string", "element": "Humidity %" }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "type": "separator",
+        "constants": { "style": "line", "size": 2 }
+      },
+      {
+        "type": "chart",
+        "id": "energy",
+        "constants": {
+          "text": "Energy this week, kWh",
+          "variant": "bar",
+          "height": 72,
+          "labels": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        },
+        "processors": {
+          "values": [{ "type": "path", "elements": ["energy", "week"] }],
+          "textSecondary": [
+            { "type": "path", "elements": ["energy", "total"] },
+            { "type": "string", "element": "% kWh so far" }
+          ]
+        }
+      },
+      {
+        "type": "separator",
+        "constants": { "style": "line", "size": 2 }
+      },
+      {
+        "type": "listItem",
+        "id": "device",
+        "expandWithProcessors": [{ "type": "path", "elements": ["devices"] }],
+        "processors": {
+          "icon": [{ "type": "path", "elements": ["icon"] }],
+          "text": [{ "type": "path", "elements": ["name"] }],
+          "textSecondary": [{ "type": "path", "elements": ["detail"] }],
+          "value": [{ "type": "path", "elements": ["state"] }]
+        }
+      }
+    ]
+  },
+  "data": {
+    "alarm": { "state": "Armed" },
+    "rooms": [
+      { "name": "Living room", "temperature": 21.5, "humidity": "44%" },
+      { "name": "Bedroom", "temperature": 19.0, "humidity": "48%" },
+      { "name": "Office", "temperature": 22.5, "humidity": "41%" },
+      { "name": "Garage", "temperature": 12.0, "humidity": "63%" }
+    ],
+    "energy": {
+      "week": [8.2, 7.4, 9.1, 0, 0, 0, 0],
+      "total": "24.7"
+    },
+    "devices": [
+      { "icon": "lock", "name": "Front door", "detail": "Locked at 08:12", "state": "Locked" },
+      { "icon": "notifications", "name": "Doorbell", "detail": "Last ring yesterday, 18:40", "state": "Idle" },
+      { "icon": "build", "name": "Boiler", "detail": "Service due in 3 weeks", "state": "OK" }
+    ]
+  }
+}

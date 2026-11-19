@@ -10,6 +10,7 @@ import com.iktwo.piktographs.navigation.DismissModalAction
 import com.iktwo.piktographs.navigation.ModalAction
 import com.iktwo.piktographs.navigation.NavigateAction
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import org.slf4j.LoggerFactory
 
@@ -43,6 +44,19 @@ internal class ScreenParser(
 
     /** @throws ScreenParseException if [screenJson] is not valid Kodices content. */
     fun parse(screenJson: String): Content {
+        val resolved = resolve(screenJson)
+
+        return parser.parseJSONElementToContent(resolved.content, resolved.data)
+            ?: throw ScreenParseException("Screen JSON is not valid Kodices content")
+    }
+
+    /**
+     * Splits [screenJson] into its content and the data its processors run against, with `now`
+     * merged in. This is what a client that renders the screen itself needs.
+     *
+     * @throws ScreenParseException if [screenJson] is not JSON.
+     */
+    fun resolve(screenJson: String): ResolvedScreen {
         val root = try {
             Json.parseToJsonElement(screenJson)
         } catch (e: Exception) {
@@ -55,10 +69,15 @@ internal class ScreenParser(
             root to null
         }
 
-        return parser.parseJSONElementToContent(contentJson, screenData.merge(data))
-            ?: throw ScreenParseException("Screen JSON is not valid Kodices content")
+        return ResolvedScreen(contentJson, screenData.merge(data))
     }
 }
+
+/** A screen's Kodices content and the data to process it with. */
+public class ResolvedScreen(
+    public val content: JsonElement,
+    public val data: JsonObject,
+)
 
 private object KodicesSlf4jLogger : Logger {
     private val log = LoggerFactory.getLogger("com.iktwo.kodices")

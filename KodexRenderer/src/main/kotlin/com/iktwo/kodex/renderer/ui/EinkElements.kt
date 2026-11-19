@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.iktwo.kodices.elements.ProcessedElement
 import com.iktwo.kodices.utils.asStringOrNull
 import com.iktwo.piktographs.ui.CARD_ELEMENT_TYPE
-import com.iktwo.piktographs.ui.DefaultTheme
+import com.iktwo.piktographs.ui.LocalTheme
 import com.iktwo.piktographs.ui.NestedElementUI
 import com.iktwo.piktographs.ui.PROGRESS_ELEMENT_TYPE
 import kotlinx.serialization.json.JsonPrimitive
@@ -71,7 +71,7 @@ internal fun einkElementOverride(element: ProcessedElement): Boolean =
 /** Every card variant as an outlined card: no shadow (elevated) and no tonal fill (filled). */
 @Composable
 internal fun EinkCard(element: ProcessedElement) {
-    val padding = DefaultTheme.current.dimensions.padding
+    val padding = LocalTheme.current.dimensions.padding
 
     Column(
         modifier = Modifier
@@ -89,7 +89,7 @@ internal fun EinkCard(element: ProcessedElement) {
                 text = subtitle,
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Black,
-                modifier = Modifier.padding(top = DefaultTheme.current.dimensions.verticalSpacing),
+                modifier = Modifier.padding(top = LocalTheme.current.dimensions.verticalSpacing),
             )
         }
 
@@ -108,7 +108,7 @@ internal fun EinkProgress(element: ProcessedElement) {
     val variant = element.jsonValues[KEY_VARIANT]?.asStringOrNull()?.lowercase() ?: "linear"
     val primitive = element.jsonValues[KEY_PROGRESS] as? JsonPrimitive
     val progress = (primitive?.doubleOrNull?.toFloat() ?: primitive?.content?.toFloatOrNull())?.coerceIn(0f, 1f)
-    val dimensions = DefaultTheme.current.dimensions
+    val dimensions = LocalTheme.current.dimensions
 
     Column(
         modifier = Modifier.fillMaxWidth().padding(dimensions.padding),

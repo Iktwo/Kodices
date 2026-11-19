@@ -17,6 +17,7 @@ include(
     ":Piktographs",
     ":SampleApp",
     ":SampleApp:sample_android",
-    ":KodexServer",
     ":KodexRenderer",
+    ":KodexClient",
+    ":KodexViewer",
 )

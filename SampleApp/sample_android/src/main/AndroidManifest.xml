@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools">
+    <!-- usesCleartextTraffic: the Dashboard tab talks to a KodexRenderer server on the local
+         network, which is plain http. A real app should serve it over https instead. -->
     <application
             tools:replace="android:name"
             android:name=".KodicesSampleApplication"
             android:supportsRtl="true"
+            android:usesCleartextTraffic="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".ui.MainActivity" android:exported="true">
             <intent-filter>

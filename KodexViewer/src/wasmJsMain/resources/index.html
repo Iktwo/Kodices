@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- The page shows a server's internals and takes its token: keep it out of search indexes and
+         do not tell other sites where a link was followed from. -->
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="referrer" content="no-referrer">
+    <title>Kodex Viewer</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #fef7ff;
+            color: #1d1b20;
+            font-family: system-ui, sans-serif;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            html, body {
+                background: #141218;
+                color: #e6e0e9;
+            }
+        }
+
+        #loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+<!-- Covered by the viewer's canvas once it has loaded. -->
+<div id="loading">Loading…</div>
+<noscript>The viewer needs JavaScript and WebAssembly.</noscript>
+<script src="kodexViewer.js"></script>
+</body>
+</html>

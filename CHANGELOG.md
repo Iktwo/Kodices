@@ -22,13 +22,73 @@
 - Karma (JS/Wasm browser tests) listens on `127.0.0.1` only (`karma.config.d/loopback.js`). On every
   interface, it started even when another process held `localhost:9876`, and ChromeHeadless then
   connected to that process and timed out without running any test.
+- SampleApp: new **Dashboard** tab, a client for KodexRenderer's `/content` endpoints (screen list,
+  polling with `ETag`, bearer token sent to that server only, `navigate` between screens). The
+  catalog shows the new dashboard elements. `./gradlew :SampleApp:run` failed with
+  `ClassNotFoundException`: `mainClass` was `MainKt` without its package.
+- New module **KodexClient** (not published): the client side of the content protocol, taken out of
+  the SampleApp so it has one implementation. `DashboardClient` (screen list, `ETag` polling),
+  `DashboardAuth` (bearer token for the dashboard server only; now one instance per HTTP client
+  instead of a process-wide object, and redirects are not followed), `DashboardController` (connect,
+  poll, select, refresh) and the `Dashboard` composable. Failures carry a kind
+  (`DashboardFailure`: unreachable, unauthorized, not found, invalid screen...), which the UI uses to
+  offer "Change token" or "Retry". A screen with its own `tabs` hides the client's screen chips, and
+  the chips scroll instead of overflowing. The SampleApp's Dashboard tab is now this.
+- **KodexServer is retired.** It served one hard-coded screen at `/content` and a WebSocket broadcast
+  that no client in the repository used. KodexRenderer is the sample server now: it serves a folder
+  of screens as JSON (`/screens`, `/content/<screen>.json`) and as PNG. The module, its IDE run
+  configuration and the two version catalog entries only it used (`ktor-server-host-common`,
+  `ktor-server-websockets`) are gone.
+- KodexClient: the token field is a `OutlinedSecureTextField` instead of a text field with the
+  deprecated `PasswordVisualTransformation`.
+- SampleApp: every screen has `@Preview`s (`SampleAppPreviews.kt`), and so does KodexViewer
+  (`ViewerPreviews.kt`). To make that possible the screens are split into a part that loads and a
+  part that draws (`AppScaffold`, `SampleList`, `SamplePage`, `ResourceContent`). The tab row
+  scrolls, because "Dashboard" broke mid-word at phone width; the JSON editor marks text that is
+  invalid when it arrives; the countdown compares its target with the instant it is given, not the
+  system clock.
+- SampleApp: the Android `web` element is the platform `WebView` in an `AndroidView`; accompanist-web
+  is deprecated and unmaintained, and is no longer a dependency. The countdown says "1 month", not
+  "1 months", and "18 days ago" for a target in the past instead of "-18 days". `LastSecond` is
+  `LocalLastSecond`. `sample_android` no longer depends on `ktor-client-websockets`, which nothing
+  used.
+- KodexViewer: the browser session code opts in to `ExperimentalWasmJsInterop` instead of warning.
+- Sample screens, the catalog and the guides use `container` in place of `hrow` / `vrow`.
+- Kodices README: the Wake-on-LAN example's JSON used the action type `WakeOnLAN` while the
+  descriptor above it registers `wol`.
+- New module **KodexViewer**: a standalone viewer for any server speaking the content protocol.
+  Desktop (`./gradlew :KodexViewer:run --args="--url ... --token ..."`, or `KODEX_URL` /
+  `KODEX_TOKEN`) and a static web bundle (`./gradlew :KodexViewer:wasmJsBrowserDistribution`) that
+  defaults to the origin it is served from and keeps the token in `sessionStorage` only.
+  `./gradlew :KodexViewer:renderScreen -Pfile=<screen.json>` renders a screen file to a PNG with the
+  viewer's theme at any window size. See [KodexViewer](KodexViewer/README.md).
 - KodexServer: package renamed `com.kodices.kodex.server` -> `com.iktwo.kodex.server` to match the
   rest of the repository; depends on `projects.kodices` (typesafe accessor); the `KodexServer` IDE
   run configuration called a task that does not exist (`runDebugExecutableNative`).
 
 ## Kodices
 
-### 0.6.0 - unreleased
+### 0.7.0 - unreleased
+
+**Added**
+
+- `emptyElement` on an element with `expandWithProcessors`: what to show in its place when the
+  array is empty or missing ("No alerts"). It is processed with the same data as the element.
+  `InterimElement` has a new `emptyElement` property (constructor, `copy` and `componentN` change).
+- `MapProcessor` (`"map"`): replaces a value with the one listed for it, with an optional
+  `default`: `{ "type": "map", "values": { "0": "neutral" }, "default": "warning" }`. Registered by
+  default.
+
+**Fixed**
+
+- A nested element's `constants` and `processors` were silently dropped when its parent declared
+  neither (`{"type": "grid", "nestedElements": [{"type": "text", "constants": {...}}]}` rendered
+  empty children). Such a parent is now processed like one with constants, keeping the values it
+  declares directly on itself.
+- An element with `expandWithProcessors` lost its `action`/`actions` on every copy, so a list built
+  from data could not be clickable. Each copy now keeps them, processed with its own entry.
+
+### 0.6.0
 
 **Added**
 
@@ -106,10 +166,30 @@ _First release._
 
 ## Piktographs
 
-### 0.8.0 - unreleased
+### 0.9.0 - unreleased
 
 **Changed**
 
+- **One name per layout concept.** A row or column is `"type": "container"`, a row unless it says
+  `"orientation": "vertical"`. The other spellings still render but are deprecated, log a warning
+  that says what to write instead, and are removed in 1.0:
+  - types `hrow`, `vrow`, `horizontal_layout`, `vertical_layout` (and their `*_ELEMENT_TYPE`
+    constants, now `@Deprecated`);
+  - keys `direction` (use `orientation`), `horizontalPadding` / `verticalPadding` (use
+    `paddingHorizontal` / `paddingVertical`);
+  - values `left` / `right` (use `start` / `end`), `spacebetween` and the like (use
+    `space_between`), `center_vertically` / `center_horizontally` (use `center`), and `column` /
+    `vrow` as an orientation (use `vertical`).
+- New `LocalLogger` (a Kodices `Logger`): where the renderer reports what it only learns while
+  drawing, such as the deprecated names above. It prints warnings and errors unless a host provides
+  its own.
+- `ContentBottomSheet` uses `rememberBottomSheetState` in place of the deprecated
+  `rememberModalBottomSheetState`; it still opens fully, with no half-open state.
+- `CountdownElement` no longer logs through the deprecated global `KodicesParser.logger`. A target
+  that is not a date and time throws `IllegalArgumentException` naming the value, which the parser
+  reports through its own logger.
+- **Renamed** the theme CompositionLocal `DefaultTheme` to `LocalTheme`, the Compose naming for a
+  CompositionLocal. `DefaultTheme` stays as a deprecated alias.
 - Built against Compose Multiplatform 1.13.0-rc01 and Kotlin 2.4.21.
 - `ContentDialog` on JVM/desktop is an in-window `Dialog`, like on every other platform, instead of a
   separate OS `DialogWindow`. The OS window could not be driven by Compose UI tests or used in a
@@ -123,6 +203,55 @@ _First release._
   built-in types (like the sample app's) behaves as before.
 - `Colors.mainTextColor` and `Colors.secondaryTextColor` default to `Color.Unspecified`, meaning
   "follow the Material theme". They were black and near-black, but nothing used them.
+
+**Added**
+
+- Dashboard elements:
+  - `TextUI` (`"text"`): text in any Material type scale style, with `align`, `fontWeight`,
+    `maxLines` and `color`.
+  - `StatUI` (`"stat"`): a figure with a label, `unit`, caption, `trend` arrow and `icon`.
+  - `ListItemUI` (`"listItem"`): leading `icon`, title, subtitle, trailing `value` and
+    `trailingIcon`; clickable with actions.
+  - `BadgeUI` (`"badge"`): a `filled` or `outlined` pill.
+  - `GridUI` (`"grid"`): nested elements in equal-width `columns`.
+  - `ChartUI` (`"chart"`): one series of `values` as a `line` or `bar` chart, with `labels`,
+    `min`/`max` and `height`; its values are exposed as a content description.
+  - Values these elements show or compute with accept a JSON number or a numeric string.
+  - Icon names: `calendar`, `email`, `phone`, `check_circle`, `arrow_up`, `arrow_down`, `build`,
+    `share`.
+  - Previews for the new elements in `commonMain` (`ui/previews/DashboardElementsPreview.kt`).
+- Elements for dense, data-driven screens (logs, tables of devices, status pages):
+  - `tone` (`info`, `success`, `warning`, `error`; also log-level names) on `text`, `badge`, `stat`,
+    `listItem`, `chart` and `tableRow`. The colors are `Colors.infoColor`, `successColor`,
+    `warningColor` and `errorColor`; unset, they follow the Material theme. `Colors` has four new
+    fields (constructor, `copy` and `componentN` change).
+  - `TableHeaderUI` (`"tableHeader"`) and `TableRowUI` (`"tableRow"`): rows with shared `columns`
+    (`key`, `label`, `width`/`weight`, `align`, `display` = `text`/`mono`/`badge`/`icon`,
+    `secondaryKey`, `toneKey`, `maxLines`, `primary`). A row is its own element, so a page stays
+    lazy over hundreds of them. Under `collapseBelow` dp of width (default 600) a row stacks and
+    labels its values, and the header disappears.
+  - `TabsUI` (`"tabs"`): links between screens with the current one marked. `PageUI` keeps a
+    top-level one above the scrolling content.
+  - `grid`: `minColumnWidth` fits as many columns as the width allows.
+  - `listItem`: `badge`, `dense`, `variant: tonal`. `badge`: `variant: tonal`; a blank badge draws
+    nothing. `stat`: `size` (`large`/`medium`/`small`), clickable with actions. `text`:
+    `fontFamily` (`monospace`, `serif`, `sans`).
+  - Previews in `ui/previews/OperatorElementsPreview.kt`.
+- `chart`: fewer `labels` than bars (4 under 24 hourly bars) now start at the bar they mark instead
+  of sitting in the middle of their stretch.
+- A JSON `null` in `constants` is no value, not the text "null" (`stat`, `listItem` and the other
+  dashboard elements).
+
+**Fixed**
+
+- `RowUI` now takes its font family from `LocalTextStyle`, so a host's typography applies to rows
+  like it does to every other element. It used to build a bare `TextStyle`, which always resolved
+  the platform default font. Size and line height are unchanged.
+- `RowUI` uses `Theme.colors.mainTextColor` / `secondaryTextColor` when they are set, instead of
+  always using the Material colors.
+- The JVM `RowUIPreview` used the deprecated `androidx.compose.desktop.ui.tooling.preview.Preview`.
+
+### 0.8.0
 
 **Added**
 
@@ -145,12 +274,6 @@ _First release._
 - Aligned `TextAreaUI` error state and `fillMaxWidth` styling with `TextInputUI`.
 - Fixed `TOP_BAR_ELEMENT_TYPE` duplicate slot allocation in `PageUI.renderElements`.
 - Renamed typo `SeperatorUI` to `SeparatorUI` with `@Deprecated` backwards-compatible alias.
-- `RowUI` now takes its font family from `LocalTextStyle`, so a host's typography applies to rows
-  like it does to every other element. It used to build a bare `TextStyle`, which always resolved
-  the platform default font. Size and line height are unchanged.
-- `RowUI` uses `Theme.colors.mainTextColor` / `secondaryTextColor` when they are set, instead of
-  always using the Material colors.
-- The JVM `RowUIPreview` used the deprecated `androidx.compose.desktop.ui.tooling.preview.Preview`.
 
 ### 0.7.0
 
@@ -219,5 +342,15 @@ Released alongside Kodices; see the Kodices entries above.
     indicators (outlined track with a solid fill, no stop dot), through `elementOverrides`.
   - `X-Render-Cache: hit|miss` header next to `X-Render-Millis`.
   - `dashboard-landscape.json`, used by `renderSample` for the landscape image.
+  - Screens as JSON for clients that render them themselves: `GET /screens`,
+    `GET /content/{screen}.json` (`{"content", "data", "refresh_seconds"}`, with `now` merged into
+    the data and `asset:` URLs rewritten to the server, `ETag`/`304`) and `GET /assets/{path}`.
+    `KODEX_PUBLIC_URL` sets the address used in asset URLs. The `/display` and `/render` contract
+    is unchanged.
+  - Sample screens `home.json` and `status.json`; `dashboard.json` now uses the stat, chart and
+    list item elements.
+  - [Building a dashboard](KodexRenderer/screens/README.md): an authoring guide with the JSON for
+    every dashboard element.
+  - Every `tone` is black in the e-ink theme.
   - The fat jar carries only the Linux Skiko natives (65 MB instead of 86 MB). `installDist`,
     `distZip` and `distTar` work: JetBrains' empty redirect jars are left out of `lib/`.

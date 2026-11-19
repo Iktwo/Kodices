@@ -14,6 +14,9 @@ import kotlin.io.path.Path
  *
  * @property token shared secret; when set, `/display` and `/render` require `Authorization: Bearer <token>`.
  * @property display what `/display` points devices at.
+ * @property publicUrl the address clients reach this server at (`https://dash.example.com`), used
+ *   for the asset URLs in `/content`. Null derives it from each request, which is right unless a
+ *   proxy rewrites the `Host` header or terminates TLS.
  */
 public data class RendererConfig(
     val screensDir: Path = Path(DEFAULT_SCREENS_DIR),
@@ -23,6 +26,7 @@ public data class RendererConfig(
     val zoneId: ZoneId = ZoneId.systemDefault(),
     val locale: Locale = Locale.US,
     val display: RenderSpec = RenderSpec(),
+    val publicUrl: String? = null,
 ) {
     init {
         require(ScreenRepository.isValidName(defaultScreen)) { "Invalid default screen name '$defaultScreen'" }
@@ -56,6 +60,7 @@ public data class RendererConfig(
                     mode = mode,
                     density = string("display.density")?.toFloat() ?: RenderSpec.DEFAULT_DENSITY,
                 ),
+                publicUrl = string("publicUrl")?.trimEnd('/'),
             )
         }
     }

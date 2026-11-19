@@ -103,6 +103,41 @@ instead - `%0`, `%1`, ... - and each is replaced with the entry at that index:
 
 This processor is used to apply simple styling transformations to a string, such as converting it to uppercase or lowercase.
 
+#### MapProcessor
+
+This processor replaces a value with the one listed for it. It is how a screen turns what the data
+says into what an element needs: a count into a tone, a level into an icon name, a code into a label.
+
+```json
+{
+  "type": "map",
+  "values": { "0": "neutral" },
+  "default": "warning"
+}
+```
+
+After a `path` that yields `0` the result is `"neutral"`; for any other value it is `"warning"`.
+The incoming value is looked up by its text, so `0`, `"0"` and `true` (as `"true"`) can all be keys.
+Without `default`, a value that is not listed passes through unchanged.
+
+### Empty lists
+
+An element with `expandWithProcessors` is repeated for each entry of an array, so an empty array
+shows nothing. `emptyElement` is what to show instead:
+
+```json
+{
+  "type": "listItem",
+  "expandWithProcessors": [{ "type": "path", "elements": ["alerts"] }],
+  "processors": { "text": [{ "type": "path", "elements": ["title"] }] },
+  "emptyElement": { "type": "text", "constants": { "text": "No alerts" } }
+}
+```
+
+It is used when the array is empty or the data has no such key, and it is processed with the same
+data as the element itself (not with an entry), so it can have processors of its own. Data that is
+there but is not an array is a mistake in the screen: it logs a warning and shows nothing.
+
 ## Customization
 
 Kodices is designed to be extensible. You can add your own custom `Element`s and `Action`s to suit the needs of your application.
@@ -215,7 +250,7 @@ This example shows how to create a button that triggers a wake-on-LAN action (th
         "text": "Wake On LAN"
       },
       "action": {
-        "type": "WakeOnLAN",
+        "type": "wol",
         "constants": {
           "ip": "192.168.1.100",
           "mac": "00:1A:2B:3C:4D:5E",

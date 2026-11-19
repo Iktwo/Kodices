@@ -247,7 +247,7 @@ public class Phase1ComponentsTest {
                 {
                   "elements": [
                     {
-                      "type": "hrow",
+                      "type": "container",
                       "id": "action_row",
                       "spacing": 16,
                       "nestedElements": [

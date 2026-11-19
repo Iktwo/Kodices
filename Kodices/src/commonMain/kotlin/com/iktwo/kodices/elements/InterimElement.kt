@@ -24,6 +24,12 @@ public data class InterimElement(
     val processorsForExpansion: List<DataProcessor> = emptyList(),
     override val actions: List<InterimAction> = emptyList(),
     val action: InterimAction? = null,
+    /**
+     * Rendered in place of this element when [processorsForExpansion] produce an empty array or
+     * nothing at all: a list's "nothing here" line. It is processed with the same data as this
+     * element, not with an entry of the array.
+     */
+    val emptyElement: Element? = null,
 ) : Element {
     public fun process(
         index: Int = 0,
@@ -39,11 +45,15 @@ public data class InterimElement(
                 dataProcessor.process(processedData)?.let {
                     processedData = it
                 } ?: run {
-                    return emptyList()
+                    return processEmptyElement(index, data, parentId, json)
                 }
             }
 
             return if (processedData is JsonArray) {
+                if (processedData.jsonArray.isEmpty()) {
+                    return processEmptyElement(index, data, parentId, json)
+                }
+
                 processedData
                     .jsonArray
                     .mapIndexed { repeatingIndex, jsonElement ->
@@ -51,7 +61,17 @@ public data class InterimElement(
                         // A declared id has to be suffixed, otherwise every expanded copy would share it and
                         // renderers keyed on the id (list keys, input state) would collide.
                         val repeatingId = id?.let { "${it}_$repeatingIndex" }
-                        val repeatingElement = InterimElement(type, nestedElements, repeatingId, constants, processors, emptyList())
+                        // Its actions go with it: they are processed with the entry, like its values.
+                        val repeatingElement = InterimElement(
+                            type = type,
+                            nestedElements = nestedElements,
+                            id = repeatingId,
+                            constants = constants,
+                            processors = processors,
+                            processorsForExpansion = emptyList(),
+                            actions = actions,
+                            action = action,
+                        )
 
                         // Process element with element from the array
                         repeatingElement.process(
@@ -182,4 +202,16 @@ public data class InterimElement(
             ),
         )
     }
+
+    private fun processEmptyElement(
+        index: Int,
+        data: JsonElement?,
+        parentId: String?,
+        json: Json,
+    ): List<ProcessedElement> =
+        when (emptyElement) {
+            null -> emptyList()
+            is ProcessedElement -> listOf(emptyElement)
+            is InterimElement -> emptyElement.process(index, data, "${parentId ?: ""}${Element.EMPTY_ELEMENT_ID_PREFIX}", json)
+        }
 }

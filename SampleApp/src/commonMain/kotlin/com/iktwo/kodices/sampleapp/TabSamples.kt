@@ -42,38 +42,49 @@ fun TabSamples() {
         }) { sample ->
             when (sample) {
                 null -> {
-                    LazyColumn(modifier = Modifier.fillMaxSize()) {
-                        Samples.entries.forEach { sample ->
-                            item {
-                                Button(modifier = Modifier.padding(8.dp), onClick = {
-                                    selectedSample = sample
-                                }) {
-                                    Text(sample.displayName)
-                                }
-                            }
-                        }
-                    }
+                    SampleList(onSampleSelected = { selectedSample = it })
                 }
 
                 else -> {
-                    Column(modifier = Modifier.fillMaxSize()) {
-                        Button(
-                            modifier = Modifier.padding(8.dp),
-                            onClick = { selectedSample = null },
-                        ) {
-                            Text(text = "Back")
-                        }
-
-                        selectedSample?.resourceFilename?.let { resourceFilename ->
-                            ResourceContentPage(
-                                resourceFilename,
-                                selectedSample?.dataFilename,
-                            )
-                        }
+                    SamplePage(onBack = { selectedSample = null }) {
+                        ResourceContentPage(sample.resourceFilename, sample.dataFilename)
                     }
                 }
             }
         }
+    }
+}
+
+/** One button per sample. */
+@Composable
+internal fun SampleList(
+    onSampleSelected: (Samples) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    LazyColumn(modifier = modifier.fillMaxSize()) {
+        Samples.entries.forEach { sample ->
+            item {
+                Button(modifier = Modifier.padding(8.dp), onClick = { onSampleSelected(sample) }) {
+                    Text(sample.displayName)
+                }
+            }
+        }
+    }
+}
+
+/** A sample: a way back to the list, then the sample itself. */
+@Composable
+internal fun SamplePage(
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Column(modifier = modifier.fillMaxSize()) {
+        Button(modifier = Modifier.padding(8.dp), onClick = onBack) {
+            Text(text = "Back")
+        }
+
+        content()
     }
 }
 

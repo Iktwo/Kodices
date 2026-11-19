@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material3.SecondaryTabRow
+import androidx.compose.material3.SecondaryScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -69,19 +69,22 @@ enum class Tabs(
     TabSamples("Samples"),
     ComponentCatalog("Catalog"),
     Input("Dynamic Input"),
+    Dashboard("Dashboard"),
 }
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun App() {
-    val orderedTabs = Tabs.entries
-    var selectedTab by remember { mutableStateOf(orderedTabs.first()) }
+    var selectedTab by remember { mutableStateOf(Tabs.entries.first()) }
 
     val sampleInitialContent = "{}"
 
     var activeContent by remember { mutableStateOf(sampleInitialContent) }
     var activeData by remember { mutableStateOf(sampleInitialContent) }
     var catalogContent by remember { mutableStateOf("") }
+
+    // Before anything shows an image: Coil keeps the first loader it is given.
+    remember { installDashboardImageLoader() }
 
     // Has to be an effect: launching from the composition body sets state, which recomposes,
     // which launches again, for as long as this composable is on screen.
@@ -91,18 +94,8 @@ fun App() {
         }
     }
 
-    Column(modifier = Modifier.safeDrawingPadding().fillMaxSize()) {
-        SecondaryTabRow(selectedTabIndex = orderedTabs.indexOf(selectedTab)) {
-            orderedTabs.map { tab ->
-                Tab(selected = tab == selectedTab, onClick = {
-                    selectedTab = tab
-                }) {
-                    Text(tab.displayName, modifier = Modifier.padding(8.dp))
-                }
-            }
-        }
-
-        when (selectedTab) {
+    AppScaffold(selectedTab = selectedTab, onTabSelected = { selectedTab = it }) { tab ->
+        when (tab) {
             Tabs.ComponentCatalog -> {
                 TabCatalog(catalogContent)
             }
@@ -119,6 +112,33 @@ fun App() {
             Tabs.TabSamples -> {
                 TabSamples()
             }
+
+            Tabs.Dashboard -> {
+                TabDashboard()
+            }
         }
+    }
+}
+
+/** The app's frame: the tab row, and under it whatever [content] draws for the selected tab. */
+@Composable
+internal fun AppScaffold(
+    selectedTab: Tabs,
+    onTabSelected: (Tabs) -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable (Tabs) -> Unit,
+) {
+    Column(modifier = modifier.safeDrawingPadding().fillMaxSize()) {
+        // Scrollable: four equal tabs are too narrow for their names on a phone, where
+        // "Dashboard" broke in the middle of the word.
+        SecondaryScrollableTabRow(selectedTabIndex = Tabs.entries.indexOf(selectedTab), edgePadding = 0.dp) {
+            Tabs.entries.forEach { tab ->
+                Tab(selected = tab == selectedTab, onClick = { onTabSelected(tab) }) {
+                    Text(tab.displayName, modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp), maxLines = 1)
+                }
+            }
+        }
+
+        content(selectedTab)
     }
 }

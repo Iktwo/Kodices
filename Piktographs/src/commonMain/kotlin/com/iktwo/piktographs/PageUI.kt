@@ -1,5 +1,6 @@
 package com.iktwo.piktographs
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -7,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -26,7 +28,8 @@ import com.iktwo.kodices.elements.ProcessedElement
 import com.iktwo.piktographs.components.CollapsingTopBar
 import com.iktwo.piktographs.components.TopBarStyle
 import com.iktwo.piktographs.ui.Constants.TOP_BAR_ELEMENT_TYPE
-import com.iktwo.piktographs.ui.DefaultTheme
+import com.iktwo.piktographs.ui.LocalTheme
+import com.iktwo.piktographs.ui.TABS_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,7 +55,7 @@ public fun PageUI(
 ) {
     val topAppBarState = rememberTopAppBarState()
 
-    CompositionLocalProvider(DefaultTheme provides theme) {
+    CompositionLocalProvider(LocalTheme provides theme) {
         // Seeding runs in an effect, not in the composition body: writing to these maps on every
         // recomposition would overwrite whatever the user has typed since. Existing keys are left
         // alone for the same reason - the maps are the source of truth once the user has touched them.
@@ -98,8 +101,11 @@ public fun PageUI(
         val topBarElement = content.elements.find { it.type == TOP_BAR_ELEMENT_TYPE }
         val barStyle = TopBarStyle.fromText(topBarElement?.style)
         val scrollBehavior = barStyle.scrollBehavior(topAppBarState)
+        // The first top-level tabs element stays put above the list, like the top bar: navigation
+        // that scrolls away with the content is navigation the user has to scroll back to.
+        val tabsElement = content.elements.firstOrNull { it.type == TABS_ELEMENT_TYPE }
         val listElements = remember(content.elements) {
-            content.elements.filter { it.type != TOP_BAR_ELEMENT_TYPE }
+            content.elements.filter { it.type != TOP_BAR_ELEMENT_TYPE && it !== tabsElement }
         }
 
         CompositionLocalProvider(
@@ -113,12 +119,18 @@ public fun PageUI(
             Scaffold(
                 modifier = modifier,
                 topBar = {
-                    topBarElement?.let {
-                        CollapsingTopBar(
-                            title = topBarElement.text,
-                            scrollBehavior = scrollBehavior,
-                            style = barStyle,
-                        )
+                    Column {
+                        topBarElement?.let {
+                            CollapsingTopBar(
+                                title = topBarElement.text,
+                                scrollBehavior = scrollBehavior,
+                                style = barStyle,
+                            )
+                        }
+
+                        tabsElement?.let {
+                            Surface { ElementUI(it) }
+                        }
                     }
                 },
             ) { innerPadding ->

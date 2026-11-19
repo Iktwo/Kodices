@@ -13,4 +13,4 @@ val emptyActionPerformer = object : ActionPerformer {
     }
 }
 
-val LastSecond = compositionLocalOf { Clock.System.now() }
+val LocalLastSecond = compositionLocalOf { Clock.System.now() }

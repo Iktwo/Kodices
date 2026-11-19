@@ -21,7 +21,6 @@ dependencies {
     implementation(projects.piktographs)
     implementation(projects.sampleApp)
 
-    implementation(libs.accompanist.webview)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core)
@@ -37,7 +36,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.ktor.client.cio)
     implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.websockets)
     implementation(libs.material.icons.core)
     implementation(libs.material.icons.extended)
 }

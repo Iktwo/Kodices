@@ -41,14 +41,18 @@ kotlin {
         val desktopMain by getting
 
         commonMain.dependencies {
+            implementation(projects.kodexClient)
             implementation(projects.piktographs)
 
             implementation(libs.androidx.datastore.core)
             implementation(libs.androidx.datastore.core.okio)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor3)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
             implementation(libs.compose.runtime)
+            implementation(libs.compose.ui.tooling.preview)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
@@ -66,7 +70,6 @@ kotlin {
         }
 
         androidMain.dependencies {
-            implementation(libs.accompanist.webview)
             implementation(libs.androidx.appcompat)
             implementation(libs.androidx.core)
             implementation(libs.kotlinx.coroutines.android)
@@ -86,7 +89,7 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "MainKt"
+        mainClass = "com.iktwo.kodices.sampleapp.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
