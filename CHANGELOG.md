@@ -1,6 +1,30 @@
 # Changelog
 
-`Kodices` and `Piktographs` are versioned independently.
+`Kodices`, `Piktographs` and `KodexRenderer` are versioned independently.
+
+## Build
+
+### Unreleased
+
+- Toolchain and dependency bump: Gradle 9.9.1, Kotlin 2.4.21, Compose Multiplatform 1.13.0-rc01
+  (CMP material3 1.13.0-rc01), AGP 9.5.1, Ktor 3.6.1, Coil 3.6.3, kotlinx-serialization 1.13.0,
+  androidx core 1.19.1 / appcompat 1.8.0 / datastore 1.3.0, okio 3.18.2, Kover 0.9.11, SKIE 0.10.16,
+  JaCoCo 0.8.16. Compose Multiplatform is a release candidate: move to 1.13.0 once it is final.
+- Removed the `maven.pkg.jetbrains.space/public/p/compose/dev` plugin repository. JetBrains Space is
+  shut down and the host no longer resolves, which made Gradle fail to resolve the build classpath
+  (`No target component for edge ... commons-lang3`) before any task ran.
+- ABI validation is back on for `:Kodices` and `:Piktographs`, using the Kotlin 2.4 DSL
+  (`abiValidation()`; the `enabled`/`klib.enabled` properties it used before no longer exist). `check`
+  runs `checkKotlinAbi`; refresh the dumps with `./gradlew updateKotlinAbi`. The dumps in `api/` had
+  not been updated since validation was switched off, so they now also record the changes made in
+  the meantime, including binary-incompatible ones to `PageUI`, `ElementUI`, `NestedElementUI`
+  (new `modifier` parameters) and `SimpleAction` (now `open`, with a `jsonValues` constructor).
+- Karma (JS/Wasm browser tests) listens on `127.0.0.1` only (`karma.config.d/loopback.js`). On every
+  interface, it started even when another process held `localhost:9876`, and ChromeHeadless then
+  connected to that process and timed out without running any test.
+- KodexServer: package renamed `com.kodices.kodex.server` -> `com.iktwo.kodex.server` to match the
+  rest of the repository; depends on `projects.kodices` (typesafe accessor); the `KodexServer` IDE
+  run configuration called a task that does not exist (`runDebugExecutableNative`).
 
 ## Kodices
 
@@ -84,6 +108,22 @@ _First release._
 
 ### 0.8.0 - unreleased
 
+**Changed**
+
+- Built against Compose Multiplatform 1.13.0-rc01 and Kotlin 2.4.21.
+- `ContentDialog` on JVM/desktop is an in-window `Dialog`, like on every other platform, instead of a
+  separate OS `DialogWindow`. The OS window could not be driven by Compose UI tests or used in a
+  headless scene: since Compose Multiplatform 1.12, touching it off the event dispatch thread throws.
+- `ContentDialog` now shows its content on a surface with `title` at the top, on every platform
+  (the same arrangement as `ContentBottomSheet`). The title used to appear only on desktop, as the
+  window title.
+- `elementOverrides` (on `PageUI` and `KodicesNavHost`) is now consulted for every element, built-in
+  types included, before Piktographs' own rendering. It used to be called only for types Piktographs
+  did not know, so a host could not restyle, say, a card. An override that returns `false` for
+  built-in types (like the sample app's) behaves as before.
+- `Colors.mainTextColor` and `Colors.secondaryTextColor` default to `Color.Unspecified`, meaning
+  "follow the Material theme". They were black and near-black, but nothing used them.
+
 **Added**
 
 - Core UI Primitives:
@@ -105,6 +145,12 @@ _First release._
 - Aligned `TextAreaUI` error state and `fillMaxWidth` styling with `TextInputUI`.
 - Fixed `TOP_BAR_ELEMENT_TYPE` duplicate slot allocation in `PageUI.renderElements`.
 - Renamed typo `SeperatorUI` to `SeparatorUI` with `@Deprecated` backwards-compatible alias.
+- `RowUI` now takes its font family from `LocalTextStyle`, so a host's typography applies to rows
+  like it does to every other element. It used to build a bare `TextStyle`, which always resolved
+  the platform default font. Size and line height are unchanged.
+- `RowUI` uses `Theme.colors.mainTextColor` / `secondaryTextColor` when they are set, instead of
+  always using the Material colors.
+- The JVM `RowUIPreview` used the deprecated `androidx.compose.desktop.ui.tooling.preview.Preview`.
 
 ### 0.7.0
 
@@ -151,3 +197,27 @@ Superseded by 0.6.0; the fixes above were developed together and released as one
 ### 0.4.0 and earlier
 
 Released alongside Kodices; see the Kodices entries above.
+
+## KodexRenderer
+
+### 0.1.0 - unreleased
+
+**Added**
+
+- New JVM module that renders Kodices screens through Piktographs headlessly (`ImageComposeScene`)
+  to PNG for e-ink displays, served by Ktor (CIO):
+  - `GET /health`, `GET /display?device=`, `GET /render/{screen}.png`, `GET /render/{screen}.json`.
+  - Strong `ETag` (hash of the PNG bytes), `Cache-Control: no-cache`, `304` on `If-None-Match`.
+  - `gray16` (8-bit grayscale, 16 levels), `bw` (Floyd–Steinberg) and `color` modes; bounded
+    `width`/`height` for landscape.
+  - Waits for Coil image loads before capturing; frozen frame clock, bundled Noto Sans, injected
+    clock and fixed locale for byte-identical output.
+  - High-contrast `EinkTheme`.
+  - Optional bearer-token auth (`KODEX_TOKEN`); configuration through `application.conf` and env vars.
+  - `renderSample` Gradle task, sample `dashboard.json` screen, multi-arch `Dockerfile`.
+  - E-ink renderings of cards (outlined, no shadow or tonal fill, for every variant) and progress
+    indicators (outlined track with a solid fill, no stop dot), through `elementOverrides`.
+  - `X-Render-Cache: hit|miss` header next to `X-Render-Millis`.
+  - `dashboard-landscape.json`, used by `renderSample` for the landscape image.
+  - The fat jar carries only the Linux Skiko natives (65 MB instead of 86 MB). `installDist`,
+    `distZip` and `distTar` work: JetBrains' empty redirect jars are left out of `lib/`.

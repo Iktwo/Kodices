@@ -65,6 +65,40 @@ final enum class com.iktwo.piktographs.ui/UnknownElementPlaceholder : kotlin/Enu
     final fun values(): kotlin/Array<com.iktwo.piktographs.ui/UnknownElementPlaceholder> // com.iktwo.piktographs.ui/UnknownElementPlaceholder.values|values#static(){}[0]
 }
 
+sealed interface com.iktwo.piktographs.navigation/NavState { // com.iktwo.piktographs.navigation/NavState|null[0]
+    final class Error : com.iktwo.piktographs.navigation/NavState { // com.iktwo.piktographs.navigation/NavState.Error|null[0]
+        constructor <init>(kotlin/Throwable) // com.iktwo.piktographs.navigation/NavState.Error.<init>|<init>(kotlin.Throwable){}[0]
+
+        final val throwable // com.iktwo.piktographs.navigation/NavState.Error.throwable|{}throwable[0]
+            final fun <get-throwable>(): kotlin/Throwable // com.iktwo.piktographs.navigation/NavState.Error.throwable.<get-throwable>|<get-throwable>(){}[0]
+
+        final fun component1(): kotlin/Throwable // com.iktwo.piktographs.navigation/NavState.Error.component1|component1(){}[0]
+        final fun copy(kotlin/Throwable = ...): com.iktwo.piktographs.navigation/NavState.Error // com.iktwo.piktographs.navigation/NavState.Error.copy|copy(kotlin.Throwable){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.iktwo.piktographs.navigation/NavState.Error.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.iktwo.piktographs.navigation/NavState.Error.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.iktwo.piktographs.navigation/NavState.Error.toString|toString(){}[0]
+    }
+
+    final class Success : com.iktwo.piktographs.navigation/NavState { // com.iktwo.piktographs.navigation/NavState.Success|null[0]
+        constructor <init>(com.iktwo.kodices.content/Content) // com.iktwo.piktographs.navigation/NavState.Success.<init>|<init>(com.iktwo.kodices.content.Content){}[0]
+
+        final val content // com.iktwo.piktographs.navigation/NavState.Success.content|{}content[0]
+            final fun <get-content>(): com.iktwo.kodices.content/Content // com.iktwo.piktographs.navigation/NavState.Success.content.<get-content>|<get-content>(){}[0]
+
+        final fun component1(): com.iktwo.kodices.content/Content // com.iktwo.piktographs.navigation/NavState.Success.component1|component1(){}[0]
+        final fun copy(com.iktwo.kodices.content/Content = ...): com.iktwo.piktographs.navigation/NavState.Success // com.iktwo.piktographs.navigation/NavState.Success.copy|copy(com.iktwo.kodices.content.Content){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.iktwo.piktographs.navigation/NavState.Success.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.iktwo.piktographs.navigation/NavState.Success.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.iktwo.piktographs.navigation/NavState.Success.toString|toString(){}[0]
+    }
+
+    final object Loading : com.iktwo.piktographs.navigation/NavState { // com.iktwo.piktographs.navigation/NavState.Loading|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // com.iktwo.piktographs.navigation/NavState.Loading.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // com.iktwo.piktographs.navigation/NavState.Loading.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // com.iktwo.piktographs.navigation/NavState.Loading.toString|toString(){}[0]
+    }
+}
+
 sealed interface com.iktwo.piktographs/PageStyle // com.iktwo.piktographs/PageStyle|null[0]
 
 final class com.iktwo.piktographs.data/Countdown { // com.iktwo.piktographs.data/Countdown|null[0]
@@ -131,6 +165,165 @@ final class com.iktwo.piktographs.elements/WebElement : com.iktwo.kodices.elemen
             final fun <get-builder>(): kotlin/Function6<kotlin/String, kotlin/String, kotlin.collections/Map<kotlin/String, kotlinx.serialization.json/JsonElement?>, kotlin.collections/List<com.iktwo.kodices.elements/ProcessedElement>, kotlin.collections/List<com.iktwo.kodices.actions/Action>, kotlinx.serialization.json/Json, com.iktwo.kodices.elements/ProcessedElement> // com.iktwo.piktographs.elements/WebElement.Companion.builder.<get-builder>|<get-builder>(){}[0]
         final val type // com.iktwo.piktographs.elements/WebElement.Companion.type|{}type[0]
             final fun <get-type>(): kotlin/String // com.iktwo.piktographs.elements/WebElement.Companion.type.<get-type>|<get-type>(){}[0]
+    }
+}
+
+final class com.iktwo.piktographs.navigation/DismissModalAction : com.iktwo.kodices.actions/Action { // com.iktwo.piktographs.navigation/DismissModalAction|null[0]
+    constructor <init>(kotlin/String? = ...) // com.iktwo.piktographs.navigation/DismissModalAction.<init>|<init>(kotlin.String?){}[0]
+
+    final val target // com.iktwo.piktographs.navigation/DismissModalAction.target|{}target[0]
+        final fun <get-target>(): kotlin/String? // com.iktwo.piktographs.navigation/DismissModalAction.target.<get-target>|<get-target>(){}[0]
+    final val type // com.iktwo.piktographs.navigation/DismissModalAction.type|{}type[0]
+        final fun <get-type>(): kotlin/String // com.iktwo.piktographs.navigation/DismissModalAction.type.<get-type>|<get-type>(){}[0]
+
+    final fun component1(): kotlin/String? // com.iktwo.piktographs.navigation/DismissModalAction.component1|component1(){}[0]
+    final fun copy(kotlin/String? = ...): com.iktwo.piktographs.navigation/DismissModalAction // com.iktwo.piktographs.navigation/DismissModalAction.copy|copy(kotlin.String?){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.iktwo.piktographs.navigation/DismissModalAction.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.iktwo.piktographs.navigation/DismissModalAction.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // com.iktwo.piktographs.navigation/DismissModalAction.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<com.iktwo.piktographs.navigation/DismissModalAction> { // com.iktwo.piktographs.navigation/DismissModalAction.$serializer|null[0]
+        final val descriptor // com.iktwo.piktographs.navigation/DismissModalAction.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // com.iktwo.piktographs.navigation/DismissModalAction.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // com.iktwo.piktographs.navigation/DismissModalAction.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): com.iktwo.piktographs.navigation/DismissModalAction // com.iktwo.piktographs.navigation/DismissModalAction.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, com.iktwo.piktographs.navigation/DismissModalAction) // com.iktwo.piktographs.navigation/DismissModalAction.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;com.iktwo.piktographs.navigation.DismissModalAction){}[0]
+    }
+
+    final object Companion { // com.iktwo.piktographs.navigation/DismissModalAction.Companion|null[0]
+        final const val TYPE // com.iktwo.piktographs.navigation/DismissModalAction.Companion.TYPE|{}TYPE[0]
+            final fun <get-TYPE>(): kotlin/String // com.iktwo.piktographs.navigation/DismissModalAction.Companion.TYPE.<get-TYPE>|<get-TYPE>(){}[0]
+
+        final val descriptor // com.iktwo.piktographs.navigation/DismissModalAction.Companion.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): com.iktwo.kodices.actions/ActionDescriptor // com.iktwo.piktographs.navigation/DismissModalAction.Companion.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<com.iktwo.piktographs.navigation/DismissModalAction> // com.iktwo.piktographs.navigation/DismissModalAction.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final class com.iktwo.piktographs.navigation/KodicesNavController { // com.iktwo.piktographs.navigation/KodicesNavController|null[0]
+    final val currentRoute // com.iktwo.piktographs.navigation/KodicesNavController.currentRoute|{}currentRoute[0]
+        final fun <get-currentRoute>(): kotlin/String // com.iktwo.piktographs.navigation/KodicesNavController.currentRoute.<get-currentRoute>|<get-currentRoute>(){}[0]
+
+    final var activeModal // com.iktwo.piktographs.navigation/KodicesNavController.activeModal|{}activeModal[0]
+        final fun <get-activeModal>(): com.iktwo.piktographs.navigation/ModalDestination? // com.iktwo.piktographs.navigation/KodicesNavController.activeModal.<get-activeModal>|<get-activeModal>(){}[0]
+
+    final fun dismissModal(): kotlin/Boolean // com.iktwo.piktographs.navigation/KodicesNavController.dismissModal|dismissModal(){}[0]
+    final fun navigate(kotlin/String) // com.iktwo.piktographs.navigation/KodicesNavController.navigate|navigate(kotlin.String){}[0]
+    final fun navigate(kotlin/String, kotlin/String = ..., kotlin/String? = ...) // com.iktwo.piktographs.navigation/KodicesNavController.navigate|navigate(kotlin.String;kotlin.String;kotlin.String?){}[0]
+    final fun popBackStack(): kotlin/Boolean // com.iktwo.piktographs.navigation/KodicesNavController.popBackStack|popBackStack(){}[0]
+    final fun showModal(kotlin/String, kotlin/String = ..., kotlin/String? = ...) // com.iktwo.piktographs.navigation/KodicesNavController.showModal|showModal(kotlin.String;kotlin.String;kotlin.String?){}[0]
+}
+
+final class com.iktwo.piktographs.navigation/ModalAction : com.iktwo.kodices.actions/Action { // com.iktwo.piktographs.navigation/ModalAction|null[0]
+    constructor <init>(kotlin/String, kotlin/String = ..., kotlin/String? = ...) // com.iktwo.piktographs.navigation/ModalAction.<init>|<init>(kotlin.String;kotlin.String;kotlin.String?){}[0]
+
+    final val presentation // com.iktwo.piktographs.navigation/ModalAction.presentation|{}presentation[0]
+        final fun <get-presentation>(): kotlin/String // com.iktwo.piktographs.navigation/ModalAction.presentation.<get-presentation>|<get-presentation>(){}[0]
+    final val targetRoute // com.iktwo.piktographs.navigation/ModalAction.targetRoute|{}targetRoute[0]
+        final fun <get-targetRoute>(): kotlin/String // com.iktwo.piktographs.navigation/ModalAction.targetRoute.<get-targetRoute>|<get-targetRoute>(){}[0]
+    final val title // com.iktwo.piktographs.navigation/ModalAction.title|{}title[0]
+        final fun <get-title>(): kotlin/String? // com.iktwo.piktographs.navigation/ModalAction.title.<get-title>|<get-title>(){}[0]
+    final val type // com.iktwo.piktographs.navigation/ModalAction.type|{}type[0]
+        final fun <get-type>(): kotlin/String // com.iktwo.piktographs.navigation/ModalAction.type.<get-type>|<get-type>(){}[0]
+
+    final fun component1(): kotlin/String // com.iktwo.piktographs.navigation/ModalAction.component1|component1(){}[0]
+    final fun component2(): kotlin/String // com.iktwo.piktographs.navigation/ModalAction.component2|component2(){}[0]
+    final fun component3(): kotlin/String? // com.iktwo.piktographs.navigation/ModalAction.component3|component3(){}[0]
+    final fun copy(kotlin/String = ..., kotlin/String = ..., kotlin/String? = ...): com.iktwo.piktographs.navigation/ModalAction // com.iktwo.piktographs.navigation/ModalAction.copy|copy(kotlin.String;kotlin.String;kotlin.String?){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.iktwo.piktographs.navigation/ModalAction.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.iktwo.piktographs.navigation/ModalAction.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // com.iktwo.piktographs.navigation/ModalAction.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<com.iktwo.piktographs.navigation/ModalAction> { // com.iktwo.piktographs.navigation/ModalAction.$serializer|null[0]
+        final val descriptor // com.iktwo.piktographs.navigation/ModalAction.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // com.iktwo.piktographs.navigation/ModalAction.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // com.iktwo.piktographs.navigation/ModalAction.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): com.iktwo.piktographs.navigation/ModalAction // com.iktwo.piktographs.navigation/ModalAction.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, com.iktwo.piktographs.navigation/ModalAction) // com.iktwo.piktographs.navigation/ModalAction.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;com.iktwo.piktographs.navigation.ModalAction){}[0]
+    }
+
+    final object Companion { // com.iktwo.piktographs.navigation/ModalAction.Companion|null[0]
+        final const val PRESENTATION_BOTTOM_SHEET // com.iktwo.piktographs.navigation/ModalAction.Companion.PRESENTATION_BOTTOM_SHEET|{}PRESENTATION_BOTTOM_SHEET[0]
+            final fun <get-PRESENTATION_BOTTOM_SHEET>(): kotlin/String // com.iktwo.piktographs.navigation/ModalAction.Companion.PRESENTATION_BOTTOM_SHEET.<get-PRESENTATION_BOTTOM_SHEET>|<get-PRESENTATION_BOTTOM_SHEET>(){}[0]
+        final const val PRESENTATION_DIALOG // com.iktwo.piktographs.navigation/ModalAction.Companion.PRESENTATION_DIALOG|{}PRESENTATION_DIALOG[0]
+            final fun <get-PRESENTATION_DIALOG>(): kotlin/String // com.iktwo.piktographs.navigation/ModalAction.Companion.PRESENTATION_DIALOG.<get-PRESENTATION_DIALOG>|<get-PRESENTATION_DIALOG>(){}[0]
+        final const val TYPE // com.iktwo.piktographs.navigation/ModalAction.Companion.TYPE|{}TYPE[0]
+            final fun <get-TYPE>(): kotlin/String // com.iktwo.piktographs.navigation/ModalAction.Companion.TYPE.<get-TYPE>|<get-TYPE>(){}[0]
+
+        final val descriptor // com.iktwo.piktographs.navigation/ModalAction.Companion.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): com.iktwo.kodices.actions/ActionDescriptor // com.iktwo.piktographs.navigation/ModalAction.Companion.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<com.iktwo.piktographs.navigation/ModalAction> // com.iktwo.piktographs.navigation/ModalAction.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final class com.iktwo.piktographs.navigation/ModalDestination { // com.iktwo.piktographs.navigation/ModalDestination|null[0]
+    constructor <init>(kotlin/String, kotlin/String = ..., kotlin/String? = ...) // com.iktwo.piktographs.navigation/ModalDestination.<init>|<init>(kotlin.String;kotlin.String;kotlin.String?){}[0]
+
+    final val presentation // com.iktwo.piktographs.navigation/ModalDestination.presentation|{}presentation[0]
+        final fun <get-presentation>(): kotlin/String // com.iktwo.piktographs.navigation/ModalDestination.presentation.<get-presentation>|<get-presentation>(){}[0]
+    final val route // com.iktwo.piktographs.navigation/ModalDestination.route|{}route[0]
+        final fun <get-route>(): kotlin/String // com.iktwo.piktographs.navigation/ModalDestination.route.<get-route>|<get-route>(){}[0]
+    final val title // com.iktwo.piktographs.navigation/ModalDestination.title|{}title[0]
+        final fun <get-title>(): kotlin/String? // com.iktwo.piktographs.navigation/ModalDestination.title.<get-title>|<get-title>(){}[0]
+
+    final fun component1(): kotlin/String // com.iktwo.piktographs.navigation/ModalDestination.component1|component1(){}[0]
+    final fun component2(): kotlin/String // com.iktwo.piktographs.navigation/ModalDestination.component2|component2(){}[0]
+    final fun component3(): kotlin/String? // com.iktwo.piktographs.navigation/ModalDestination.component3|component3(){}[0]
+    final fun copy(kotlin/String = ..., kotlin/String = ..., kotlin/String? = ...): com.iktwo.piktographs.navigation/ModalDestination // com.iktwo.piktographs.navigation/ModalDestination.copy|copy(kotlin.String;kotlin.String;kotlin.String?){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.iktwo.piktographs.navigation/ModalDestination.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.iktwo.piktographs.navigation/ModalDestination.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // com.iktwo.piktographs.navigation/ModalDestination.toString|toString(){}[0]
+}
+
+final class com.iktwo.piktographs.navigation/NavigateAction : com.iktwo.kodices.actions/Action { // com.iktwo.piktographs.navigation/NavigateAction|null[0]
+    constructor <init>(kotlin/String, kotlin/String = ..., kotlin/String? = ...) // com.iktwo.piktographs.navigation/NavigateAction.<init>|<init>(kotlin.String;kotlin.String;kotlin.String?){}[0]
+
+    final val presentation // com.iktwo.piktographs.navigation/NavigateAction.presentation|{}presentation[0]
+        final fun <get-presentation>(): kotlin/String // com.iktwo.piktographs.navigation/NavigateAction.presentation.<get-presentation>|<get-presentation>(){}[0]
+    final val targetRoute // com.iktwo.piktographs.navigation/NavigateAction.targetRoute|{}targetRoute[0]
+        final fun <get-targetRoute>(): kotlin/String // com.iktwo.piktographs.navigation/NavigateAction.targetRoute.<get-targetRoute>|<get-targetRoute>(){}[0]
+    final val title // com.iktwo.piktographs.navigation/NavigateAction.title|{}title[0]
+        final fun <get-title>(): kotlin/String? // com.iktwo.piktographs.navigation/NavigateAction.title.<get-title>|<get-title>(){}[0]
+    final val type // com.iktwo.piktographs.navigation/NavigateAction.type|{}type[0]
+        final fun <get-type>(): kotlin/String // com.iktwo.piktographs.navigation/NavigateAction.type.<get-type>|<get-type>(){}[0]
+
+    final fun component1(): kotlin/String // com.iktwo.piktographs.navigation/NavigateAction.component1|component1(){}[0]
+    final fun component2(): kotlin/String // com.iktwo.piktographs.navigation/NavigateAction.component2|component2(){}[0]
+    final fun component3(): kotlin/String? // com.iktwo.piktographs.navigation/NavigateAction.component3|component3(){}[0]
+    final fun copy(kotlin/String = ..., kotlin/String = ..., kotlin/String? = ...): com.iktwo.piktographs.navigation/NavigateAction // com.iktwo.piktographs.navigation/NavigateAction.copy|copy(kotlin.String;kotlin.String;kotlin.String?){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.iktwo.piktographs.navigation/NavigateAction.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.iktwo.piktographs.navigation/NavigateAction.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // com.iktwo.piktographs.navigation/NavigateAction.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<com.iktwo.piktographs.navigation/NavigateAction> { // com.iktwo.piktographs.navigation/NavigateAction.$serializer|null[0]
+        final val descriptor // com.iktwo.piktographs.navigation/NavigateAction.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // com.iktwo.piktographs.navigation/NavigateAction.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // com.iktwo.piktographs.navigation/NavigateAction.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): com.iktwo.piktographs.navigation/NavigateAction // com.iktwo.piktographs.navigation/NavigateAction.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, com.iktwo.piktographs.navigation/NavigateAction) // com.iktwo.piktographs.navigation/NavigateAction.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;com.iktwo.piktographs.navigation.NavigateAction){}[0]
+    }
+
+    final object Companion { // com.iktwo.piktographs.navigation/NavigateAction.Companion|null[0]
+        final const val PRESENTATION_BOTTOM_SHEET // com.iktwo.piktographs.navigation/NavigateAction.Companion.PRESENTATION_BOTTOM_SHEET|{}PRESENTATION_BOTTOM_SHEET[0]
+            final fun <get-PRESENTATION_BOTTOM_SHEET>(): kotlin/String // com.iktwo.piktographs.navigation/NavigateAction.Companion.PRESENTATION_BOTTOM_SHEET.<get-PRESENTATION_BOTTOM_SHEET>|<get-PRESENTATION_BOTTOM_SHEET>(){}[0]
+        final const val PRESENTATION_DIALOG // com.iktwo.piktographs.navigation/NavigateAction.Companion.PRESENTATION_DIALOG|{}PRESENTATION_DIALOG[0]
+            final fun <get-PRESENTATION_DIALOG>(): kotlin/String // com.iktwo.piktographs.navigation/NavigateAction.Companion.PRESENTATION_DIALOG.<get-PRESENTATION_DIALOG>|<get-PRESENTATION_DIALOG>(){}[0]
+        final const val PRESENTATION_PUSH // com.iktwo.piktographs.navigation/NavigateAction.Companion.PRESENTATION_PUSH|{}PRESENTATION_PUSH[0]
+            final fun <get-PRESENTATION_PUSH>(): kotlin/String // com.iktwo.piktographs.navigation/NavigateAction.Companion.PRESENTATION_PUSH.<get-PRESENTATION_PUSH>|<get-PRESENTATION_PUSH>(){}[0]
+        final const val PRESENTATION_SHEET // com.iktwo.piktographs.navigation/NavigateAction.Companion.PRESENTATION_SHEET|{}PRESENTATION_SHEET[0]
+            final fun <get-PRESENTATION_SHEET>(): kotlin/String // com.iktwo.piktographs.navigation/NavigateAction.Companion.PRESENTATION_SHEET.<get-PRESENTATION_SHEET>|<get-PRESENTATION_SHEET>(){}[0]
+        final const val TYPE // com.iktwo.piktographs.navigation/NavigateAction.Companion.TYPE|{}TYPE[0]
+            final fun <get-TYPE>(): kotlin/String // com.iktwo.piktographs.navigation/NavigateAction.Companion.TYPE.<get-TYPE>|<get-TYPE>(){}[0]
+
+        final val descriptor // com.iktwo.piktographs.navigation/NavigateAction.Companion.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): com.iktwo.kodices.actions/ActionDescriptor // com.iktwo.piktographs.navigation/NavigateAction.Companion.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<com.iktwo.piktographs.navigation/NavigateAction> // com.iktwo.piktographs.navigation/NavigateAction.Companion.serializer|serializer(){}[0]
     }
 }
 
@@ -236,21 +429,68 @@ final object com.iktwo.piktographs/Res { // com.iktwo.piktographs/Res|null[0]
 
 final object com.iktwo.piktographs/VerticalListPageStyle : com.iktwo.piktographs/PageStyle // com.iktwo.piktographs/VerticalListPageStyle|null[0]
 
+final const val com.iktwo.piktographs.ui/BUTTON_ELEMENT_TYPE // com.iktwo.piktographs.ui/BUTTON_ELEMENT_TYPE|{}BUTTON_ELEMENT_TYPE[0]
+    final fun <get-BUTTON_ELEMENT_TYPE>(): kotlin/String // com.iktwo.piktographs.ui/BUTTON_ELEMENT_TYPE.<get-BUTTON_ELEMENT_TYPE>|<get-BUTTON_ELEMENT_TYPE>(){}[0]
+final const val com.iktwo.piktographs.ui/CARD_ELEMENT_TYPE // com.iktwo.piktographs.ui/CARD_ELEMENT_TYPE|{}CARD_ELEMENT_TYPE[0]
+    final fun <get-CARD_ELEMENT_TYPE>(): kotlin/String // com.iktwo.piktographs.ui/CARD_ELEMENT_TYPE.<get-CARD_ELEMENT_TYPE>|<get-CARD_ELEMENT_TYPE>(){}[0]
+final const val com.iktwo.piktographs.ui/CONTAINER_ELEMENT_TYPE // com.iktwo.piktographs.ui/CONTAINER_ELEMENT_TYPE|{}CONTAINER_ELEMENT_TYPE[0]
+    final fun <get-CONTAINER_ELEMENT_TYPE>(): kotlin/String // com.iktwo.piktographs.ui/CONTAINER_ELEMENT_TYPE.<get-CONTAINER_ELEMENT_TYPE>|<get-CONTAINER_ELEMENT_TYPE>(){}[0]
+final const val com.iktwo.piktographs.ui/HORIZONTAL_LAYOUT_ELEMENT_TYPE // com.iktwo.piktographs.ui/HORIZONTAL_LAYOUT_ELEMENT_TYPE|{}HORIZONTAL_LAYOUT_ELEMENT_TYPE[0]
+    final fun <get-HORIZONTAL_LAYOUT_ELEMENT_TYPE>(): kotlin/String // com.iktwo.piktographs.ui/HORIZONTAL_LAYOUT_ELEMENT_TYPE.<get-HORIZONTAL_LAYOUT_ELEMENT_TYPE>|<get-HORIZONTAL_LAYOUT_ELEMENT_TYPE>(){}[0]
+final const val com.iktwo.piktographs.ui/HROW_ELEMENT_TYPE // com.iktwo.piktographs.ui/HROW_ELEMENT_TYPE|{}HROW_ELEMENT_TYPE[0]
+    final fun <get-HROW_ELEMENT_TYPE>(): kotlin/String // com.iktwo.piktographs.ui/HROW_ELEMENT_TYPE.<get-HROW_ELEMENT_TYPE>|<get-HROW_ELEMENT_TYPE>(){}[0]
+final const val com.iktwo.piktographs.ui/ICON_ELEMENT_TYPE // com.iktwo.piktographs.ui/ICON_ELEMENT_TYPE|{}ICON_ELEMENT_TYPE[0]
+    final fun <get-ICON_ELEMENT_TYPE>(): kotlin/String // com.iktwo.piktographs.ui/ICON_ELEMENT_TYPE.<get-ICON_ELEMENT_TYPE>|<get-ICON_ELEMENT_TYPE>(){}[0]
 final const val com.iktwo.piktographs.ui/IMAGE_ELEMENT_TYPE // com.iktwo.piktographs.ui/IMAGE_ELEMENT_TYPE|{}IMAGE_ELEMENT_TYPE[0]
     final fun <get-IMAGE_ELEMENT_TYPE>(): kotlin/String // com.iktwo.piktographs.ui/IMAGE_ELEMENT_TYPE.<get-IMAGE_ELEMENT_TYPE>|<get-IMAGE_ELEMENT_TYPE>(){}[0]
+final const val com.iktwo.piktographs.ui/KEY_ALIGNMENT // com.iktwo.piktographs.ui/KEY_ALIGNMENT|{}KEY_ALIGNMENT[0]
+    final fun <get-KEY_ALIGNMENT>(): kotlin/String // com.iktwo.piktographs.ui/KEY_ALIGNMENT.<get-KEY_ALIGNMENT>|<get-KEY_ALIGNMENT>(){}[0]
+final const val com.iktwo.piktographs.ui/KEY_ALPHA // com.iktwo.piktographs.ui/KEY_ALPHA|{}KEY_ALPHA[0]
+    final fun <get-KEY_ALPHA>(): kotlin/String // com.iktwo.piktographs.ui/KEY_ALPHA.<get-KEY_ALPHA>|<get-KEY_ALPHA>(){}[0]
+final const val com.iktwo.piktographs.ui/KEY_ASPECT_RATIO // com.iktwo.piktographs.ui/KEY_ASPECT_RATIO|{}KEY_ASPECT_RATIO[0]
+    final fun <get-KEY_ASPECT_RATIO>(): kotlin/String // com.iktwo.piktographs.ui/KEY_ASPECT_RATIO.<get-KEY_ASPECT_RATIO>|<get-KEY_ASPECT_RATIO>(){}[0]
 final const val com.iktwo.piktographs.ui/KEY_CONTENT_DESCRIPTION // com.iktwo.piktographs.ui/KEY_CONTENT_DESCRIPTION|{}KEY_CONTENT_DESCRIPTION[0]
     final fun <get-KEY_CONTENT_DESCRIPTION>(): kotlin/String // com.iktwo.piktographs.ui/KEY_CONTENT_DESCRIPTION.<get-KEY_CONTENT_DESCRIPTION>|<get-KEY_CONTENT_DESCRIPTION>(){}[0]
+final const val com.iktwo.piktographs.ui/KEY_CONTENT_SCALE // com.iktwo.piktographs.ui/KEY_CONTENT_SCALE|{}KEY_CONTENT_SCALE[0]
+    final fun <get-KEY_CONTENT_SCALE>(): kotlin/String // com.iktwo.piktographs.ui/KEY_CONTENT_SCALE.<get-KEY_CONTENT_SCALE>|<get-KEY_CONTENT_SCALE>(){}[0]
+final const val com.iktwo.piktographs.ui/KEY_CORNER_RADIUS // com.iktwo.piktographs.ui/KEY_CORNER_RADIUS|{}KEY_CORNER_RADIUS[0]
+    final fun <get-KEY_CORNER_RADIUS>(): kotlin/String // com.iktwo.piktographs.ui/KEY_CORNER_RADIUS.<get-KEY_CORNER_RADIUS>|<get-KEY_CORNER_RADIUS>(){}[0]
+final const val com.iktwo.piktographs.ui/KEY_HEIGHT // com.iktwo.piktographs.ui/KEY_HEIGHT|{}KEY_HEIGHT[0]
+    final fun <get-KEY_HEIGHT>(): kotlin/String // com.iktwo.piktographs.ui/KEY_HEIGHT.<get-KEY_HEIGHT>|<get-KEY_HEIGHT>(){}[0]
+final const val com.iktwo.piktographs.ui/KEY_RADIUS // com.iktwo.piktographs.ui/KEY_RADIUS|{}KEY_RADIUS[0]
+    final fun <get-KEY_RADIUS>(): kotlin/String // com.iktwo.piktographs.ui/KEY_RADIUS.<get-KEY_RADIUS>|<get-KEY_RADIUS>(){}[0]
+final const val com.iktwo.piktographs.ui/KEY_SRC // com.iktwo.piktographs.ui/KEY_SRC|{}KEY_SRC[0]
+    final fun <get-KEY_SRC>(): kotlin/String // com.iktwo.piktographs.ui/KEY_SRC.<get-KEY_SRC>|<get-KEY_SRC>(){}[0]
 final const val com.iktwo.piktographs.ui/KEY_URL // com.iktwo.piktographs.ui/KEY_URL|{}KEY_URL[0]
     final fun <get-KEY_URL>(): kotlin/String // com.iktwo.piktographs.ui/KEY_URL.<get-KEY_URL>|<get-KEY_URL>(){}[0]
+final const val com.iktwo.piktographs.ui/KEY_WIDTH // com.iktwo.piktographs.ui/KEY_WIDTH|{}KEY_WIDTH[0]
+    final fun <get-KEY_WIDTH>(): kotlin/String // com.iktwo.piktographs.ui/KEY_WIDTH.<get-KEY_WIDTH>|<get-KEY_WIDTH>(){}[0]
+final const val com.iktwo.piktographs.ui/PROGRESS_ELEMENT_TYPE // com.iktwo.piktographs.ui/PROGRESS_ELEMENT_TYPE|{}PROGRESS_ELEMENT_TYPE[0]
+    final fun <get-PROGRESS_ELEMENT_TYPE>(): kotlin/String // com.iktwo.piktographs.ui/PROGRESS_ELEMENT_TYPE.<get-PROGRESS_ELEMENT_TYPE>|<get-PROGRESS_ELEMENT_TYPE>(){}[0]
 final const val com.iktwo.piktographs.ui/ROW_ELEMENT_TYPE // com.iktwo.piktographs.ui/ROW_ELEMENT_TYPE|{}ROW_ELEMENT_TYPE[0]
     final fun <get-ROW_ELEMENT_TYPE>(): kotlin/String // com.iktwo.piktographs.ui/ROW_ELEMENT_TYPE.<get-ROW_ELEMENT_TYPE>|<get-ROW_ELEMENT_TYPE>(){}[0]
 final const val com.iktwo.piktographs.ui/SEPARATOR_ELEMENT_TYPE // com.iktwo.piktographs.ui/SEPARATOR_ELEMENT_TYPE|{}SEPARATOR_ELEMENT_TYPE[0]
     final fun <get-SEPARATOR_ELEMENT_TYPE>(): kotlin/String // com.iktwo.piktographs.ui/SEPARATOR_ELEMENT_TYPE.<get-SEPARATOR_ELEMENT_TYPE>|<get-SEPARATOR_ELEMENT_TYPE>(){}[0]
+final const val com.iktwo.piktographs.ui/VERTICAL_LAYOUT_ELEMENT_TYPE // com.iktwo.piktographs.ui/VERTICAL_LAYOUT_ELEMENT_TYPE|{}VERTICAL_LAYOUT_ELEMENT_TYPE[0]
+    final fun <get-VERTICAL_LAYOUT_ELEMENT_TYPE>(): kotlin/String // com.iktwo.piktographs.ui/VERTICAL_LAYOUT_ELEMENT_TYPE.<get-VERTICAL_LAYOUT_ELEMENT_TYPE>|<get-VERTICAL_LAYOUT_ELEMENT_TYPE>(){}[0]
+final const val com.iktwo.piktographs.ui/VROW_ELEMENT_TYPE // com.iktwo.piktographs.ui/VROW_ELEMENT_TYPE|{}VROW_ELEMENT_TYPE[0]
+    final fun <get-VROW_ELEMENT_TYPE>(): kotlin/String // com.iktwo.piktographs.ui/VROW_ELEMENT_TYPE.<get-VROW_ELEMENT_TYPE>|<get-VROW_ELEMENT_TYPE>(){}[0]
 
 final val com.iktwo.piktographs.data/com_iktwo_piktographs_data_Countdown$stableprop // com.iktwo.piktographs.data/com_iktwo_piktographs_data_Countdown$stableprop|#static{}com_iktwo_piktographs_data_Countdown$stableprop[0]
 final val com.iktwo.piktographs.data/com_iktwo_piktographs_data_Countdown_$serializer$stableprop // com.iktwo.piktographs.data/com_iktwo_piktographs_data_Countdown_$serializer$stableprop|#static{}com_iktwo_piktographs_data_Countdown_$serializer$stableprop[0]
 final val com.iktwo.piktographs.elements/com_iktwo_piktographs_elements_CountdownElement$stableprop // com.iktwo.piktographs.elements/com_iktwo_piktographs_elements_CountdownElement$stableprop|#static{}com_iktwo_piktographs_elements_CountdownElement$stableprop[0]
 final val com.iktwo.piktographs.elements/com_iktwo_piktographs_elements_WebElement$stableprop // com.iktwo.piktographs.elements/com_iktwo_piktographs_elements_WebElement$stableprop|#static{}com_iktwo_piktographs_elements_WebElement$stableprop[0]
+final val com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_DismissModalAction$stableprop // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_DismissModalAction$stableprop|#static{}com_iktwo_piktographs_navigation_DismissModalAction$stableprop[0]
+final val com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_DismissModalAction_$serializer$stableprop // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_DismissModalAction_$serializer$stableprop|#static{}com_iktwo_piktographs_navigation_DismissModalAction_$serializer$stableprop[0]
+final val com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_KodicesNavController$stableprop // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_KodicesNavController$stableprop|#static{}com_iktwo_piktographs_navigation_KodicesNavController$stableprop[0]
+final val com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_ModalAction$stableprop // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_ModalAction$stableprop|#static{}com_iktwo_piktographs_navigation_ModalAction$stableprop[0]
+final val com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_ModalAction_$serializer$stableprop // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_ModalAction_$serializer$stableprop|#static{}com_iktwo_piktographs_navigation_ModalAction_$serializer$stableprop[0]
+final val com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_ModalDestination$stableprop // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_ModalDestination$stableprop|#static{}com_iktwo_piktographs_navigation_ModalDestination$stableprop[0]
+final val com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavState_Error$stableprop // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavState_Error$stableprop|#static{}com_iktwo_piktographs_navigation_NavState_Error$stableprop[0]
+final val com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavState_Loading$stableprop // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavState_Loading$stableprop|#static{}com_iktwo_piktographs_navigation_NavState_Loading$stableprop[0]
+final val com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavState_Success$stableprop // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavState_Success$stableprop|#static{}com_iktwo_piktographs_navigation_NavState_Success$stableprop[0]
+final val com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavigateAction$stableprop // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavigateAction$stableprop|#static{}com_iktwo_piktographs_navigation_NavigateAction$stableprop[0]
+final val com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavigateAction_$serializer$stableprop // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavigateAction_$serializer$stableprop|#static{}com_iktwo_piktographs_navigation_NavigateAction_$serializer$stableprop[0]
 final val com.iktwo.piktographs.ui/DefaultTheme // com.iktwo.piktographs.ui/DefaultTheme|{}DefaultTheme[0]
     final fun <get-DefaultTheme>(): androidx.compose.runtime/ProvidableCompositionLocal<com.iktwo.piktographs.ui/Theme> // com.iktwo.piktographs.ui/DefaultTheme.<get-DefaultTheme>|<get-DefaultTheme>(){}[0]
 final val com.iktwo.piktographs.ui/LocalUnknownElementPlaceholder // com.iktwo.piktographs.ui/LocalUnknownElementPlaceholder|{}LocalUnknownElementPlaceholder[0]
@@ -260,6 +500,8 @@ final val com.iktwo.piktographs.ui/com_iktwo_piktographs_ui_Constants$stableprop
 final val com.iktwo.piktographs.ui/com_iktwo_piktographs_ui_Dimensions$stableprop // com.iktwo.piktographs.ui/com_iktwo_piktographs_ui_Dimensions$stableprop|#static{}com_iktwo_piktographs_ui_Dimensions$stableprop[0]
 final val com.iktwo.piktographs.ui/com_iktwo_piktographs_ui_FontSizes$stableprop // com.iktwo.piktographs.ui/com_iktwo_piktographs_ui_FontSizes$stableprop|#static{}com_iktwo_piktographs_ui_FontSizes$stableprop[0]
 final val com.iktwo.piktographs.ui/com_iktwo_piktographs_ui_Theme$stableprop // com.iktwo.piktographs.ui/com_iktwo_piktographs_ui_Theme$stableprop|#static{}com_iktwo_piktographs_ui_Theme$stableprop[0]
+final val com.iktwo.piktographs/LocalActionPerformer // com.iktwo.piktographs/LocalActionPerformer|{}LocalActionPerformer[0]
+    final fun <get-LocalActionPerformer>(): androidx.compose.runtime/ProvidableCompositionLocal<com.iktwo.kodices.actions/ActionPerformer> // com.iktwo.piktographs/LocalActionPerformer.<get-LocalActionPerformer>|<get-LocalActionPerformer>(){}[0]
 final val com.iktwo.piktographs/LocalBooleanInputData // com.iktwo.piktographs/LocalBooleanInputData|{}LocalBooleanInputData[0]
     final fun <get-LocalBooleanInputData>(): androidx.compose.runtime/ProvidableCompositionLocal<androidx.compose.runtime.snapshots/SnapshotStateMap<kotlin/String, kotlin/Boolean>> // com.iktwo.piktographs/LocalBooleanInputData.<get-LocalBooleanInputData>|<get-LocalBooleanInputData>(){}[0]
 final val com.iktwo.piktographs/LocalElementBooleanInput // com.iktwo.piktographs/LocalElementBooleanInput|{}LocalElementBooleanInput[0]
@@ -308,12 +550,34 @@ final fun com.iktwo.piktographs.data/com_iktwo_piktographs_data_Countdown$stable
 final fun com.iktwo.piktographs.data/com_iktwo_piktographs_data_Countdown_$serializer$stableprop_getter(): kotlin/Int // com.iktwo.piktographs.data/com_iktwo_piktographs_data_Countdown_$serializer$stableprop_getter|com_iktwo_piktographs_data_Countdown_$serializer$stableprop_getter(){}[0]
 final fun com.iktwo.piktographs.elements/com_iktwo_piktographs_elements_CountdownElement$stableprop_getter(): kotlin/Int // com.iktwo.piktographs.elements/com_iktwo_piktographs_elements_CountdownElement$stableprop_getter|com_iktwo_piktographs_elements_CountdownElement$stableprop_getter(){}[0]
 final fun com.iktwo.piktographs.elements/com_iktwo_piktographs_elements_WebElement$stableprop_getter(): kotlin/Int // com.iktwo.piktographs.elements/com_iktwo_piktographs_elements_WebElement$stableprop_getter|com_iktwo_piktographs_elements_WebElement$stableprop_getter(){}[0]
+final fun com.iktwo.piktographs.navigation/KodicesNavHost(com.iktwo.piktographs.navigation/KodicesNavController, kotlin.coroutines/SuspendFunction1<kotlin/String, com.iktwo.kodices.content/Content?>, androidx.compose.ui/Modifier?, com.iktwo.piktographs/PageStyle?, kotlin/Function3<com.iktwo.kodices.elements/ProcessedElement, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Boolean>?, com.iktwo.piktographs.ui/Theme?, com.iktwo.kodices.actions/ActionPerformer?, kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>?, kotlin/Function5<kotlin/String, kotlin/Throwable, kotlin/Function0<kotlin/Unit>, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.iktwo.piktographs.navigation/KodicesNavHost|KodicesNavHost(com.iktwo.piktographs.navigation.KodicesNavController;kotlin.coroutines.SuspendFunction1<kotlin.String,com.iktwo.kodices.content.Content?>;androidx.compose.ui.Modifier?;com.iktwo.piktographs.PageStyle?;kotlin.Function3<com.iktwo.kodices.elements.ProcessedElement,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Boolean>?;com.iktwo.piktographs.ui.Theme?;com.iktwo.kodices.actions.ActionPerformer?;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>?;kotlin.Function5<kotlin.String,kotlin.Throwable,kotlin.Function0<kotlin.Unit>,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_DismissModalAction$stableprop_getter(): kotlin/Int // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_DismissModalAction$stableprop_getter|com_iktwo_piktographs_navigation_DismissModalAction$stableprop_getter(){}[0]
+final fun com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_DismissModalAction_$serializer$stableprop_getter(): kotlin/Int // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_DismissModalAction_$serializer$stableprop_getter|com_iktwo_piktographs_navigation_DismissModalAction_$serializer$stableprop_getter(){}[0]
+final fun com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_KodicesNavController$stableprop_getter(): kotlin/Int // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_KodicesNavController$stableprop_getter|com_iktwo_piktographs_navigation_KodicesNavController$stableprop_getter(){}[0]
+final fun com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_ModalAction$stableprop_getter(): kotlin/Int // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_ModalAction$stableprop_getter|com_iktwo_piktographs_navigation_ModalAction$stableprop_getter(){}[0]
+final fun com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_ModalAction_$serializer$stableprop_getter(): kotlin/Int // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_ModalAction_$serializer$stableprop_getter|com_iktwo_piktographs_navigation_ModalAction_$serializer$stableprop_getter(){}[0]
+final fun com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_ModalDestination$stableprop_getter(): kotlin/Int // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_ModalDestination$stableprop_getter|com_iktwo_piktographs_navigation_ModalDestination$stableprop_getter(){}[0]
+final fun com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavState_Error$stableprop_getter(): kotlin/Int // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavState_Error$stableprop_getter|com_iktwo_piktographs_navigation_NavState_Error$stableprop_getter(){}[0]
+final fun com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavState_Loading$stableprop_getter(): kotlin/Int // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavState_Loading$stableprop_getter|com_iktwo_piktographs_navigation_NavState_Loading$stableprop_getter(){}[0]
+final fun com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavState_Success$stableprop_getter(): kotlin/Int // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavState_Success$stableprop_getter|com_iktwo_piktographs_navigation_NavState_Success$stableprop_getter(){}[0]
+final fun com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavigateAction$stableprop_getter(): kotlin/Int // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavigateAction$stableprop_getter|com_iktwo_piktographs_navigation_NavigateAction$stableprop_getter(){}[0]
+final fun com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavigateAction_$serializer$stableprop_getter(): kotlin/Int // com.iktwo.piktographs.navigation/com_iktwo_piktographs_navigation_NavigateAction_$serializer$stableprop_getter|com_iktwo_piktographs_navigation_NavigateAction_$serializer$stableprop_getter(){}[0]
+final fun com.iktwo.piktographs.navigation/rememberKodicesNavController(kotlin/String, androidx.compose.runtime/Composer?, kotlin/Int): com.iktwo.piktographs.navigation/KodicesNavController // com.iktwo.piktographs.navigation/rememberKodicesNavController|rememberKodicesNavController(kotlin.String;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final fun com.iktwo.piktographs.ui/ButtonUI(com.iktwo.kodices.elements/ProcessedElement, androidx.compose.runtime/Composer?, kotlin/Int) // com.iktwo.piktographs.ui/ButtonUI|ButtonUI(com.iktwo.kodices.elements.ProcessedElement;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final fun com.iktwo.piktographs.ui/CardUI(com.iktwo.kodices.elements/ProcessedElement, androidx.compose.runtime/Composer?, kotlin/Int) // com.iktwo.piktographs.ui/CardUI|CardUI(com.iktwo.kodices.elements.ProcessedElement;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 final fun com.iktwo.piktographs.ui/CheckboxUI(com.iktwo.kodices.elements/InputElement, com.iktwo.kodices.elements/InputHandler, androidx.compose.runtime/Composer?, kotlin/Int) // com.iktwo.piktographs.ui/CheckboxUI|CheckboxUI(com.iktwo.kodices.elements.InputElement;com.iktwo.kodices.elements.InputHandler;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final fun com.iktwo.piktographs.ui/ContainerUI(com.iktwo.kodices.elements/ProcessedElement, androidx.compose.ui/Modifier?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.iktwo.piktographs.ui/ContainerUI|ContainerUI(com.iktwo.kodices.elements.ProcessedElement;androidx.compose.ui.Modifier?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.iktwo.piktographs.ui/ContentBottomSheet(kotlin/Function0<kotlin/Unit>, kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer?, kotlin/Int) // com.iktwo.piktographs.ui/ContentBottomSheet|ContentBottomSheet(kotlin.Function0<kotlin.Unit>;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final fun com.iktwo.piktographs.ui/ContentBottomSheet(kotlin/String?, kotlin/Function0<kotlin/Unit>, kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.iktwo.piktographs.ui/ContentBottomSheet|ContentBottomSheet(kotlin.String?;kotlin.Function0<kotlin.Unit>;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
 final fun com.iktwo.piktographs.ui/ContentDialog(kotlin/String?, kotlin/Function0<kotlin/Unit>, kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.iktwo.piktographs.ui/ContentDialog|ContentDialog(kotlin.String?;kotlin.Function0<kotlin.Unit>;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.iktwo.piktographs.ui/IconUI(com.iktwo.kodices.elements/ProcessedElement, androidx.compose.runtime/Composer?, kotlin/Int) // com.iktwo.piktographs.ui/IconUI|IconUI(com.iktwo.kodices.elements.ProcessedElement;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 final fun com.iktwo.piktographs.ui/ImageUI(com.iktwo.kodices.elements/ProcessedElement, androidx.compose.runtime/Composer?, kotlin/Int) // com.iktwo.piktographs.ui/ImageUI|ImageUI(com.iktwo.kodices.elements.ProcessedElement;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
-final fun com.iktwo.piktographs.ui/NestedElementUI(com.iktwo.kodices.elements/ProcessedElement, androidx.compose.runtime/Composer?, kotlin/Int) // com.iktwo.piktographs.ui/NestedElementUI|NestedElementUI(com.iktwo.kodices.elements.ProcessedElement;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final fun com.iktwo.piktographs.ui/NestedElementUI(com.iktwo.kodices.elements/ProcessedElement, androidx.compose.ui/Modifier?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.iktwo.piktographs.ui/NestedElementUI|NestedElementUI(com.iktwo.kodices.elements.ProcessedElement;androidx.compose.ui.Modifier?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.iktwo.piktographs.ui/ProgressUI(com.iktwo.kodices.elements/ProcessedElement, androidx.compose.runtime/Composer?, kotlin/Int) // com.iktwo.piktographs.ui/ProgressUI|ProgressUI(com.iktwo.kodices.elements.ProcessedElement;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 final fun com.iktwo.piktographs.ui/RowUI(com.iktwo.kodices.elements/ProcessedElement, androidx.compose.runtime/Composer?, kotlin/Int) // com.iktwo.piktographs.ui/RowUI|RowUI(com.iktwo.kodices.elements.ProcessedElement;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final fun com.iktwo.piktographs.ui/SeparatorUI(com.iktwo.kodices.elements/ProcessedElement, androidx.compose.runtime/Composer?, kotlin/Int) // com.iktwo.piktographs.ui/SeparatorUI|SeparatorUI(com.iktwo.kodices.elements.ProcessedElement;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 final fun com.iktwo.piktographs.ui/SeperatorUI(com.iktwo.kodices.elements/ProcessedElement, androidx.compose.runtime/Composer?, kotlin/Int) // com.iktwo.piktographs.ui/SeperatorUI|SeperatorUI(com.iktwo.kodices.elements.ProcessedElement;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+final fun com.iktwo.piktographs.ui/SwitchUI(com.iktwo.kodices.elements/InputElement, com.iktwo.kodices.elements/InputHandler, androidx.compose.runtime/Composer?, kotlin/Int) // com.iktwo.piktographs.ui/SwitchUI|SwitchUI(com.iktwo.kodices.elements.InputElement;com.iktwo.kodices.elements.InputHandler;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 final fun com.iktwo.piktographs.ui/TextAreaUI(com.iktwo.kodices.elements/InputElement, com.iktwo.kodices.elements/InputHandler, androidx.compose.runtime/Composer?, kotlin/Int) // com.iktwo.piktographs.ui/TextAreaUI|TextAreaUI(com.iktwo.kodices.elements.InputElement;com.iktwo.kodices.elements.InputHandler;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 final fun com.iktwo.piktographs.ui/TextInputUI(com.iktwo.kodices.elements/InputElement, com.iktwo.kodices.elements/InputHandler, androidx.compose.runtime/Composer?, kotlin/Int) // com.iktwo.piktographs.ui/TextInputUI|TextInputUI(com.iktwo.kodices.elements.InputElement;com.iktwo.kodices.elements.InputHandler;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 final fun com.iktwo.piktographs.ui/UnknownElementUI(com.iktwo.kodices.elements/ProcessedElement, androidx.compose.runtime/Composer?, kotlin/Int) // com.iktwo.piktographs.ui/UnknownElementUI|UnknownElementUI(com.iktwo.kodices.elements.ProcessedElement;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
@@ -324,8 +588,8 @@ final fun com.iktwo.piktographs.ui/com_iktwo_piktographs_ui_FontSizes$stableprop
 final fun com.iktwo.piktographs.ui/com_iktwo_piktographs_ui_Theme$stableprop_getter(): kotlin/Int // com.iktwo.piktographs.ui/com_iktwo_piktographs_ui_Theme$stableprop_getter|com_iktwo_piktographs_ui_Theme$stableprop_getter(){}[0]
 final fun com.iktwo.piktographs.utils/FontScaleSplit(kotlin/Float, kotlin/Float, kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.iktwo.piktographs.utils/FontScaleSplit|FontScaleSplit(kotlin.Float;kotlin.Float;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
 final fun com.iktwo.piktographs.utils/ThemeSplitter(kotlin/Array<out kotlin/Function3<kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>>..., kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit>, androidx.compose.runtime/Composer?, kotlin/Int) // com.iktwo.piktographs.utils/ThemeSplitter|ThemeSplitter(kotlin.Array<out|kotlin.Function3<kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>>...;kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,kotlin.Unit>;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
-final fun com.iktwo.piktographs/ElementUI(com.iktwo.kodices.elements/ProcessedElement, androidx.compose.runtime/Composer?, kotlin/Int) // com.iktwo.piktographs/ElementUI|ElementUI(com.iktwo.kodices.elements.ProcessedElement;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
-final fun com.iktwo.piktographs/PageUI(com.iktwo.kodices.content/Content, androidx.compose.ui/Modifier?, com.iktwo.piktographs/PageStyle?, kotlin/Function3<com.iktwo.kodices.elements/ProcessedElement, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Boolean>?, com.iktwo.piktographs.ui/Theme?, androidx.compose.runtime.snapshots/SnapshotStateMap<kotlin/String, kotlin/String?>?, androidx.compose.runtime.snapshots/SnapshotStateMap<kotlin/String, kotlin/Boolean>?, androidx.compose.runtime.snapshots/SnapshotStateMap<kotlin/String, kotlin/Boolean>?, kotlin/Function0<kotlin/Unit>?, kotlin/Function0<kotlin/Unit>?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.iktwo.piktographs/PageUI|PageUI(com.iktwo.kodices.content.Content;androidx.compose.ui.Modifier?;com.iktwo.piktographs.PageStyle?;kotlin.Function3<com.iktwo.kodices.elements.ProcessedElement,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Boolean>?;com.iktwo.piktographs.ui.Theme?;androidx.compose.runtime.snapshots.SnapshotStateMap<kotlin.String,kotlin.String?>?;androidx.compose.runtime.snapshots.SnapshotStateMap<kotlin.String,kotlin.Boolean>?;androidx.compose.runtime.snapshots.SnapshotStateMap<kotlin.String,kotlin.Boolean>?;kotlin.Function0<kotlin.Unit>?;kotlin.Function0<kotlin.Unit>?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.iktwo.piktographs/ElementUI(com.iktwo.kodices.elements/ProcessedElement, androidx.compose.ui/Modifier?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.iktwo.piktographs/ElementUI|ElementUI(com.iktwo.kodices.elements.ProcessedElement;androidx.compose.ui.Modifier?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.iktwo.piktographs/PageUI(com.iktwo.kodices.content/Content, androidx.compose.ui/Modifier?, com.iktwo.piktographs/PageStyle?, kotlin/Function3<com.iktwo.kodices.elements/ProcessedElement, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Boolean>?, com.iktwo.piktographs.ui/Theme?, androidx.compose.runtime.snapshots/SnapshotStateMap<kotlin/String, kotlin/String?>?, androidx.compose.runtime.snapshots/SnapshotStateMap<kotlin/String, kotlin/Boolean>?, androidx.compose.runtime.snapshots/SnapshotStateMap<kotlin/String, kotlin/Boolean>?, kotlin/Function0<kotlin/Unit>?, kotlin/Function0<kotlin/Unit>?, com.iktwo.kodices.actions/ActionPerformer?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int, kotlin/Int) // com.iktwo.piktographs/PageUI|PageUI(com.iktwo.kodices.content.Content;androidx.compose.ui.Modifier?;com.iktwo.piktographs.PageStyle?;kotlin.Function3<com.iktwo.kodices.elements.ProcessedElement,androidx.compose.runtime.Composer,kotlin.Int,kotlin.Boolean>?;com.iktwo.piktographs.ui.Theme?;androidx.compose.runtime.snapshots.SnapshotStateMap<kotlin.String,kotlin.String?>?;androidx.compose.runtime.snapshots.SnapshotStateMap<kotlin.String,kotlin.Boolean>?;androidx.compose.runtime.snapshots.SnapshotStateMap<kotlin.String,kotlin.Boolean>?;kotlin.Function0<kotlin.Unit>?;kotlin.Function0<kotlin.Unit>?;com.iktwo.kodices.actions.ActionPerformer?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int;kotlin.Int){}[0]
 final fun com.iktwo.piktographs/com_iktwo_piktographs_HorizontalListPageStyle$stableprop_getter(): kotlin/Int // com.iktwo.piktographs/com_iktwo_piktographs_HorizontalListPageStyle$stableprop_getter|com_iktwo_piktographs_HorizontalListPageStyle$stableprop_getter(){}[0]
 final fun com.iktwo.piktographs/com_iktwo_piktographs_Res$stableprop_getter(): kotlin/Int // com.iktwo.piktographs/com_iktwo_piktographs_Res$stableprop_getter|com_iktwo_piktographs_Res$stableprop_getter(){}[0]
 final fun com.iktwo.piktographs/com_iktwo_piktographs_Res_array$stableprop_getter(): kotlin/Int // com.iktwo.piktographs/com_iktwo_piktographs_Res_array$stableprop_getter|com_iktwo_piktographs_Res_array$stableprop_getter(){}[0]
@@ -334,3 +598,4 @@ final fun com.iktwo.piktographs/com_iktwo_piktographs_Res_font$stableprop_getter
 final fun com.iktwo.piktographs/com_iktwo_piktographs_Res_plurals$stableprop_getter(): kotlin/Int // com.iktwo.piktographs/com_iktwo_piktographs_Res_plurals$stableprop_getter|com_iktwo_piktographs_Res_plurals$stableprop_getter(){}[0]
 final fun com.iktwo.piktographs/com_iktwo_piktographs_Res_string$stableprop_getter(): kotlin/Int // com.iktwo.piktographs/com_iktwo_piktographs_Res_string$stableprop_getter|com_iktwo_piktographs_Res_string$stableprop_getter(){}[0]
 final fun com.iktwo.piktographs/com_iktwo_piktographs_VerticalListPageStyle$stableprop_getter(): kotlin/Int // com.iktwo.piktographs/com_iktwo_piktographs_VerticalListPageStyle$stableprop_getter|com_iktwo_piktographs_VerticalListPageStyle$stableprop_getter(){}[0]
+final inline fun com.iktwo.piktographs/ActionPerformer(crossinline kotlin/Function1<com.iktwo.kodices.actions/Action, kotlin/Unit>): com.iktwo.kodices.actions/ActionPerformer // com.iktwo.piktographs/ActionPerformer|ActionPerformer(kotlin.Function1<com.iktwo.kodices.actions.Action,kotlin.Unit>){}[0]

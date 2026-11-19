@@ -25,6 +25,7 @@ This repository contains different modules to help you get started:
 *   **Kodices**: The core module that parses the JSON and creates a platform-agnostic model of the UI.
 *   **Piktographs**: A reference implementation that renders the UI models using Jetpack Compose for Android, iOS, and Desktop.
 *   **SampleApp**: An example application that demonstrates how to use these components together.
+*   **KodexRenderer**: A JVM server that renders screens through Piktographs to PNG images, for e-ink dashboards.
 
 ## Getting Started
 
@@ -86,9 +87,35 @@ fun MyScreen(jsonString: String) {
 }
 ```
 
+## Rendering server
+
+[KodexRenderer](KodexRenderer/README.md) renders Kodices screens through Piktographs **headlessly**
+to PNG images served over HTTP, so an e-ink tablet can show a server-driven dashboard by polling for
+a picture (self-hosted, in the spirit of TRMNL). It is a separate JVM module because Compose UI
+cannot run on Kotlin/Native.
+
+```shell
+./gradlew :KodexRenderer:run            # http://localhost:8090
+./gradlew :KodexRenderer:renderSample   # KodexRenderer/build/render/dashboard.png, no server
+```
+
+| Endpoint | |
+|---|---|
+| `GET /health` | `200 ok` |
+| `GET /display?device=<id>` | `{"image_url": "/render/dashboard.png?width=954&height=1696&mode=gray16", "refresh_seconds": 900, "etag": "..."}` |
+| `GET /render/{screen}.png?width=&height=&mode=` | PNG (`mode` = `gray16` default, `bw`, `color`) with a strong `ETag`; `304` on a matching `If-None-Match` |
+| `GET /render/{screen}.json` | The screen's source JSON |
+
+To add a screen, put `<name>.json` (any Kodices content, optionally wrapped as
+`{"content": ..., "data": ...}`) in `KodexRenderer/screens/`; it is served at `/render/<name>.png`
+with no restart. Screens can show the current date through the injected `now` data, and bundled
+images through `asset:<file>` URLs. Set `KODEX_TOKEN` to require a bearer token. Configuration,
+Docker and the rendering details are in the [module README](KodexRenderer/README.md).
+
 ## Subprojects
 
 *   [**Kodices**](Kodices/README.md): The core KMP library for parsing UI models.
 *   [**Piktographs**](Piktographs/README.md): A reference UI implementation using Compose Multiplatform.
 *   [**SampleApp**](SampleApp/README.md): A sample application demonstrating the usage of the library.
 *   [**KodexServer**](KodexServer/README.md): A sample Ktor-based server for serving UI models.
+*   [**KodexRenderer**](KodexRenderer/README.md): Headless renderer serving screens as e-ink ready PNGs.

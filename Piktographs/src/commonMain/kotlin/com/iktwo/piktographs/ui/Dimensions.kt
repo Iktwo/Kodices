@@ -27,14 +27,21 @@ public data class FontSizes(
 private val FONT_SIZE_PRIMARY = 18.sp
 private val FONT_SIZE_SECONDARY = 12.sp
 
+/**
+ * Colors for Piktographs' own elements.
+ *
+ * [mainTextColor] and [secondaryTextColor] default to [Color.Unspecified], which means "follow the
+ * Material theme" (`onSurface` / `onSurfaceVariant`), so text stays readable in dark themes unless a
+ * host sets them explicitly.
+ */
 public data class Colors(
     val mainTextColor: Color = MAIN_TEXT_COLOR,
     val secondaryTextColor: Color = SECONDARY_TEXT_COLOR,
     val separatorColor: Color = SEPARATOR_COLOR,
 )
 
-private val MAIN_TEXT_COLOR = Color.Black
-private val SECONDARY_TEXT_COLOR = Color(0xFF131313)
+private val MAIN_TEXT_COLOR = Color.Unspecified
+private val SECONDARY_TEXT_COLOR = Color.Unspecified
 private val SEPARATOR_COLOR = Color(0xFF282828)
 
 public data class Theme(

@@ -7,7 +7,9 @@ public final class com/iktwo/piktographs/ActualResourceCollectorsKt {
 }
 
 public final class com/iktwo/piktographs/ElementUIKt {
-	public static final fun ElementUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
+	public static final fun ActionPerformer (Lkotlin/jvm/functions/Function1;)Lcom/iktwo/kodices/actions/ActionPerformer;
+	public static final fun ElementUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun getLocalActionPerformer ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalBooleanInputData ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalElementBooleanInput ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalElementEnabled ()Landroidx/compose/runtime/ProvidableCompositionLocal;
@@ -28,7 +30,7 @@ public abstract interface class com/iktwo/piktographs/PageStyle {
 }
 
 public final class com/iktwo/piktographs/PageUIKt {
-	public static final fun PageUI (Lcom/iktwo/kodices/content/Content;Landroidx/compose/ui/Modifier;Lcom/iktwo/piktographs/PageStyle;Lkotlin/jvm/functions/Function3;Lcom/iktwo/piktographs/ui/Theme;Landroidx/compose/runtime/snapshots/SnapshotStateMap;Landroidx/compose/runtime/snapshots/SnapshotStateMap;Landroidx/compose/runtime/snapshots/SnapshotStateMap;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PageUI (Lcom/iktwo/kodices/content/Content;Landroidx/compose/ui/Modifier;Lcom/iktwo/piktographs/PageStyle;Lkotlin/jvm/functions/Function3;Lcom/iktwo/piktographs/ui/Theme;Landroidx/compose/runtime/snapshots/SnapshotStateMap;Landroidx/compose/runtime/snapshots/SnapshotStateMap;Landroidx/compose/runtime/snapshots/SnapshotStateMap;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lcom/iktwo/kodices/actions/ActionPerformer;Landroidx/compose/runtime/Composer;III)V
 	public static final fun mapSaver ()Landroidx/compose/runtime/saveable/Saver;
 	public static final fun renderElements (Landroidx/compose/foundation/lazy/LazyListScope;Ljava/util/List;)V
 }
@@ -81,8 +83,8 @@ public final class com/iktwo/piktographs/components/CollapsingTopBarKt {
 public final class com/iktwo/piktographs/components/ComposableSingletons$CollapsingTopBarKt {
 	public static final field INSTANCE Lcom/iktwo/piktographs/components/ComposableSingletons$CollapsingTopBarKt;
 	public fun <init> ()V
-	public final fun getLambda$-592409132$Piktographs ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1491278420$Piktographs ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-592409132$com_iktwo_Piktographs ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1491278420$com_iktwo_Piktographs ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/iktwo/piktographs/components/TopBarStyle : java/lang/Enum {
@@ -176,12 +178,215 @@ public final class com/iktwo/piktographs/elements/WebElement$Companion : com/ikt
 	public fun getType ()Ljava/lang/String;
 }
 
+public final class com/iktwo/piktographs/navigation/ComposableSingletons$KodicesNavHostKt {
+	public static final field INSTANCE Lcom/iktwo/piktographs/navigation/ComposableSingletons$KodicesNavHostKt;
+	public fun <init> ()V
+	public final fun getLambda$-1400077061$com_iktwo_Piktographs ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1113587318$com_iktwo_Piktographs ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda$982229468$com_iktwo_Piktographs ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/iktwo/piktographs/navigation/DismissModalAction : com/iktwo/kodices/actions/Action {
+	public static final field $stable I
+	public static final field Companion Lcom/iktwo/piktographs/navigation/DismissModalAction$Companion;
+	public static final field TYPE Ljava/lang/String;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/iktwo/piktographs/navigation/DismissModalAction;
+	public static synthetic fun copy$default (Lcom/iktwo/piktographs/navigation/DismissModalAction;Ljava/lang/String;ILjava/lang/Object;)Lcom/iktwo/piktographs/navigation/DismissModalAction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getTarget ()Ljava/lang/String;
+	public fun getType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class com/iktwo/piktographs/navigation/DismissModalAction$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/iktwo/piktographs/navigation/DismissModalAction$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/iktwo/piktographs/navigation/DismissModalAction;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/iktwo/piktographs/navigation/DismissModalAction;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/piktographs/navigation/DismissModalAction$Companion {
+	public final fun getDescriptor ()Lcom/iktwo/kodices/actions/ActionDescriptor;
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/piktographs/navigation/KodicesNavController {
+	public static final field $stable I
+	public final fun dismissModal ()Z
+	public final fun getActiveModal ()Lcom/iktwo/piktographs/navigation/ModalDestination;
+	public final fun getCurrentRoute ()Ljava/lang/String;
+	public final fun navigate (Ljava/lang/String;)V
+	public final fun navigate (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public static synthetic fun navigate$default (Lcom/iktwo/piktographs/navigation/KodicesNavController;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
+	public final fun popBackStack ()Z
+	public final fun showModal (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public static synthetic fun showModal$default (Lcom/iktwo/piktographs/navigation/KodicesNavController;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
+}
+
+public final class com/iktwo/piktographs/navigation/KodicesNavHostKt {
+	public static final fun KodicesNavHost (Lcom/iktwo/piktographs/navigation/KodicesNavController;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;Lcom/iktwo/piktographs/PageStyle;Lkotlin/jvm/functions/Function3;Lcom/iktwo/piktographs/ui/Theme;Lcom/iktwo/kodices/actions/ActionPerformer;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function5;Landroidx/compose/runtime/Composer;II)V
+	public static final fun rememberKodicesNavController (Ljava/lang/String;Landroidx/compose/runtime/Composer;I)Lcom/iktwo/piktographs/navigation/KodicesNavController;
+}
+
+public final class com/iktwo/piktographs/navigation/ModalAction : com/iktwo/kodices/actions/Action {
+	public static final field $stable I
+	public static final field Companion Lcom/iktwo/piktographs/navigation/ModalAction$Companion;
+	public static final field PRESENTATION_BOTTOM_SHEET Ljava/lang/String;
+	public static final field PRESENTATION_DIALOG Ljava/lang/String;
+	public static final field TYPE Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/iktwo/piktographs/navigation/ModalAction;
+	public static synthetic fun copy$default (Lcom/iktwo/piktographs/navigation/ModalAction;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/iktwo/piktographs/navigation/ModalAction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPresentation ()Ljava/lang/String;
+	public final fun getTargetRoute ()Ljava/lang/String;
+	public final fun getTitle ()Ljava/lang/String;
+	public fun getType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class com/iktwo/piktographs/navigation/ModalAction$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/iktwo/piktographs/navigation/ModalAction$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/iktwo/piktographs/navigation/ModalAction;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/iktwo/piktographs/navigation/ModalAction;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/piktographs/navigation/ModalAction$Companion {
+	public final fun getDescriptor ()Lcom/iktwo/kodices/actions/ActionDescriptor;
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/piktographs/navigation/ModalDestination {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/iktwo/piktographs/navigation/ModalDestination;
+	public static synthetic fun copy$default (Lcom/iktwo/piktographs/navigation/ModalDestination;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/iktwo/piktographs/navigation/ModalDestination;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPresentation ()Ljava/lang/String;
+	public final fun getRoute ()Ljava/lang/String;
+	public final fun getTitle ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/iktwo/piktographs/navigation/NavState {
+}
+
+public final class com/iktwo/piktographs/navigation/NavState$Error : com/iktwo/piktographs/navigation/NavState {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Throwable;)V
+	public final fun component1 ()Ljava/lang/Throwable;
+	public final fun copy (Ljava/lang/Throwable;)Lcom/iktwo/piktographs/navigation/NavState$Error;
+	public static synthetic fun copy$default (Lcom/iktwo/piktographs/navigation/NavState$Error;Ljava/lang/Throwable;ILjava/lang/Object;)Lcom/iktwo/piktographs/navigation/NavState$Error;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getThrowable ()Ljava/lang/Throwable;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/iktwo/piktographs/navigation/NavState$Loading : com/iktwo/piktographs/navigation/NavState {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/iktwo/piktographs/navigation/NavState$Loading;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/iktwo/piktographs/navigation/NavState$Success : com/iktwo/piktographs/navigation/NavState {
+	public static final field $stable I
+	public fun <init> (Lcom/iktwo/kodices/content/Content;)V
+	public final fun component1 ()Lcom/iktwo/kodices/content/Content;
+	public final fun copy (Lcom/iktwo/kodices/content/Content;)Lcom/iktwo/piktographs/navigation/NavState$Success;
+	public static synthetic fun copy$default (Lcom/iktwo/piktographs/navigation/NavState$Success;Lcom/iktwo/kodices/content/Content;ILjava/lang/Object;)Lcom/iktwo/piktographs/navigation/NavState$Success;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContent ()Lcom/iktwo/kodices/content/Content;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/iktwo/piktographs/navigation/NavigateAction : com/iktwo/kodices/actions/Action {
+	public static final field $stable I
+	public static final field Companion Lcom/iktwo/piktographs/navigation/NavigateAction$Companion;
+	public static final field PRESENTATION_BOTTOM_SHEET Ljava/lang/String;
+	public static final field PRESENTATION_DIALOG Ljava/lang/String;
+	public static final field PRESENTATION_PUSH Ljava/lang/String;
+	public static final field PRESENTATION_SHEET Ljava/lang/String;
+	public static final field TYPE Ljava/lang/String;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/iktwo/piktographs/navigation/NavigateAction;
+	public static synthetic fun copy$default (Lcom/iktwo/piktographs/navigation/NavigateAction;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/iktwo/piktographs/navigation/NavigateAction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPresentation ()Ljava/lang/String;
+	public final fun getTargetRoute ()Ljava/lang/String;
+	public final fun getTitle ()Ljava/lang/String;
+	public fun getType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class com/iktwo/piktographs/navigation/NavigateAction$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/iktwo/piktographs/navigation/NavigateAction$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/iktwo/piktographs/navigation/NavigateAction;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/iktwo/piktographs/navigation/NavigateAction;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/piktographs/navigation/NavigateAction$Companion {
+	public final fun getDescriptor ()Lcom/iktwo/kodices/actions/ActionDescriptor;
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/iktwo/piktographs/ui/ButtonUIKt {
+	public static final field BUTTON_ELEMENT_TYPE Ljava/lang/String;
+	public static final fun ButtonUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/iktwo/piktographs/ui/CardUIKt {
+	public static final field CARD_ELEMENT_TYPE Ljava/lang/String;
+	public static final fun CardUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
+}
+
 public final class com/iktwo/piktographs/ui/CheckboxUIKt {
 	public static final fun CheckboxUI (Lcom/iktwo/kodices/elements/InputElement;Lcom/iktwo/kodices/elements/InputHandler;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class com/iktwo/piktographs/ui/Colors {
 	public static final field $stable I
+	public fun <init> ()V
 	public synthetic fun <init> (JJJILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public synthetic fun <init> (JJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1-0d7_KjU ()J
@@ -197,11 +402,34 @@ public final class com/iktwo/piktographs/ui/Colors {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/iktwo/piktographs/ui/ComposableSingletons$DialogContentKt {
+	public static final field INSTANCE Lcom/iktwo/piktographs/ui/ComposableSingletons$DialogContentKt;
+	public fun <init> ()V
+	public final fun getLambda$-1199234292$com_iktwo_Piktographs ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1812134831$com_iktwo_Piktographs ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-659634205$com_iktwo_Piktographs ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-690906562$com_iktwo_Piktographs ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class com/iktwo/piktographs/ui/Constants {
 	public static final field $stable I
 	public static final field ACTIVE_KEY Ljava/lang/String;
 	public static final field INSTANCE Lcom/iktwo/piktographs/ui/Constants;
 	public static final field TOP_BAR_ELEMENT_TYPE Ljava/lang/String;
+}
+
+public final class com/iktwo/piktographs/ui/ContainerUIKt {
+	public static final field CONTAINER_ELEMENT_TYPE Ljava/lang/String;
+	public static final field HORIZONTAL_LAYOUT_ELEMENT_TYPE Ljava/lang/String;
+	public static final field HROW_ELEMENT_TYPE Ljava/lang/String;
+	public static final field VERTICAL_LAYOUT_ELEMENT_TYPE Ljava/lang/String;
+	public static final field VROW_ELEMENT_TYPE Ljava/lang/String;
+	public static final fun ContainerUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/iktwo/piktographs/ui/ContentBottomSheetKt {
+	public static final fun ContentBottomSheet (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun ContentBottomSheet (Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class com/iktwo/piktographs/ui/ContentDialogKt {
@@ -210,6 +438,7 @@ public final class com/iktwo/piktographs/ui/ContentDialogKt {
 
 public final class com/iktwo/piktographs/ui/Dimensions {
 	public static final field $stable I
+	public fun <init> ()V
 	public synthetic fun <init> (FFFFILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public synthetic fun <init> (FFFFLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1-D9Ej5fM ()F
@@ -233,6 +462,7 @@ public final class com/iktwo/piktographs/ui/DimensionsKt {
 
 public final class com/iktwo/piktographs/ui/FontSizes {
 	public static final field $stable I
+	public fun <init> ()V
 	public synthetic fun <init> (JJILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public synthetic fun <init> (JJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1-XSAIIZE ()J
@@ -246,15 +476,34 @@ public final class com/iktwo/piktographs/ui/FontSizes {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/iktwo/piktographs/ui/IconUIKt {
+	public static final field ICON_ELEMENT_TYPE Ljava/lang/String;
+	public static final fun IconUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
+}
+
 public final class com/iktwo/piktographs/ui/ImageUIKt {
 	public static final field IMAGE_ELEMENT_TYPE Ljava/lang/String;
+	public static final field KEY_ALIGNMENT Ljava/lang/String;
+	public static final field KEY_ALPHA Ljava/lang/String;
+	public static final field KEY_ASPECT_RATIO Ljava/lang/String;
 	public static final field KEY_CONTENT_DESCRIPTION Ljava/lang/String;
+	public static final field KEY_CONTENT_SCALE Ljava/lang/String;
+	public static final field KEY_CORNER_RADIUS Ljava/lang/String;
+	public static final field KEY_HEIGHT Ljava/lang/String;
+	public static final field KEY_RADIUS Ljava/lang/String;
+	public static final field KEY_SRC Ljava/lang/String;
 	public static final field KEY_URL Ljava/lang/String;
+	public static final field KEY_WIDTH Ljava/lang/String;
 	public static final fun ImageUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class com/iktwo/piktographs/ui/NestedElementUIKt {
-	public static final fun NestedElementUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
+	public static final fun NestedElementUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/iktwo/piktographs/ui/ProgressUIKt {
+	public static final field PROGRESS_ELEMENT_TYPE Ljava/lang/String;
+	public static final fun ProgressUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class com/iktwo/piktographs/ui/RowUIKt {
@@ -275,9 +524,14 @@ public final class com/iktwo/piktographs/ui/SeparatorStyle$Companion {
 	public final fun fromString (Ljava/lang/String;)Lcom/iktwo/piktographs/ui/SeparatorStyle;
 }
 
-public final class com/iktwo/piktographs/ui/SeperatorUIKt {
+public final class com/iktwo/piktographs/ui/SeparatorUIKt {
 	public static final field SEPARATOR_ELEMENT_TYPE Ljava/lang/String;
+	public static final fun SeparatorUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
 	public static final fun SeperatorUI (Lcom/iktwo/kodices/elements/ProcessedElement;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/iktwo/piktographs/ui/SwitchUIKt {
+	public static final fun SwitchUI (Lcom/iktwo/kodices/elements/InputElement;Lcom/iktwo/kodices/elements/InputHandler;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class com/iktwo/piktographs/ui/TextAreaUIKt {
@@ -327,8 +581,8 @@ public final class com/iktwo/piktographs/ui/previews/RowUIPreviewKt {
 public final class com/iktwo/piktographs/utils/ComposableSingletons$WIPModifierKt {
 	public static final field INSTANCE Lcom/iktwo/piktographs/utils/ComposableSingletons$WIPModifierKt;
 	public fun <init> ()V
-	public final fun getLambda$-386173271$Piktographs ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-785923043$Piktographs ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-386173271$com_iktwo_Piktographs ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-785923043$com_iktwo_Piktographs ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/iktwo/piktographs/utils/FontScaleSplitKt {

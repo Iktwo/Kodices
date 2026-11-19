@@ -1,8 +1,8 @@
-package com.kodices.kodex.server
+package com.iktwo.kodex.server
 
-import com.kodices.kodex.server.plugins.configureRouting
-import com.kodices.kodex.server.plugins.configureSerialization
-import com.kodices.kodex.server.plugins.configureSockets
+import com.iktwo.kodex.server.plugins.configureRouting
+import com.iktwo.kodex.server.plugins.configureSerialization
+import com.iktwo.kodex.server.plugins.configureSockets
 import io.ktor.server.application.Application
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer

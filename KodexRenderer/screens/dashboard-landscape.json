@@ -1,0 +1,162 @@
+{
+  "content": {
+    "elements": [
+      {
+        "type": "topbar",
+        "constants": {
+          "text": "Kodex Dashboard"
+        }
+      },
+      {
+        "type": "hrow",
+        "constants": {
+          "alignment": "top",
+          "spacing": 8
+        },
+        "nestedElements": [
+          {
+            "type": "vrow",
+            "constants": {
+              "weight": 1.0
+            },
+            "nestedElements": [
+              {
+                "type": "hrow",
+                "constants": {
+                  "spacing": 16,
+                  "alignment": "center",
+                  "padding": 16
+                },
+                "nestedElements": [
+                  {
+                    "type": "image",
+                    "constants": {
+                      "url": "asset:kodices.png",
+                      "contentDescription": "Kodices logo",
+                      "width": 96,
+                      "height": 96,
+                      "cornerRadius": 16
+                    }
+                  },
+                  {
+                    "type": "row",
+                    "id": "today",
+                    "constants": {
+                      "weight": 1.0
+                    },
+                    "processors": {
+                      "text": [
+                        {
+                          "type": "path",
+                          "elements": [
+                            "now",
+                            "date"
+                          ]
+                        }
+                      ],
+                      "textSecondary": [
+                        {
+                          "type": "path",
+                          "elements": [
+                            "now",
+                            "time"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "element": "Updated at %"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "separator",
+                "constants": {
+                  "style": "line",
+                  "size": 2
+                }
+              },
+              {
+                "type": "card",
+                "constants": {
+                  "text": "Home",
+                  "textSecondary": "Living room 21 °C · Outside 7 °C · Windows closed",
+                  "variant": "outlined"
+                }
+              },
+              {
+                "type": "progress",
+                "constants": {
+                  "text": "Week",
+                  "textSecondary": "Wednesday — 3 of 7 days",
+                  "variant": "linear",
+                  "progress": 0.43
+                }
+              }
+            ]
+          },
+          {
+            "type": "vrow",
+            "constants": {
+              "weight": 1.0
+            },
+            "nestedElements": [
+              {
+                "type": "row",
+                "id": "agenda",
+                "expandWithProcessors": [
+                  {
+                    "type": "path",
+                    "elements": [
+                      "agenda"
+                    ]
+                  }
+                ],
+                "processors": {
+                  "text": [
+                    {
+                      "type": "path",
+                      "elements": [
+                        "title"
+                      ]
+                    }
+                  ],
+                  "textSecondary": [
+                    {
+                      "type": "path",
+                      "elements": [
+                        "when"
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "data": {
+    "agenda": [
+      {
+        "title": "Stand-up",
+        "when": "09:30 · Kitchen table"
+      },
+      {
+        "title": "Dentist",
+        "when": "12:15 · Dr. Rivera"
+      },
+      {
+        "title": "Pick up groceries",
+        "when": "17:00 · Market on 4th"
+      },
+      {
+        "title": "Call Mom",
+        "when": "19:30"
+      }
+    ]
+  }
+}

@@ -22,7 +22,7 @@ kotlin {
     sourceSets {
         val nativeMain by creating {
             dependencies {
-                implementation(project(":Kodices"))
+                implementation(projects.kodices)
 
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.kotlinx.serialization.json)
@@ -43,7 +43,7 @@ kotlin {
     nativeTarget.apply {
         binaries {
             executable {
-                entryPoint = "com.kodices.kodex.server.main"
+                entryPoint = "com.iktwo.kodex.server.main"
             }
         }
     }

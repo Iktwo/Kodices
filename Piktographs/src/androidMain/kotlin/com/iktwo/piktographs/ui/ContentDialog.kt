@@ -10,6 +10,6 @@ public actual fun ContentDialog(
     content: @Composable () -> Unit,
 ) {
     Dialog(onDismissRequest = onCloseRequest) {
-        content()
+        DialogContent(title = title, content = content)
     }
 }

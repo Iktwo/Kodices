@@ -1,31 +1,35 @@
 [versions]
 #noinspection UnusedVersionCatalogEntry
 android-compileSdk = "37"
+# Compose Multiplatform 1.13 requires compileSdk 37.1 or later.
+#noinspection UnusedVersionCatalogEntry
+android-compileSdkMinor = "2"
 #noinspection UnusedVersionCatalogEntry
 android-minSdk = "28"
 #noinspection UnusedVersionCatalogEntry
 android-targetSdk = "37"
 
-agp = "9.3.1"
+agp = "9.5.1"
 accompanist-webview = "0.36.0"
 androidx-activity-compose = "1.13.0"
-androidx-core = "1.19.0"
-androidx-datastore = "1.2.1"
-appcompat = "1.7.1"
-coil = "3.5.0"
-composeMultiplatform = "1.11.1"
-kotlin = "2.4.10"
+androidx-core = "1.19.1"
+androidx-datastore = "1.3.0"
+appcompat = "1.8.0"
+coil = "3.6.3"
+composeMultiplatform = "1.13.0-rc01"
+kotlin = "2.4.21"
 kotlinx-coroutines = "1.11.0"
 kotlinx-datetime = "0.8.0"
-kotlinx-serialization = "1.11.0"
-kover = "0.9.9"
+kotlinx-serialization = "1.13.0"
+kover = "0.9.11"
 ktlint = "14.2.0"
-ktor = "3.5.2"
+ktor = "3.6.1"
 lifecycle = "2.11.0"
+logback = "1.6.7"
 material-icons = "1.7.3"
-material3 = "1.10.0-alpha05"
-okio = "3.18.1"
-skie = "0.10.14"
+material3 = "1.13.0-rc01"
+okio = "3.18.2"
+skie = "0.10.16"
 vanniktech-publish = "0.37.0"
 
 [libraries]
@@ -58,11 +62,15 @@ ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-client-websockets = { module = "io.ktor:ktor-client-websockets", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
+ktor-server-call-logging = { module = "io.ktor:ktor-server-call-logging", version.ref = "ktor" }
 ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
 ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 ktor-server-host-common = { module = "io.ktor:ktor-server-host-common", version.ref = "ktor" }
+ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 ktor-server-websockets = { module = "io.ktor:ktor-server-websockets", version.ref = "ktor" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "material-icons" }
 material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "material-icons" }

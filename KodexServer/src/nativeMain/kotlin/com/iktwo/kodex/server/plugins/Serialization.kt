@@ -1,4 +1,4 @@
-package com.kodices.kodex.server.plugins
+package com.iktwo.kodex.server.plugins
 
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application

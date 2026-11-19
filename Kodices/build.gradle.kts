@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
@@ -20,6 +21,11 @@ kotlin {
     // Every public declaration must state its visibility and return type, so the published
     // surface is deliberate rather than incidental.
     explicitApi()
+
+    // Guards the published ABI against the dumps in api/: `check` fails on an unreviewed change to
+    // the public surface. After a deliberate change, refresh them with `./gradlew updateKotlinAbi`.
+    @OptIn(ExperimentalAbiValidation::class)
+    abiValidation()
 
     //region JVM
     jvm {
@@ -81,7 +87,7 @@ kotlin {
 }
 
 kover {
-    useJacoco("0.8.13")
+    useJacoco("0.8.16")
 
     reports {
         total {

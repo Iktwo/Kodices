@@ -1,6 +1,7 @@
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
@@ -20,6 +21,11 @@ kotlin {
     // surface is deliberate rather than incidental.
     explicitApi()
 
+    // Guards the published ABI against the dumps in api/: `check` fails on an unreviewed change to
+    // the public surface. After a deliberate change, refresh them with `./gradlew updateKotlinAbi`.
+    @OptIn(ExperimentalAbiValidation::class)
+    abiValidation()
+
     jvmToolchain(21)
 
     android {
@@ -28,7 +34,11 @@ kotlin {
             freeCompilerArgs.add("-Xjdk-release=17")
         }
 
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        compileSdk {
+            version = release(libs.versions.android.compileSdk.get().toInt()) {
+                minorApiLevel = libs.versions.android.compileSdkMinor.get().toInt()
+            }
+        }
         minSdk = libs.versions.android.minSdk.get().toInt()
 
         namespace = "com.iktwo.piktographs"
@@ -57,9 +67,12 @@ kotlin {
         }
     }
 
+    // Compose UI tests on the web need the Skiko runtime bundled by webpack, which only happens for
+    // an executable binary (CMP-4906). Compose Multiplatform 1.13 fails the build without it.
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser()
+        binaries.executable()
     }
 
     js {
@@ -68,6 +81,7 @@ kotlin {
                 enabled = false
             }
         }
+        binaries.executable()
     }
 
     sourceSets {
@@ -122,7 +136,7 @@ kotlin {
 }
 
 kover {
-    useJacoco("0.8.13")
+    useJacoco("0.8.16")
 
     reports {
         total {

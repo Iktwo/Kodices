@@ -111,87 +111,89 @@ public fun ElementUI(
     val componentContent = @Composable {
         CompositionLocalProvider(LocalElementEnabled provides isEnabled) {
             Box(modifier = modifier) {
-                when (element.type) {
-                    ROW_ELEMENT_TYPE -> {
-                        RowUI(element)
-                    }
-
-                    CONTAINER_ELEMENT_TYPE,
-                    HROW_ELEMENT_TYPE,
-                    HORIZONTAL_LAYOUT_ELEMENT_TYPE,
-                    VROW_ELEMENT_TYPE,
-                    VERTICAL_LAYOUT_ELEMENT_TYPE,
-                    -> {
-                        ContainerUI(element)
-                    }
-
-                    INPUT_ELEMENT_TEXT_INPUT if element is InputElement -> {
-                        SideEffect {
-                            val isElementValid = element.isValid(textInputData[element.id] ?: element.text ?: "")
-                            if (validityMap[element.id] != isElementValid) {
-                                validityMap[element.id] = isElementValid
-                            }
+                // Overrides are consulted first, so a host can restyle a built-in type as well as
+                // render its own ones.
+                if (!elementOverrides(element)) {
+                    when (element.type) {
+                        ROW_ELEMENT_TYPE -> {
+                            RowUI(element)
                         }
 
-                        TextInputUI(
-                            element = element,
-                            inputHandler = inputHandler,
-                        )
-                    }
-
-                    INPUT_ELEMENT_TEXT_AREA if element is InputElement -> {
-                        SideEffect {
-                            val isElementValid = element.isValid(textInputData[element.id] ?: element.text ?: "")
-                            if (validityMap[element.id] != isElementValid) {
-                                validityMap[element.id] = isElementValid
-                            }
+                        CONTAINER_ELEMENT_TYPE,
+                        HROW_ELEMENT_TYPE,
+                        HORIZONTAL_LAYOUT_ELEMENT_TYPE,
+                        VROW_ELEMENT_TYPE,
+                        VERTICAL_LAYOUT_ELEMENT_TYPE,
+                        -> {
+                            ContainerUI(element)
                         }
 
-                        TextAreaUI(element, inputHandler)
-                    }
+                        INPUT_ELEMENT_TEXT_INPUT if element is InputElement -> {
+                            SideEffect {
+                                val isElementValid = element.isValid(textInputData[element.id] ?: element.text ?: "")
+                                if (validityMap[element.id] != isElementValid) {
+                                    validityMap[element.id] = isElementValid
+                                }
+                            }
 
-                    INPUT_ELEMENT_CHECKBOX if element is InputElement -> {
-                        CheckboxUI(element, inputHandler)
-                    }
+                            TextInputUI(
+                                element = element,
+                                inputHandler = inputHandler,
+                            )
+                        }
 
-                    INPUT_ELEMENT_SWITCH if element is InputElement -> {
-                        SwitchUI(element, inputHandler)
-                    }
+                        INPUT_ELEMENT_TEXT_AREA if element is InputElement -> {
+                            SideEffect {
+                                val isElementValid = element.isValid(textInputData[element.id] ?: element.text ?: "")
+                                if (validityMap[element.id] != isElementValid) {
+                                    validityMap[element.id] = isElementValid
+                                }
+                            }
 
-                    INPUT_ELEMENT_TOGGLE if element is InputElement -> {
-                        SwitchUI(element, inputHandler)
-                    }
+                            TextAreaUI(element, inputHandler)
+                        }
 
-                    ICON_ELEMENT_TYPE -> {
-                        IconUI(element)
-                    }
+                        INPUT_ELEMENT_CHECKBOX if element is InputElement -> {
+                            CheckboxUI(element, inputHandler)
+                        }
 
-                    BUTTON_ELEMENT_TYPE -> {
-                        ButtonUI(element)
-                    }
+                        INPUT_ELEMENT_SWITCH if element is InputElement -> {
+                            SwitchUI(element, inputHandler)
+                        }
 
-                    CARD_ELEMENT_TYPE -> {
-                        CardUI(element)
-                    }
+                        INPUT_ELEMENT_TOGGLE if element is InputElement -> {
+                            SwitchUI(element, inputHandler)
+                        }
 
-                    PROGRESS_ELEMENT_TYPE -> {
-                        ProgressUI(element)
-                    }
+                        ICON_ELEMENT_TYPE -> {
+                            IconUI(element)
+                        }
 
-                    SEPARATOR_ELEMENT_TYPE -> {
-                        SeparatorUI(element)
-                    }
+                        BUTTON_ELEMENT_TYPE -> {
+                            ButtonUI(element)
+                        }
 
-                    IMAGE_ELEMENT_TYPE -> {
-                        ImageUI(element)
-                    }
+                        CARD_ELEMENT_TYPE -> {
+                            CardUI(element)
+                        }
 
-                    TOP_BAR_ELEMENT_TYPE -> {
-                        // Skip this element, as it should be rendered in the Scaffold
-                    }
+                        PROGRESS_ELEMENT_TYPE -> {
+                            ProgressUI(element)
+                        }
 
-                    else -> {
-                        if (!elementOverrides(element)) {
+                        SEPARATOR_ELEMENT_TYPE -> {
+                            SeparatorUI(element)
+                        }
+
+                        IMAGE_ELEMENT_TYPE -> {
+                            ImageUI(element)
+                        }
+
+                        TOP_BAR_ELEMENT_TYPE -> {
+                            // Skip this element, as it should be rendered in the Scaffold
+                        }
+
+                        else -> {
                             UnknownElementUI(element)
                         }
                     }

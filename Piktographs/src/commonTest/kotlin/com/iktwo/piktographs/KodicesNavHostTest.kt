@@ -255,10 +255,12 @@ public class KodicesNavHostTest {
             onNodeWithText("Main Page Content").assertIsDisplayed()
             onNodeWithText("Open Dialog").performClick()
 
+            onNodeWithText("Info Dialog").assertIsDisplayed()
             onNodeWithText("Inside Modal Dialog").assertIsDisplayed()
             onNodeWithText("Close Dialog").performClick()
 
             onNodeWithText("Main Page Content").assertIsDisplayed()
+            onNodeWithText("Inside Modal Dialog").assertDoesNotExist()
         }
 
     @Test

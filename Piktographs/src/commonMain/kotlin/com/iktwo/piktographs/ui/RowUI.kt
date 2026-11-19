@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
 import com.iktwo.kodices.elements.ProcessedElement
@@ -17,6 +19,11 @@ public const val ROW_ELEMENT_TYPE: String = "row"
 
 @Composable
 public fun RowUI(element: ProcessedElement) {
+    // Only the font family is inherited: the size and line height stay Piktographs' own, but a host
+    // that sets a typography (or has to avoid system fonts, like the headless renderer) is respected.
+    val fontFamily = LocalTextStyle.current.fontFamily
+    val colors = DefaultTheme.current.colors
+
     Column(
         modifier = Modifier.fillMaxWidth().padding(vertical = DefaultTheme.current.dimensions.padding),
         verticalArrangement = Arrangement.spacedBy(DefaultTheme.current.dimensions.verticalSpacing),
@@ -26,8 +33,9 @@ public fun RowUI(element: ProcessedElement) {
                 Text(
                     text = it,
                     modifier = Modifier.fillMaxWidth(),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = colors.mainTextColor.takeOrElse { MaterialTheme.colorScheme.onSurface },
                     style = TextStyle(
+                        fontFamily = fontFamily,
                         fontSize = DefaultTheme.current.fonts.primary,
                         lineHeightStyle = LineHeightStyle(
                             alignment = LineHeightStyle.Alignment.Proportional,
@@ -42,8 +50,9 @@ public fun RowUI(element: ProcessedElement) {
             Text(
                 text = it,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = DefaultTheme.current.dimensions.padding),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = colors.secondaryTextColor.takeOrElse { MaterialTheme.colorScheme.onSurfaceVariant },
                 style = TextStyle(
+                    fontFamily = fontFamily,
                     fontSize = DefaultTheme.current.fonts.secondary,
                     lineHeightStyle = LineHeightStyle(
                         alignment = LineHeightStyle.Alignment.Proportional,

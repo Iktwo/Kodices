@@ -182,7 +182,8 @@ public sealed interface NavState {
  * @param fetchContent suspend function that fetches the [Content] model for a given route.
  * @param modifier Modifier applied to the root host container.
  * @param pageStyle page layout style (vertical or horizontal list).
- * @param elementOverrides custom composable override handler for specific element types.
+ * @param elementOverrides renders an element itself and returns true, or returns false to let
+ *   Piktographs render it. Consulted for every element, built-in types included.
  * @param theme styling theme passed to child composables.
  * @param actionPerformer handler for non-navigation UI actions.
  * @param loadingContent composable rendered while fetching route JSON.

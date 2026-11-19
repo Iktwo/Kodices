@@ -167,13 +167,6 @@ final class com.iktwo.kodices.actions/MessageAction : com.iktwo.kodices.actions/
     }
 }
 
-final class com.iktwo.kodices.actions/SimpleAction : com.iktwo.kodices.actions/Action { // com.iktwo.kodices.actions/SimpleAction|null[0]
-    constructor <init>(kotlin/String) // com.iktwo.kodices.actions/SimpleAction.<init>|<init>(kotlin.String){}[0]
-
-    final val type // com.iktwo.kodices.actions/SimpleAction.type|{}type[0]
-        final fun <get-type>(): kotlin/String // com.iktwo.kodices.actions/SimpleAction.type.<get-type>|<get-type>(){}[0]
-}
-
 final class com.iktwo.kodices.content/Content { // com.iktwo.kodices.content/Content|null[0]
     constructor <init>(kotlin.collections/List<com.iktwo.kodices.elements/ProcessedElement>) // com.iktwo.kodices.content/Content.<init>|<init>(kotlin.collections.List<com.iktwo.kodices.elements.ProcessedElement>){}[0]
 
@@ -503,6 +496,20 @@ open class com.iktwo.kodices.actions/InterimAction : com.iktwo.kodices.actions/A
     }
 }
 
+open class com.iktwo.kodices.actions/SimpleAction : com.iktwo.kodices.actions/Action { // com.iktwo.kodices.actions/SimpleAction|null[0]
+    constructor <init>(kotlin/String) // com.iktwo.kodices.actions/SimpleAction.<init>|<init>(kotlin.String){}[0]
+    constructor <init>(kotlin/String, kotlin.collections/Map<kotlin/String, kotlinx.serialization.json/JsonElement?> = ...) // com.iktwo.kodices.actions/SimpleAction.<init>|<init>(kotlin.String;kotlin.collections.Map<kotlin.String,kotlinx.serialization.json.JsonElement?>){}[0]
+
+    final val jsonValues // com.iktwo.kodices.actions/SimpleAction.jsonValues|{}jsonValues[0]
+        final fun <get-jsonValues>(): kotlin.collections/Map<kotlin/String, kotlinx.serialization.json/JsonElement?> // com.iktwo.kodices.actions/SimpleAction.jsonValues.<get-jsonValues>|<get-jsonValues>(){}[0]
+    open val type // com.iktwo.kodices.actions/SimpleAction.type|{}type[0]
+        open fun <get-type>(): kotlin/String // com.iktwo.kodices.actions/SimpleAction.type.<get-type>|<get-type>(){}[0]
+
+    open fun equals(kotlin/Any?): kotlin/Boolean // com.iktwo.kodices.actions/SimpleAction.equals|equals(kotlin.Any?){}[0]
+    open fun hashCode(): kotlin/Int // com.iktwo.kodices.actions/SimpleAction.hashCode|hashCode(){}[0]
+    open fun toString(): kotlin/String // com.iktwo.kodices.actions/SimpleAction.toString|toString(){}[0]
+}
+
 open class com.iktwo.kodices.elements/ProcessedElement : com.iktwo.kodices.elements/Element { // com.iktwo.kodices.elements/ProcessedElement|null[0]
     constructor <init>(kotlin/Int, kotlin/String?, kotlin.collections/List<com.iktwo.kodices.elements/ProcessedElement>?, kotlin/String?, kotlin/Int, kotlin/String?, kotlin/String?, kotlin.collections/List<com.iktwo.kodices.actions/Action>?, kotlin.collections/Map<kotlin/String, kotlinx.serialization.json/JsonElement?>?, kotlin/String?, com.iktwo.kodices.inputvalidation/Validation?, kotlin.collections/List<kotlin/String>?, kotlin/Boolean, kotlin/Boolean, kotlinx.serialization.internal/SerializationConstructorMarker?) // com.iktwo.kodices.elements/ProcessedElement.<init>|<init>(kotlin.Int;kotlin.String?;kotlin.collections.List<com.iktwo.kodices.elements.ProcessedElement>?;kotlin.String?;kotlin.Int;kotlin.String?;kotlin.String?;kotlin.collections.List<com.iktwo.kodices.actions.Action>?;kotlin.collections.Map<kotlin.String,kotlinx.serialization.json.JsonElement?>?;kotlin.String?;com.iktwo.kodices.inputvalidation.Validation?;kotlin.collections.List<kotlin.String>?;kotlin.Boolean;kotlin.Boolean;kotlinx.serialization.internal.SerializationConstructorMarker?){}[0]
     constructor <init>(kotlin/String, kotlin.collections/List<com.iktwo.kodices.elements/ProcessedElement> = ..., kotlin/String, kotlin/Int = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin.collections/List<com.iktwo.kodices.actions/Action> = ..., kotlin.collections/Map<kotlin/String, kotlinx.serialization.json/JsonElement?> = ..., kotlin/String? = ..., com.iktwo.kodices.inputvalidation/Validation? = ..., kotlin.collections/List<kotlin/String> = ..., kotlin/Boolean = ..., kotlin/Boolean = ...) // com.iktwo.kodices.elements/ProcessedElement.<init>|<init>(kotlin.String;kotlin.collections.List<com.iktwo.kodices.elements.ProcessedElement>;kotlin.String;kotlin.Int;kotlin.String?;kotlin.String?;kotlin.collections.List<com.iktwo.kodices.actions.Action>;kotlin.collections.Map<kotlin.String,kotlinx.serialization.json.JsonElement?>;kotlin.String?;com.iktwo.kodices.inputvalidation.Validation?;kotlin.collections.List<kotlin.String>;kotlin.Boolean;kotlin.Boolean){}[0]
@@ -535,6 +542,8 @@ open class com.iktwo.kodices.elements/ProcessedElement : com.iktwo.kodices.eleme
         open fun <get-visible>(): kotlin/Boolean // com.iktwo.kodices.elements/ProcessedElement.visible.<get-visible>|<get-visible>(){}[0]
 
     open fun copy(kotlin/String = ..., kotlin/Int = ..., kotlin.collections/List<com.iktwo.kodices.elements/ProcessedElement> = ..., kotlin/String? = ..., kotlin/String? = ..., kotlin.collections/List<com.iktwo.kodices.actions/Action> = ..., kotlin.collections/Map<kotlin/String, kotlinx.serialization.json/JsonElement?> = ..., kotlin/String? = ..., com.iktwo.kodices.inputvalidation/Validation? = ..., kotlin.collections/List<kotlin/String> = ..., kotlin/Boolean = ..., kotlin/Boolean = ...): com.iktwo.kodices.elements/ProcessedElement // com.iktwo.kodices.elements/ProcessedElement.copy|copy(kotlin.String;kotlin.Int;kotlin.collections.List<com.iktwo.kodices.elements.ProcessedElement>;kotlin.String?;kotlin.String?;kotlin.collections.List<com.iktwo.kodices.actions.Action>;kotlin.collections.Map<kotlin.String,kotlinx.serialization.json.JsonElement?>;kotlin.String?;com.iktwo.kodices.inputvalidation.Validation?;kotlin.collections.List<kotlin.String>;kotlin.Boolean;kotlin.Boolean){}[0]
+    open fun equals(kotlin/Any?): kotlin/Boolean // com.iktwo.kodices.elements/ProcessedElement.equals|equals(kotlin.Any?){}[0]
+    open fun hashCode(): kotlin/Int // com.iktwo.kodices.elements/ProcessedElement.hashCode|hashCode(){}[0]
     open fun toString(): kotlin/String // com.iktwo.kodices.elements/ProcessedElement.toString|toString(){}[0]
 
     final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<com.iktwo.kodices.elements/ProcessedElement> { // com.iktwo.kodices.elements/ProcessedElement.$serializer|null[0]
@@ -648,15 +657,21 @@ final object com.iktwo.kodices.utils/Constants { // com.iktwo.kodices.utils/Cons
 
 final const val com.iktwo.kodices.elements/INPUT_ELEMENT_CHECKBOX // com.iktwo.kodices.elements/INPUT_ELEMENT_CHECKBOX|{}INPUT_ELEMENT_CHECKBOX[0]
     final fun <get-INPUT_ELEMENT_CHECKBOX>(): kotlin/String // com.iktwo.kodices.elements/INPUT_ELEMENT_CHECKBOX.<get-INPUT_ELEMENT_CHECKBOX>|<get-INPUT_ELEMENT_CHECKBOX>(){}[0]
+final const val com.iktwo.kodices.elements/INPUT_ELEMENT_SWITCH // com.iktwo.kodices.elements/INPUT_ELEMENT_SWITCH|{}INPUT_ELEMENT_SWITCH[0]
+    final fun <get-INPUT_ELEMENT_SWITCH>(): kotlin/String // com.iktwo.kodices.elements/INPUT_ELEMENT_SWITCH.<get-INPUT_ELEMENT_SWITCH>|<get-INPUT_ELEMENT_SWITCH>(){}[0]
 final const val com.iktwo.kodices.elements/INPUT_ELEMENT_TEXT_AREA // com.iktwo.kodices.elements/INPUT_ELEMENT_TEXT_AREA|{}INPUT_ELEMENT_TEXT_AREA[0]
     final fun <get-INPUT_ELEMENT_TEXT_AREA>(): kotlin/String // com.iktwo.kodices.elements/INPUT_ELEMENT_TEXT_AREA.<get-INPUT_ELEMENT_TEXT_AREA>|<get-INPUT_ELEMENT_TEXT_AREA>(){}[0]
 final const val com.iktwo.kodices.elements/INPUT_ELEMENT_TEXT_INPUT // com.iktwo.kodices.elements/INPUT_ELEMENT_TEXT_INPUT|{}INPUT_ELEMENT_TEXT_INPUT[0]
     final fun <get-INPUT_ELEMENT_TEXT_INPUT>(): kotlin/String // com.iktwo.kodices.elements/INPUT_ELEMENT_TEXT_INPUT.<get-INPUT_ELEMENT_TEXT_INPUT>|<get-INPUT_ELEMENT_TEXT_INPUT>(){}[0]
+final const val com.iktwo.kodices.elements/INPUT_ELEMENT_TOGGLE // com.iktwo.kodices.elements/INPUT_ELEMENT_TOGGLE|{}INPUT_ELEMENT_TOGGLE[0]
+    final fun <get-INPUT_ELEMENT_TOGGLE>(): kotlin/String // com.iktwo.kodices.elements/INPUT_ELEMENT_TOGGLE.<get-INPUT_ELEMENT_TOGGLE>|<get-INPUT_ELEMENT_TOGGLE>(){}[0]
 
 final val com.iktwo.kodices.elements/DefaultInputElements // com.iktwo.kodices.elements/DefaultInputElements|{}DefaultInputElements[0]
     final fun <get-DefaultInputElements>(): kotlin.collections/List<kotlin/String> // com.iktwo.kodices.elements/DefaultInputElements.<get-DefaultInputElements>|<get-DefaultInputElements>(){}[0]
 
 final fun (kotlinx.serialization.json/JsonElement).com.iktwo.kodices.utils/asBooleanOrNull(): kotlin/Boolean? // com.iktwo.kodices.utils/asBooleanOrNull|asBooleanOrNull@kotlinx.serialization.json.JsonElement(){}[0]
+final fun (kotlinx.serialization.json/JsonElement).com.iktwo.kodices.utils/asDoubleOrNull(): kotlin/Double? // com.iktwo.kodices.utils/asDoubleOrNull|asDoubleOrNull@kotlinx.serialization.json.JsonElement(){}[0]
+final fun (kotlinx.serialization.json/JsonElement).com.iktwo.kodices.utils/asFloatOrNull(): kotlin/Float? // com.iktwo.kodices.utils/asFloatOrNull|asFloatOrNull@kotlinx.serialization.json.JsonElement(){}[0]
 final fun (kotlinx.serialization.json/JsonElement).com.iktwo.kodices.utils/asIntOrNull(): kotlin/Int? // com.iktwo.kodices.utils/asIntOrNull|asIntOrNull@kotlinx.serialization.json.JsonElement(){}[0]
 final fun (kotlinx.serialization.json/JsonElement).com.iktwo.kodices.utils/asJSONArrayOrNull(): kotlinx.serialization.json/JsonArray? // com.iktwo.kodices.utils/asJSONArrayOrNull|asJSONArrayOrNull@kotlinx.serialization.json.JsonElement(){}[0]
 final fun (kotlinx.serialization.json/JsonElement).com.iktwo.kodices.utils/asJSONObjectOrNull(): kotlinx.serialization.json/JsonObject? // com.iktwo.kodices.utils/asJSONObjectOrNull|asJSONObjectOrNull@kotlinx.serialization.json.JsonElement(){}[0]

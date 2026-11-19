@@ -3,7 +3,6 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 }
 plugins {
@@ -19,4 +18,5 @@ include(
     ":SampleApp",
     ":SampleApp:sample_android",
     ":KodexServer",
+    ":KodexRenderer",
 )

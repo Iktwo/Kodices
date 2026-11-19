@@ -1,0 +1,10 @@
+# Build context for KodexRenderer/Dockerfile. Keep it to sources; Gradle output and IDE state are
+# large and would invalidate the layer cache on every build.
+**/build
+**/.gradle
+.gradle
+.kotlin
+.idea
+**/*.iml
+local.properties
+SampleApp/iosApp
