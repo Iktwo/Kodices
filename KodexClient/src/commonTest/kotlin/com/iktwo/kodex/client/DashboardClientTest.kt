@@ -125,6 +125,13 @@ class DashboardClientTest {
             assertTrue("Connection refused" in unreachable.message)
             assertEquals(DashboardFailure.Unreachable, unreachable.failure)
 
+            // What a browser's failed fetch looks like: an Error, not an Exception.
+            val blocked = assertIs<DashboardResult.Failed>(
+                client { throw Error("Fail to fetch") }.fetch(connection, "dashboard"),
+            )
+            assertTrue("Fail to fetch" in blocked.message)
+            assertEquals(DashboardFailure.Unreachable, blocked.failure)
+
             val badAddress = client { respond(envelope) }.fetch(DashboardConnection("http://bad host:x"), "dashboard")
             assertIs<DashboardResult.Failed>(badAddress)
         }

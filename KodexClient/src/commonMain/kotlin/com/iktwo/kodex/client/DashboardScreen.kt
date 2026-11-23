@@ -51,10 +51,17 @@ import com.iktwo.piktographs.ui.TABS_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.Theme
 import kotlinx.coroutines.launch
 
-/** What the connect form says above its fields. */
+/**
+ * What the connect form says above its fields, and which fields it has.
+ *
+ * @property askForServer false leaves the server address out of the form: for a host that already
+ *   knows it and where no other address could work, such as a page served by the dashboard server
+ *   itself. The form then asks for the token only.
+ */
 data class DashboardIntro(
     val title: String = "Live dashboard",
     val text: String? = null,
+    val askForServer: Boolean = true,
 )
 
 /**
@@ -332,15 +339,17 @@ private fun DashboardConnectForm(
             Text(intro.title, style = MaterialTheme.typography.titleLarge)
             intro.text?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }
 
-            OutlinedTextField(
-                value = state.serverUrl,
-                onValueChange = onServerUrlChanged,
-                label = { Text("Server address") },
-                singleLine = true,
-                isError = state.failure == DashboardFailure.InvalidAddress || state.failure == DashboardFailure.Unreachable,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, autoCorrectEnabled = false, imeAction = ImeAction.Next),
-                modifier = Modifier.fillMaxWidth().testTag(TAG_SERVER_URL),
-            )
+            if (intro.askForServer) {
+                OutlinedTextField(
+                    value = state.serverUrl,
+                    onValueChange = onServerUrlChanged,
+                    label = { Text("Server address") },
+                    singleLine = true,
+                    isError = state.failure == DashboardFailure.InvalidAddress || state.failure == DashboardFailure.Unreachable,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, autoCorrectEnabled = false, imeAction = ImeAction.Next),
+                    modifier = Modifier.fillMaxWidth().testTag(TAG_SERVER_URL),
+                )
+            }
 
             TokenField(
                 token = state.token,

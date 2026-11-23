@@ -34,8 +34,19 @@ internal object BrowserSession {
     }
 }
 
+/**
+ * Leaves the browser's own context menu alone. Compose cancels `contextmenu` on its canvas, which
+ * takes away "Inspect", "Reload", "Save page" and everything an extension adds, and puts nothing
+ * in their place here: the viewer has no context menu of its own. A capturing listener on the
+ * window runs before Compose's and stops the event from reaching it, so nothing cancels it.
+ */
+internal fun keepBrowserContextMenu(): Unit = js("window.addEventListener('contextmenu', function (event) { event.stopImmediatePropagation(); }, true)")
+
 /** `scheme://host[:port]` of the page: the API it was served next to. */
 internal fun pageOrigin(): String = locationOrigin().takeIf { it.startsWith("http") } ?: FALLBACK_URL
+
+/** The origin of a page served over http(s); null for one opened from disk. */
+internal fun servedFrom(): String? = locationOrigin().takeIf { it.startsWith("http") }
 
 /** A page opened from disk has no origin worth connecting to. */
 private const val FALLBACK_URL = "http://localhost:8090"

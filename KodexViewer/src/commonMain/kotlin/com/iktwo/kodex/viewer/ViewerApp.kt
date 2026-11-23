@@ -35,6 +35,8 @@ data class ViewerConfig(
     val serverUrl: String,
     val token: String = "",
     val autoConnect: Boolean = false,
+    /** The address is not the user's to choose: the form asks for the token only. */
+    val fixedServer: Boolean = false,
 ) {
     /** The token is a secret: keep it out of logs. */
     override fun toString(): String = "ViewerConfig(serverUrl=$serverUrl, token=${if (token.isEmpty()) "none" else "***"}, autoConnect=$autoConnect)"
@@ -75,7 +77,7 @@ fun ViewerApp(
         Dashboard(
             controller = controller,
             modifier = modifier.fillMaxSize().safeDrawingPadding(),
-            intro = ViewerIntro,
+            intro = if (config.fixedServer) FixedServerIntro else ViewerIntro,
             autoConnect = config.autoConnect,
             theme = viewerPageTheme(),
             onConnected = onConnected,
@@ -88,6 +90,13 @@ internal val ViewerIntro = DashboardIntro(
     title = "Kodex Viewer",
     text = "Connect to a server that serves Kodices screens (GET /screens and GET /content/<screen>.json), " +
         "such as KodexRenderer. The token is sent to that server only.",
+)
+
+/** For a viewer served by the dashboard server itself: there is one server, the one the page came from. */
+internal val FixedServerIntro = DashboardIntro(
+    title = "Kodex Viewer",
+    text = "Enter this server's dashboard token. It is sent to this server only.",
+    askForServer = false,
 )
 
 /** Material 3, light or dark with the system. */

@@ -184,7 +184,11 @@ class DashboardClient(
             Response(response.status, response.bodyAsText(), response.headers[HttpHeaders.ETag])
         } catch (e: CancellationException) {
             throw e
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
+            // Throwable, not Exception: in a browser Ktor reports a failed fetch (the server is down,
+            // or the page's Content-Security-Policy forbids the address) as kotlin.Error, and a
+            // rejected promise arrives as JsException. Neither is an Exception, so both escaped
+            // and the connect form showed nothing at all.
             throw DashboardException(
                 "Could not reach ${connection.baseUrl}: ${e.message ?: e::class.simpleName}",
                 DashboardFailure.Unreachable,
