@@ -244,6 +244,13 @@ _First release._
 
 **Fixed**
 
+- `PageUI` seeds its input maps for every input on the page, not only the top-level ones. An input
+  inside a `card`, `container` or `grid` was missing from `textInputData` until the user typed in
+  it, so a host restoring or submitting a form in `onInputIdsPopulated` did not see it.
+  `booleanInputData` is seeded as well (from `active`, else `false`), so an untouched `checkbox` or
+  `switch` has a value in the map. Keys a host already set are left alone.
+- Two inputs with the same id share one value, because the maps are keyed by id. `PageUI` now
+  reports each such id through `LocalLogger`.
 - `RowUI` now takes its font family from `LocalTextStyle`, so a host's typography applies to rows
   like it does to every other element. It used to build a bare `TextStyle`, which always resolved
   the platform default font. Size and line height are unchanged.

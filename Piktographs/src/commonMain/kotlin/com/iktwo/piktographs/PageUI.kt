@@ -22,11 +22,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.iktwo.kodices.actions.ActionPerformer
 import com.iktwo.kodices.content.Content
+import com.iktwo.kodices.elements.INPUT_ELEMENT_CHECKBOX
+import com.iktwo.kodices.elements.INPUT_ELEMENT_SWITCH
+import com.iktwo.kodices.elements.INPUT_ELEMENT_TOGGLE
 import com.iktwo.kodices.elements.InputElement
 import com.iktwo.kodices.elements.InputHandler
 import com.iktwo.kodices.elements.ProcessedElement
+import com.iktwo.kodices.utils.asBooleanOrNull
 import com.iktwo.piktographs.components.CollapsingTopBar
 import com.iktwo.piktographs.components.TopBarStyle
+import com.iktwo.piktographs.ui.Constants
 import com.iktwo.piktographs.ui.Constants.TOP_BAR_ELEMENT_TYPE
 import com.iktwo.piktographs.ui.LocalTheme
 import com.iktwo.piktographs.ui.TABS_ELEMENT_TYPE
@@ -56,20 +61,33 @@ public fun PageUI(
     val topAppBarState = rememberTopAppBarState()
 
     CompositionLocalProvider(LocalTheme provides theme) {
+        val logger = LocalLogger.current
+
         // Seeding runs in an effect, not in the composition body: writing to these maps on every
         // recomposition would overwrite whatever the user has typed since. Existing keys are left
         // alone for the same reason - the maps are the source of truth once the user has touched them.
+        // Every input is seeded, wherever it is nested: a host reading the maps (to restore or
+        // submit a form) sees the whole form, not just the inputs drawn so far.
         LaunchedEffect(content) {
-            content.elements.forEach { element ->
-                if (element is InputElement) {
-                    if (!validityMap.containsKey(element.id)) {
-                        validityMap[element.id] = element.isValid
-                    }
+            val inputs = content.elements.inputs()
 
-                    if (!textInputData.containsKey(element.id)) {
-                        textInputData[element.id] = element.text
-                    }
+            inputs.forEach { element ->
+                if (!validityMap.containsKey(element.id)) {
+                    validityMap[element.id] = element.isValid
                 }
+
+                if (element.type in BOOLEAN_INPUT_TYPES) {
+                    if (!booleanInputData.containsKey(element.id)) {
+                        booleanInputData[element.id] = element.jsonValues[Constants.ACTIVE_KEY]?.asBooleanOrNull() ?: false
+                    }
+                } else if (!textInputData.containsKey(element.id)) {
+                    textInputData[element.id] = element.text
+                }
+            }
+
+            // The maps are keyed by id, so inputs that share one share their value too.
+            duplicateInputIds(inputs).forEach { id ->
+                logger.warn("Input id \"$id\" is used by more than one input on this page; they will share one value.")
             }
 
             onInputIdsPopulated()
@@ -194,3 +212,20 @@ public fun <K, V> mapSaver(): Saver<SnapshotStateMap<K, V>, Any> {
         },
     )
 }
+
+private val BOOLEAN_INPUT_TYPES = setOf(INPUT_ELEMENT_CHECKBOX, INPUT_ELEMENT_SWITCH, INPUT_ELEMENT_TOGGLE)
+
+/** Every input in these elements, however deeply nested, in document order. */
+internal fun List<ProcessedElement>.inputs(): List<InputElement> =
+    flatMap { element ->
+        listOfNotNull(element as? InputElement) + element.nestedElements.inputs()
+    }
+
+/** The ids more than one of [inputs] has, each listed once. */
+internal fun duplicateInputIds(inputs: List<InputElement>): List<String> =
+    inputs
+        .groupingBy { it.id }
+        .eachCount()
+        .filterValues { it > 1 }
+        .keys
+        .toList()

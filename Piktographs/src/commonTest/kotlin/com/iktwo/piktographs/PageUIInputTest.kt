@@ -1,6 +1,8 @@
 package com.iktwo.piktographs
 
 import androidx.compose.material3.Text
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -18,7 +20,9 @@ import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.v2.runComposeUiTest
 import com.iktwo.kodices.KodicesParser
 import com.iktwo.kodices.content.Content
+import com.iktwo.kodices.utils.Logger
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 /**
@@ -322,5 +326,112 @@ class PageUIInputTest {
             }
 
             onNodeWithText("Bio").assertExists()
+        }
+
+    private val nestedForm = """
+        {
+          "elements": [
+            { "type": "textInput", "id": "top", "constants": { "text": "outside" } },
+            {
+              "type": "card",
+              "nestedElements": [
+                { "type": "textInput", "id": "name", "constants": { "text": "Ada", "validation": { "nonBlank": true } } },
+                {
+                  "type": "container",
+                  "nestedElements": [
+                    { "type": "switch", "id": "notify", "constants": { "text": "Notify", "active": true } },
+                    { "type": "checkbox", "id": "agree", "constants": { "text": "I agree" } }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+    """.trimIndent()
+
+    @Test
+    fun nestedInputsAreSeededBeforeTheHostIsTold() =
+        runComposeUiTest {
+            val content = parse(nestedForm)
+            val text = mutableStateMapOf<String, String?>()
+            val booleans = mutableStateMapOf<String, Boolean>()
+            val validity = mutableStateMapOf<String, Boolean>()
+            var textAtCallback: Map<String, String?>? = null
+            var booleansAtCallback: Map<String, Boolean>? = null
+
+            setContent {
+                PageUI(
+                    content = content,
+                    textInputData = text,
+                    booleanInputData = booleans,
+                    validityMap = validity,
+                    onInputIdsPopulated = {
+                        textAtCallback = text.toMap()
+                        booleansAtCallback = booleans.toMap()
+                    },
+                )
+            }
+            waitForIdle()
+
+            assertEquals(mapOf<String, String?>("top" to "outside", "name" to "Ada"), textAtCallback)
+            assertEquals(mapOf("notify" to true, "agree" to false), booleansAtCallback)
+            assertEquals(setOf("top", "name", "notify", "agree"), validity.keys.toSet())
+        }
+
+    @Test
+    fun seedingKeepsWhatTheHostAlreadyHas() =
+        runComposeUiTest {
+            val content = parse(nestedForm)
+            val text = mutableStateMapOf<String, String?>("name" to "Grace")
+            val booleans = mutableStateMapOf("notify" to false)
+
+            setContent {
+                PageUI(content = content, textInputData = text, booleanInputData = booleans)
+            }
+            waitForIdle()
+
+            assertEquals("Grace", text["name"])
+            assertEquals(false, booleans["notify"])
+            onNodeWithText("Grace").assertExists()
+        }
+
+    @Test
+    fun inputsSharingAnIdAreReported() =
+        runComposeUiTest {
+            val content = parse(
+                """
+                {
+                  "elements": [
+                    { "type": "textInput", "id": "name" },
+                    { "type": "card", "nestedElements": [ { "type": "textInput", "id": "name" } ] },
+                    { "type": "textInput", "id": "other" }
+                  ]
+                }
+                """.trimIndent(),
+            )
+            val warnings = mutableListOf<String>()
+            val logger = object : Logger {
+                override fun debug(message: String) = Unit
+
+                override fun info(message: String) = Unit
+
+                override fun warn(message: String) {
+                    warnings += message
+                }
+
+                override fun error(message: String) = Unit
+            }
+
+            setContent {
+                CompositionLocalProvider(LocalLogger provides logger) {
+                    PageUI(content = content)
+                }
+            }
+            waitForIdle()
+
+            assertEquals(
+                listOf("Input id \"name\" is used by more than one input on this page; they will share one value."),
+                warnings,
+            )
         }
 }
